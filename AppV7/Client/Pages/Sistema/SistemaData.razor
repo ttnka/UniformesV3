@@ -1,0 +1,35 @@
+﻿@page "/sistema"
+@inherits SistemaDataBase
+
+<h3>Sistema Datos</h3>
+
+<RadzenCard>
+    @if(ElUsuarioAll != null)
+    {
+    <RadzenTabs  @bind-SelectedIndex=@selectedIndex>
+            <Tabs>
+                <RadzenTabsItem Text="Usuarios">
+                    <AppV7.Client.Pages.Admin.Usuarios ElUsuario=ElUsuarioAll />
+                </RadzenTabsItem>
+
+                <RadzenTabsItem Text="Organizaciones">
+                    <AppV7.Client.Pages.Admin.Organizaciones 
+                        ElUsuario=@ElUsuarioAll />
+                </RadzenTabsItem>
+
+                <RadzenTabsItem Text="Bitacora">
+
+                </RadzenTabsItem>
+            </Tabs>
+    </RadzenTabs>
+    } 
+    else
+    {
+        
+    }
+</RadzenCard>
+--Tatanka--
+
+@code {
+    int selectedIndex = 0;
+}

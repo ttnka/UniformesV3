@@ -1,0 +1,61 @@
+﻿@page "/Firma"
+@inherits LogInBase
+@using AppV7.Shared
+
+<h3>Firma con Email</h3>
+
+<RadzenCard>
+    <RadzenTemplateForm Data="@ElNuevo"  TItem="@EAddUsuario"  Submit="@Firma">
+        <div class="form-grup row">
+            <label for="mail" class="col-sm-3 col-form-label">Email</label>
+            <div class="col-sm-9">
+                        
+                <RadzenTextBox Name="Mail" @bind-Value=@ElNuevo.Mail
+                    style="display: block; width: 300px;" />
+                <RadzenRequiredValidator Component="Mail" Text="El Mail es obligatorio " />
+                <RadzenEmailValidator Component="Mail" Text="El Formato de Mail es Incorrecto!" />
+            </div>
+        </div>
+      
+        <div class="form-grup row">
+            <label for="pass" class="col-sm-3 col-form-label">Password </label>
+            <div class="col-sm-9">
+                <RadzenPassword Name="Pass" @bind-Value=@ElNuevo.Pass Style="width: 300px;" />
+                <RadzenRequiredValidator Component="Pass" Text="El Password es obligatorio!" />
+            <br />
+            </div>
+        </div>
+        <div class="form-grup row">
+            <label for="recordarme" class="col-sm-3 col-form-label">RecordarMe </label>
+            <div class="col-sm-9">
+                <NavLink class="nav-link" href="/recuperar">Olvide Mi Password</NavLink>
+            </div>
+        </div>
+        <div class="form-grup row">
+                <label for="botones" class="col-sm-3 col-form-label">
+                No<RadzenSwitch Name="RecordarMe" @bind-Value=@ElNuevo.RecordarMe /> Si
+                </label>
+                <div class="col-sm-2">
+                    <NavLink class="nav-link" href="/">Cancelar</NavLink>
+                    
+                </div>
+                <div class="col-sm-2">
+                    <RadzenButton ButtonType="ButtonType.Submit" Text="Registro" />
+                </div>
+                
+                <label for="botones" class="col-sm-5 col-form-label"></label>
+            </div>
+    </RadzenTemplateForm>
+
+
+</RadzenCard>
+
+     
+    
+@code {
+    async void Firma()
+    {
+        await FirmaInn();
+    }
+
+}

@@ -1,0 +1,68 @@
+﻿@page "/resetpass/{code}/{mail}"
+@inherits ResetPassBase
+@using AppV7.Shared
+
+<h3>Reinicia tu Password</h3>
+
+<RadzenCard>
+    <RadzenTemplateForm Data="@EaddUsuario"  TItem="@EAddUsuario"  Submit="@ElReset">
+            <div class="form-grup row">
+                <label for="mail" class="col-sm-3 col-form-label">Email</label>
+                <div class="col-sm-9">
+                    @EaddUsuario.Mail;
+                </div>
+            </div>
+      
+            <div class="form-grup row">
+                <label for="pass" class="col-sm-3 col-form-label">Password </label>
+                <div class="col-sm-9">
+                    <RadzenPassword Name="Pass" @bind-Value=@EaddUsuario.Pass
+                        Placeholder="6 Caracteres, 1 numero, 1 letra como minimo!" Style="width: 300px;" />
+                    <RadzenRequiredValidator Component="Pass" Text="El Password es obligatorio!" />
+                <br />
+                </div>
+            </div>
+            <div class="form-grup row">
+                <label for="confirmpass" class="col-sm-3 col-form-label">Confirma tu Password</label>
+                <div class="col-sm-9">
+                    <RadzenPassword Name="ConfirmPass" @bind-Value=@EaddUsuario.ConfirmPass Style="width: 300px;" />
+                    <RadzenRequiredValidator Component="ConfirmPass" Text="El Password es obligatorio!" />
+                    <RadzenCompareValidator Visible=@(!string.IsNullOrEmpty(EaddUsuario.ConfirmPass)) 
+                        Value=@EaddUsuario.Pass Component="ConfirmPass" 
+                    Text="Confirmacion del password no coincide"/>
+                </div>
+            </div>
+            
+
+            <div class="form-grup row">
+                <label for="botones" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-7">
+                    
+                    Tu password debe ser 6 caracteres mínimo, contener 1 mayúscula, 1 minúscula, 1 numero.
+                </div>
+                <div class="col-sm-2">
+                    
+                </div>
+            </div>
+            <div class="form-grup row">
+                <label for="botones" class="col-sm-8 col-form-label"></label>
+                <div class="col-sm-2">
+                    <NavLink class="nav-link" href="/">Cancelar</NavLink>
+                    
+                </div>
+                <div class="col-sm-2">
+                    <RadzenButton ButtonType="ButtonType.Submit" Text="Registro" />
+                </div>
+            </div>
+
+        </RadzenTemplateForm>
+</RadzenCard>
+
+
+@code {
+    async void ElReset()
+    {
+        
+    }
+
+}

@@ -1,0 +1,62 @@
+﻿@page "/bitacora"
+@inherits BitacoraBase
+@using AppV7.Shared
+@using AppV7.Shared.Libreria
+
+<h3>Bitacora</h3>
+@if (LasBitacoras != null)
+{
+    // aqui va un if por el nivel de usuario
+    
+    
+    <RadzenCard>
+    
+        <RadzenDataGrid @ref="BitacoraGrid" Data="@LasBitacoras" TItem="@Z190_Bitacora" ColumnWidth="200px"
+        AllowSorting="true" AllowFiltering="true" AllowPaging="true" PageSize="55"
+         PagerHorizontalAlign="HorizontalAlign.Center" >
+
+        <Columns>
+            <RadzenDataGridColumn TItem="@Z190_Bitacora" Filterable="false" 
+                Title="Fecha" Frozen="true" Width="90px" TextAlign="TextAlign.Left">
+                <Template Context=Data>
+                    <label>@($"{@Data.Fecha.Day}/{@MyFunc.MesTitulo(@Data.Fecha.Month,0)}/{@MyFunc.Ejercicio(@Data.Fecha)}")</label>
+                    <br />
+                    <label>@($"{@MyFunc.LaHora(@Data.Fecha, "S")}")</label>
+                </Template>
+            </RadzenDataGridColumn>
+
+            <RadzenDataGridColumn TItem="@Z190_Bitacora" Filterable="false" 
+                Title="Usuarios" Frozen="true" Width="140px" TextAlign="TextAlign.Left">
+                <Template Context=Data>
+                        @if(NombresDic.ContainsKey(@Data.UsuariosId))
+                        {<label> @NombresDic[@Data.UsuariosId] </label>
+                        }else {<label> No hay Nombre! </label>}
+
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="@Z190_Bitacora" Property="Desc" Filterable="true" 
+                Title="Descripcion" Width="400px" TextAlign="TextAlign.Left" />
+        </Columns>
+    </RadzenDataGrid>
+    
+    </RadzenCard>
+}
+else
+{
+    <div class="spinner">
+        
+    </div>
+}
+@code {
+    public class Filtro
+    {
+        public string Org { get; set; } = string.Empty;
+        public bool Syst { get; set; } = false;
+    }
+    Filtro filtro = new();
+
+    async void ElSearch(Filtro arg)
+    {
+        await LeerDatos(OrgX, "", ElSistema);
+    }
+}

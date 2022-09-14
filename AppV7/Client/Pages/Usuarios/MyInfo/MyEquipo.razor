@@ -1,0 +1,234 @@
+﻿
+@inherits MyEquipoBase
+@using AppV7.Shared
+
+
+<div class="form-grup row">        
+        <div class="col-sm-9">
+            <div class="nav-item px-3">
+            @if (@Permiso)
+            {
+                <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" 
+                Text="Nuevo integrante" 
+                Click="@InsertRow" Disabled="@Editando"/>
+            }
+            <RadzenButton Icon="refresh" style="margin-bottom: 10px" ButtonStyle="ButtonStyle.Info"                 
+                Click="@LeerDatos" Disabled="@Editando"/>
+            </div>
+        </div>
+        
+        <div class="col-sm-3">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href=@($"/indexusers")>
+                <span class="oi oi-caret-left" aria-hidden="true"></span> Regresar a Inicio</NavLink>
+            </div>
+        </div>
+    </div>
+
+@if (ElTeam != null)
+{
+    <RadzenCard>       
+    <RadzenDataGrid @ref="UsersGrid" AllowFiltering="true" AllowPaging="true" PageSize="50" 
+                AllowSorting="true" AllowColumnResize="true"
+                ExpandMode="DataGridExpandMode.Single" AllowGrouping="false"
+                EditMode="DataGridEditMode.Single" 
+                Data="@ElTeam" TItem="Z110_Usuarios" RowUpdate="@OnUpdateRow" 
+                RowCreate="@OnCreateRow" >
+                
+        <Template Context="datos1">
+ 
+            <RadzenTabs>
+                <Tabs>
+                    <RadzenTabsItem Text="Detalle ">
+                        Uno 
+                    </RadzenTabsItem>
+                    <RadzenTabsItem Text="Extras">
+                        <RadzenDataList WrapItems="true" AllowPaging="true" Data="@ElTeam" 
+                            TItem="Z110_Usuarios" PageSize="10">
+                            <Template Context="datos2">
+                                <RadzenCard Style="width:100px; height:100px">
+                                    <h4 class="text-thin">Usuarios</h4>
+                                    <b>@datos2.Nombre</b>
+                                </RadzenCard>
+                            </Template>
+                        </RadzenDataList>
+                    </RadzenTabsItem>
+                </Tabs>
+            </RadzenTabs>
+        </Template>
+<!-- AQUI EMPIEZA REPORTE-->
+        
+        <Columns>
+            <RadzenDataGridColumn TItem="Z110_Usuarios" Property="Nombre" Title="Nombre" 
+                Filterable="true" Width="150px">
+                <Template Context="datos">
+                    @datos.Nombre
+                </Template>
+                <EditTemplate Context="datos">
+                    <RadzenTextBox Name="Nombre" @bind-Value="datos.Nombre" Style="width: 90%" /> <br>
+                    <RadzenLengthValidator Component="Nombre" Min="1" Max="30" 
+                        Text="El Nombre es obligatorio" />
+
+                </EditTemplate>
+            </RadzenDataGridColumn>
+        
+            <RadzenDataGridColumn TItem="Z110_Usuarios" Property="Paterno" Title="Apellidos" 
+                Filterable="true"  Width="170px">
+                <Template Context="datos">
+                    @datos.Paterno @datos.Materno
+                </Template>
+                <EditTemplate Context="datos">
+                    <RadzenTextBox Name="Paterno" @bind-Value="datos.Paterno" Style="width: 90%" 
+                    Placeholder="Paterno" />
+                    <RadzenTextBox Name="Materno" @bind-Value="datos.Materno" Style="width: 90%" 
+                    Placeholder="Paterno" /><br>
+                    <RadzenRequiredValidator Component="Paterno" Text="El Apellido Paterno es Obligatorio." />
+                </EditTemplate>
+            </RadzenDataGridColumn>
+        
+            <RadzenDataGridColumn TItem="Z110_Usuarios" Property="Nivel" Title="Nivel" 
+                Filterable="false" Resizable="true" >
+                <Template Context="datos">
+                        @if (@DataDic.ContainsKey($"Nivel_{datos.Nivel}"))
+                        {
+                            @DataDic[$"Nivel_{datos.Nivel}"];    
+                        }
+                        else
+                        {
+                            <label>No tenemos informacion!</label>
+                        }
+                </Template>
+                <EditTemplate Context="datos">
+                    <RadzenDropDown Name="Nivel" Data=@LosNiveles @bind-Value=@ElUsuario.Nivel
+                        ValueProperty="Key" TextProperty="Value" AllowClear="true" 
+                        Style="width: 300px;" />
+                </EditTemplate>
+            </RadzenDataGridColumn>
+            
+            
+            <RadzenDataGridColumn TItem="Z110_Usuarios" Context="sampleBlazorModelsSampleOrder" 
+                    Filterable="false" Sortable="false" TextAlign="TextAlign.Center" 
+                    Width="250px" Title="Estado">
+                <Template Context="datos">
+                    @if(Permiso)
+                    {
+                    <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Secondary" 
+                        Class="m-1" Click="@((args) => EditRow(datos))" Visible="@(!Editando)" >
+                    </RadzenButton>
+                    }
+                    @if(datos.Status == true)
+                    { 
+                        <b>Activo</b>
+                    }
+                    else
+                    {
+                        <b>Suspendido</b>
+                    }
+                </Template>
+
+                <EditTemplate Context="datos">
+                        
+                        <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Class="m-1" 
+                        Click="@((args) => CancelEdit(datos))" />
+
+                        <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Primary" 
+                            Class="m-1" Click="@((args) => SaveRow(datos))">
+                        </RadzenButton>
+                    
+                    @if (datos.Estado != 3)
+                        {
+                            <br />
+                            <label>Borrar este registro? Si </label><RadzenSwitch @bind-Value=@datos.Status Name="Status" 
+                             /> <label>No!</label>
+                        }
+                </EditTemplate>
+
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
+    </RadzenCard>
+} 
+else
+{
+    <div class="spinner"></div>
+}
+
+@code {
+        /*
+        void RowRender(RowRenderEventArgs<Z100_Org> args)
+            {
+            //args.Expandable = args.Data.ShipCountry == "France" || args.Data.ShipCountry == "Brazil";
+        }
+        void Cancel()
+        {
+
+    }
+
+    */
+    Z110_Usuarios UserToInsert = new();
+
+
+    async Task EditRow(Z110_Usuarios user)
+    {
+        await UsersGrid.EditRow(user);
+        Editando = !Editando;
+    }
+    async void OnUpdateRow(Z110_Usuarios user)
+    {
+        if (user == UserToInsert) UserToInsert = null!;
+
+        Editando = !Editando;
+        await UserIServ.UpDateUsuario(user);
+
+        string texto = $"Se actualizo los datos de un usuario {user.Nombre}";
+        texto += $"{user.Paterno} {user.Materno} {user.OldEmail}";
+        await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, texto, false);
+
+    }
+    async Task SaveRow(Z110_Usuarios user)
+    {
+        await UsersGrid.UpdateRow(user);
+    }
+
+    void CancelEdit(Z110_Usuarios user)
+    {
+        if (user == UserToInsert) UserToInsert = null!;
+        Editando = !Editando; 
+        UsersGrid.CancelEditRow(user);
+    }
+    async Task InsertRow()
+    {/*
+        UserToInsert = new Z110_Usuarios();
+        UserToInsert.userId = Guid.NewGuid().ToString();
+        UserToInsert.Estado = 3;
+        Editando = !Editando;
+
+        await UsersGrid.InsertRow(UserToInsert); 
+      */
+    }
+    async void OnCreateRow(Z110_Usuarios user)
+    {
+        if (user == UserToInsert) UserToInsert = null;
+        Editando = !Editando;
+        /*
+        Z110_Usuarios resultado = new Z110_Usuarios();
+        
+        resultado = await userIServ.Adduser(user);
+
+        string texto = $"Se creo un registro {user.Rfc}";
+        texto += $"{user.Comercial} {user.RazonSocial}";
+        await Escribir(ElUsuario.UsuariosId, ElUsuario.userId, texto, false);
+        */
+    }
+
+    public void ShowNotification(NotificationMessage message)
+    {
+        //NS.Notify(message);
+    }
+
+    async Task LoadData()
+    {
+        await LeerDatos();
+    }
+
+}

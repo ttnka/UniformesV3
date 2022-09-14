@@ -1,0 +1,46 @@
+﻿@page "/recupera"
+@inherits RecuperaBase
+@using AppV7.Shared
+
+<h3>Recupera tu Password</h3>
+
+<RadzenCard>
+    <RadzenTemplateForm Data="@RecuperaNew"  TItem="@ERecupera"  Submit="@RecuperaSubmit">
+        <div class="form-grup row">
+            <label for="mail" class="col-sm-3 col-form-label">Email</label>
+            <div class="col-sm-9">
+                        
+                <RadzenTextBox Name="Mail" @bind-Value=@RecuperaNew.Emial
+                    style="display: block; width: 300px;" />
+                <RadzenRequiredValidator Component="Mail" Text="El Mail es obligatorio " />
+                <RadzenEmailValidator Component="Mail" Text="El Formato de Mail es Incorrecto!" />
+            </div>
+        </div>
+      
+        <div class="form-grup row">
+                <label for="botones" class="col-sm-3 col-form-label">
+                </label>
+                <div class="col-sm-2">
+                    <NavLink class="nav-link" href="/">Cancelar</NavLink>
+                    
+                </div>
+                <div class="col-sm-2">
+                    <RadzenButton ButtonType="ButtonType.Submit" Text="Recupera" />
+                </div>
+                
+                <label for="botones" class="col-sm-5 col-form-label"></label>
+            </div>
+    </RadzenTemplateForm>
+
+
+</RadzenCard>
+
+     
+    
+@code {
+    async void RecuperaSubmit()
+    {
+       await RecuperaInn();
+    }
+
+}

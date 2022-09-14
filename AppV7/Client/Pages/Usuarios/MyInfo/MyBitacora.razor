@@ -1,0 +1,74 @@
+﻿
+@inherits MyBitacoraBase
+@using AppV7.Shared
+@using AppV7.Shared.Libreria
+
+
+<RadzenCard>
+@if(LasBits != null)
+{
+    <div class="form-grup row">        
+        <div class="col-sm-2">
+            <div class="nav-item px-3">
+                <RadzenButton Icon="refresh" style="margin-bottom: 10px" ButtonStyle="ButtonStyle.Info"                 
+                Click="@Refresh"/>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="nav-item px-3 vertical-align: text-bottom;">
+                Solo los registros del Sistema NO <RadzenSwitch 
+                    @bind-Value=ElSystema Change=@Refresh />
+                Si!
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href=@($"/indexusers")>
+                <span class="oi oi-caret-left" aria-hidden="true"></span> Regresar a Inicio</NavLink>
+            </div>
+        </div>
+    </div>
+    <RadzenDataGrid @ref="BitaGrid" Data="@LasBits" TItem="@Z190_Bitacora" 
+        ColumnWidth="200px" AllowSorting="true" AllowFiltering="true" AllowPaging="true" 
+        PageSize="55" PagerHorizontalAlign="HorizontalAlign.Center" >
+
+        <Columns>
+            <RadzenDataGridColumn TItem="@Z190_Bitacora" Filterable="false" 
+                Title="Fecha" Frozen="true" Width="90px" TextAlign="TextAlign.Left">
+                <Template Context=Data>
+                    <label>@($"{@Data.Fecha.Day}/{@MyFunc.MesTitulo(@Data.Fecha.Month,0)}/{@MyFunc.Ejercicio(@Data.Fecha)}")</label>
+                    <br />
+                    <label>@($"{@MyFunc.LaHora(@Data.Fecha, "S")}")</label>
+                </Template>
+            </RadzenDataGridColumn>
+
+            <RadzenDataGridColumn TItem="@Z190_Bitacora" Filterable="false" 
+                Title="Usuarios" Frozen="true" Width="140px" TextAlign="TextAlign.Left">
+                <Template Context=Data>
+                        @if(DataDic.ContainsKey($"Nombre_{@Data.UsuariosId}"))
+                        {<label> @DataDic[$"Nombre_{@Data.UsuariosId}"] </label>
+                        }else {<label> No hay Nombre! </label>}
+
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="@Z190_Bitacora" Property="Desc" Filterable="true" 
+                Title="Descripcion" Width="400px" TextAlign="TextAlign.Left" />
+
+        </Columns>
+    </RadzenDataGrid>
+}
+else
+{
+    
+}
+</RadzenCard>
+
+
+@code {
+    async void Refresh()
+    {
+        await LeerBitacoras(ElSystema);
+    }
+}

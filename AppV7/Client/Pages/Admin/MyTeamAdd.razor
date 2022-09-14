@@ -1,0 +1,90 @@
+﻿
+@inherits MyTeamAddBase
+@using AppV7.Shared
+
+<RadzenCard>
+@if (LasOrgs != null && LosNiveles != null)
+    {
+        <RadzenTemplateForm Data="@NewAddUsuario"  TItem="@EAddUsuario"  Submit="@ElNewUsuario">
+            <div class="form-grup row">
+                <label for="mail" class="col-sm-3 col-form-label">Email</label>
+                <div class="col-sm-9">
+                        
+                    <RadzenTextBox Name="Mail" @bind-Value=@NewAddUsuario.Mail
+                        style="display: block; width: 300px;" />
+                    <RadzenRequiredValidator Component="Mail" Text="El Mail es obligatorio " />
+                    <RadzenEmailValidator Component="Mail" Text="El Formato de Mail es Incorrecto!" />
+                </div>
+            </div>
+      
+            <div class="form-grup row">
+                <label for="pass" class="col-sm-3 col-form-label">Password </label>
+                <div class="col-sm-9">
+                    <RadzenPassword Name="Pass" @bind-Value=@NewAddUsuario.Pass 
+                        Placeholder="6 Caracteres, 1 numero, 1 letra como minimo!" Style="width: 300px;" />
+                    <RadzenRequiredValidator Component="Pass" Text="El Password es obligatorio!" />
+                <br />
+                </div>
+            </div>
+            <div class="form-grup row">
+                <label for="confirmpass" class="col-sm-3 col-form-label">Confirma tu Password</label>
+                <div class="col-sm-9">
+                    <RadzenPassword Name="ConfirmPass" @bind-Value=@NewAddUsuario.ConfirmPass Style="width: 300px;" />
+                    <RadzenRequiredValidator Component="ConfirmPass" Text="El Password es obligatorio!" />
+                    <RadzenCompareValidator Visible=@(!string.IsNullOrEmpty(NewAddUsuario.ConfirmPass)) 
+                        Value=@NewAddUsuario.Pass Component="ConfirmPass" 
+                    Text="Confirmacion del password no coincide"/>
+                </div>
+            </div>
+            <div class="form-grup row">
+                <label for="orgid" class="col-sm-3 col-form-label">Organizacion</label>
+                <div class="col-sm-9">
+                    <RadzenDropDown Name="OrgId" Data=@LasOrgs @bind-Value=@NewAddUsuario.OrgId
+                        ValueProperty="OrgId" TextProperty="Comercial" AllowClear="true" Style="width: 300px;" />
+                </div>
+            </div>
+            <div class="form-grup row">
+                <label for="nivel" class="col-sm-3 col-form-label">Nivel</label>
+                <div class="col-sm-9">
+                    <RadzenDropDown Name="Nivel" Data=@LosNiveles @bind-Value=@NewAddUsuario.Nivel
+                        ValueProperty="Key" TextProperty="Value" AllowClear="true" Style="width: 300px;" />
+                </div>
+            </div>
+
+            <div class="form-grup row">
+                <label for="botones" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-7">
+                    
+                    Tu password debe ser 6 caracteres mínimo, contener 1 mayúscula, 1 minúscula, 1 numero.
+                </div>
+                <div class="col-sm-2">
+                    
+                </div>
+            </div>
+            <div class="form-grup row">
+                <label for="botones" class="col-sm-8 col-form-label"></label>
+                <div class="col-sm-2">
+                    <NavLink class="nav-link" href="/">Cancelar</NavLink>
+                    
+                </div>
+                <div class="col-sm-2">
+                    <RadzenButton ButtonType="ButtonType.Submit" Text="Registro" />
+                </div>
+            </div>
+
+        </RadzenTemplateForm>
+    }
+    else
+    { 
+        <div class="spinner"></div>
+    }
+</RadzenCard>
+
+
+@code {
+    async void ElNewUsuario()
+    {
+        await SaveNewUsuario();
+    }
+
+}

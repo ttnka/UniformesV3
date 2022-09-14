@@ -1,0 +1,42 @@
+﻿Pasos
+
+1) Nuevo proyecto, Con control de Acceso
+2) Instalar Nuggets, Mailkit, RADZEN, POMONA
+3) Hacer la conexion a la base de datos MySQl 
+    Usuarios DB
+                Ulises  Pa$.$word
+                adp   dro$.$aP
+                "DefaultConnection": "Server=lafam002.mysql.guardedhost.com;
+                Database=lafam002_auditoriaV1;User=lafam002_ulises;Password=2468022Ih.;"
+
+4) Es necesario borrar todas migration para volver a hacer la del diseño por que esta en sQL
+
+4) Scaffold    
+    Scaffold-DbContext ""Connexion"" software conector POMONA -Tables xxx -Context "Dbcontext" -OutputDir "xx" 
+5) Nuevo usuario 
+    CREATE TRIGGER AgregarUser AFTER INSERT ON AspNetUsers FOR EACH ROW INSERT INTO 
+Users (UserId, Email, Nombre, Paterno, Nivel, OrgId, Estado, Status) VALUES (AspNetUsers.Id, AspNetUsers.Email, AspNetUsers.NormalizedEmail, "Cambiar", "1", "Invitado", "2", "1")
+
+6) Mailkit instalar
+
+ILogger
+ Trace, Debug, Information, Warning, Error, Critical
+
+ 
+ 
+ 10) ApplictaionDbContext
+    10.1)
+    Se genera un servicio general Interfase "ITenantServ" obtenerTenant y se inyecta en AppDbContext
+
+    Es necesario agregar un filtro para las tablas que son comunes y las que son de la empresa
+    en AppDbContext se genera una variable y un servicio
+    10.2)
+    Generar 2 Interfaces IEntidadTanteId y IEntidadComun la cual se asigna a cada Tabla que se va a consultar, esto para filtar
+    las comunes de las privadas
+    10.3)
+    Generar AppDbContext 
+
+
+
+   11) al iniciar nueva app es necesario corre la hoja de /arranque, esta pagina gerena 
+   la org Publico general y Zuverworks

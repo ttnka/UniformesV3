@@ -1,0 +1,22 @@
+﻿@page "/mensajes/{clave}"
+@inherits MensajesBase
+
+<h3>Mensajes</h3>
+
+@if (!string.IsNullOrEmpty(clave))
+{
+    <RadzenCard>
+        @if (ClavesDic.ContainsKey(clave))
+        {
+            <RadzenLabel>
+                @ClavesDic[clave]
+            </RadzenLabel>    
+        }
+        <NavLink class="nav-link" href="/">Cerrar</NavLink>
+        
+    </RadzenCard>
+}
+
+@code {
+    string LaUrl = "/";
+}
