@@ -12,7 +12,7 @@ namespace AppV7.Server.Controllers
 
         public C190BitacoraController(I190Bitacora bitacoraIFace)
         {
-            this._bitacoraIFace = bitacoraIFace;
+            _bitacoraIFace = bitacoraIFace;
         }
 
         [HttpGet("{filtro}")]
