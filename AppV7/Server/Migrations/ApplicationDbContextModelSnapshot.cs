@@ -117,6 +117,9 @@ namespace AppV7.Server.Migrations
                     b.Property<bool>("Status")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<bool>("WebAdmin")
+                        .HasColumnType("tinyint(1)");
+
                     b.HasKey("OrgId");
 
                     b.HasIndex("Rfc")

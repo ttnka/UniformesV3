@@ -3,8 +3,9 @@
 @using AppV7.Shared
 
 <h3>Informacion</h3>
-
-<RadzenCard>
+<AuthorizeView>
+    <Authorized>
+        <RadzenCard>
     @if (ElUsuario != null)
     {
         <RadzenTabs  @bind-SelectedIndex=@selectedIndex>
@@ -48,6 +49,11 @@
         <div class="spinner"></div>
     }
 </RadzenCard>
+    </Authorized>
+    <NotAuthorized>
+
+    </NotAuthorized>
+</AuthorizeView>
 --Tatanka--
 @code {
     int selectedIndex = 0;

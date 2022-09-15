@@ -14,7 +14,7 @@ namespace AppV7.Client.Pages.Sistema
         [Parameter]
         public string ElMensaje { get; set; } = string.Empty;
         [Parameter]
-        public string LaUrl { get; set; } = "/indexusers";
+        public string LaUrl { get; set; } = "/";
 
         protected async override Task OnInitializedAsync()
         {
@@ -26,9 +26,9 @@ namespace AppV7.Client.Pages.Sistema
             ElNuevo.FirmaIn = true;
             var respuesta = await AddUserIServ.AddUsuario(ElNuevo);
             
-            if (respuesta.Positivo)
-                //LocalRedirect("/indexuser");
-                    NM.NavigateTo(LaUrl,true);
+            LaUrl = respuesta.Positivo ? "/" : "/indexusers";
+            //LocalRedirect("/indexuser");
+            NM.NavigateTo(LaUrl,true);
         }
     }
 }

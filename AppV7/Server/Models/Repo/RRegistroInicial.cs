@@ -39,7 +39,7 @@ namespace AppV7.Server.Models.Repo
                 eAddUsuario.Mail = Constantes.SyMail;
                 eAddUsuario.Pass = Constantes.SysPassword;
                 eAddUsuario.OrgId = newSysOrg.OrgId;
-                eAddUsuario.Nivel = 6;
+                eAddUsuario.Nivel = 7;
                 var userNew = await _addUser.AddUsuario(eAddUsuario);
 
                 Z110_Usuarios SyUser = new();

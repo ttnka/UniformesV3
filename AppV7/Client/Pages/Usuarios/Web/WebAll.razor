@@ -1,0 +1,43 @@
+﻿@page "/"
+@inherits WebAllBase
+@using AppV7.Shared
+
+<h3>WEB</h3>
+
+<AuthorizeView>
+    <Authorized>
+
+    </Authorized>
+    <NotAuthorized>
+
+    </NotAuthorized>
+</AuthorizeView>
+
+<RadzenCard>
+    <RadzenTabs @bind-SelectedIndex=@selectedIndex>
+        <Tabs>
+            <RadzenTabsItem Text="Inicio" >
+
+            </RadzenTabsItem>
+            <RadzenTabsItem Text="CANACO">
+
+            </RadzenTabsItem>
+            <RadzenTabsItem Text="Servicios">
+
+            </RadzenTabsItem>
+            <RadzenTabsItem Text="Noticias">
+
+            </RadzenTabsItem>
+            <RadzenTabsItem Text="Bolsa de Trabajo">
+
+            </RadzenTabsItem>
+            <RadzenTabsItem Text="Contacto">
+
+            </RadzenTabsItem>
+        </Tabs>
+    </RadzenTabs>
+</RadzenCard>
+
+@code {
+    
+}

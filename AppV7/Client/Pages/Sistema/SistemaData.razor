@@ -1,14 +1,27 @@
 ﻿@page "/sistema"
 @inherits SistemaDataBase
+@using AppV7.Shared
 
 <h3>Sistema Datos</h3>
-
-<RadzenCard>
+<AuthorizeView>
+    <Authorized> 
+        <RadzenCard>
     @if(ElUsuarioAll != null)
     {
     <RadzenTabs  @bind-SelectedIndex=@selectedIndex>
             <Tabs>
                 <RadzenTabsItem Text="Usuarios">
+                    @if (ElUsuarioAll.Nivel > UserNivel.Director)
+                        {
+                            <RadzenAccordion>
+                                <Items>
+                                    <RadzenAccordionItem Text="Nuevo Usuario" Icon="plus">
+                                        <AppV7.Client.Pages.Admin.MyTeamAdd 
+                                            ElUsuario=@ElUsuarioAll />
+                                    </RadzenAccordionItem>
+                                </Items>
+                            </RadzenAccordion>
+                        }
                     <AppV7.Client.Pages.Admin.Usuarios ElUsuario=ElUsuarioAll />
                 </RadzenTabsItem>
 
@@ -28,6 +41,11 @@
         
     }
 </RadzenCard>
+    </Authorized>
+    <NotAuthorized>
+
+    </NotAuthorized>
+</AuthorizeView>
 --Tatanka--
 
 @code {

@@ -25,6 +25,7 @@ namespace AppV7.Shared
         public string? Paterno { get; set; }
         public string? Materno { get; set; }
         public string? RazonSocial { get; set; }
+        public bool WebAdmin { get; set; } = false;
         public int Estado { get; set; } = 2;
         public bool Status { get; set; } = true;
 

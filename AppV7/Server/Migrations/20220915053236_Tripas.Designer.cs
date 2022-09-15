@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppV7.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220912173211_Tres")]
-    partial class Tres
+    [Migration("20220915053236_Tripas")]
+    partial class Tripas
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -117,6 +117,9 @@ namespace AppV7.Server.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("WebAdmin")
                         .HasColumnType("tinyint(1)");
 
                     b.HasKey("OrgId");

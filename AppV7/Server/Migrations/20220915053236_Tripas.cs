@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppV7.Server.Migrations
 {
-    public partial class Tres : Migration
+    public partial class Tripas : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -49,6 +49,7 @@ namespace AppV7.Server.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     RazonSocial = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    WebAdmin = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Estado = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },

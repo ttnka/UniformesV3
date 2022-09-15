@@ -19,6 +19,7 @@ namespace AppV7.Client.Pages.Admin
         public Dictionary<string, string> OrgDic { get; set; } = new(); 
         public bool isLoading { get; set; } = false;
         public bool Editando { get; set; } = false;
+        public bool HayWebMaster { get; set; } = false;
         [Inject]
         public NavigationManager NM { get; set; }
         protected async override Task OnInitializedAsync()
@@ -34,6 +35,7 @@ namespace AppV7.Client.Pages.Admin
             LasOrgs = await OrgIServ.Buscar("All");
             foreach (var org in LasOrgs)
             {
+                if (org.WebAdmin) HayWebMaster = true; 
                 if (!OrgDic.ContainsKey(org.Rfc))
                     OrgDic.Add(org.Rfc, org.OrgId);
             }

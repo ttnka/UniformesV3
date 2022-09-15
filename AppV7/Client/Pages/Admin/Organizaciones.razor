@@ -158,13 +158,21 @@
                             Class="m-1" Click="@((args) => SaveRow(datos))">
                         </RadzenButton>
                     }
-                    <br />
+                    
                     @if (datos.Estado != 3)
                         {
+                            <br />
                             <label>Borrar este registro? Si </label><RadzenSwitch @bind-Value=@datos.Status Name="Status" 
                              /> <label>No!</label>
                         }
-                </EditTemplate>
+                        @if(ElUsuario.Nivel == 7 && (datos.WebAdmin || !HayWebMaster))
+                        {
+                            <br />
+                            <label>Marcar empresa Web Master NO</label>
+                            <RadzenSwitch @bind-Value=datos.WebAdmin />
+                            <label>SI!</label>
+                        }
+                    </EditTemplate>
 
             </RadzenDataGridColumn>
         </Columns>
