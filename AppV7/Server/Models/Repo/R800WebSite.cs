@@ -28,13 +28,17 @@ namespace AppV7.Server.Models.Repo
             switch (clave)
             {
                 case "All":
-                    //return await querry.OrderByDescending(x => x.Fecha).ToListAsync();
+                    //
+                    break;
+                
+                case "Allo":
+                    //querry = querry.Where(x => x.Status);
+                    return await querry.OrderBy(e => e.Nivel).ThenBy(c=> c.Indice).ToListAsync();
+                
+                case "Raiz":
+                    querry = querry.Where(x => x.Nivel == 0);
                     break;
                     /*
-                case "OrgX":
-                    querry = querry.Where(x => x.OrgId == orgX && x.Sistema == false);
-                    break;
-
                 case "Sistema":
                     querry = orgX == "Vacio" ? querry.Where(x => x.Sistema == true) :
                         querry.Where(x => x.Sistema == true && x.OrgId == orgX);
@@ -50,7 +54,7 @@ namespace AppV7.Server.Models.Repo
                     */
             }
 
-            return await querry.ToListAsync();
+            return await querry.OrderBy(e => e.Indice).ThenBy(e => e.Nivel).ToListAsync();
         }
 
         public async Task<Z800_WebSite> UpdateWebSite(Z800_WebSite webSite)
@@ -66,9 +70,13 @@ namespace AppV7.Server.Models.Repo
                 }
                 else
                 {
+                    res.Nivel = webSite.Nivel;
+                    res.Catalogo = webSite.Catalogo;
+                    res.Indice = webSite.Indice;
                     res.Titulo = webSite.Titulo;
-                    res.Padre = webSite.Padre;
-                    res.Visible = webSite.Visible;
+                    res.Valor = webSite.Valor;
+                    res.TipoValor = webSite.TipoValor;
+                    res.Componente = webSite.Componente;
                     res.Fecha = webSite.Fecha;
 
                     res.Estado = webSite.Estado;

@@ -32,7 +32,7 @@
                 ExpandMode="DataGridExpandMode.Single" AllowGrouping="false"
                 EditMode="DataGridEditMode.Single" 
                 Data="@LasOrgs" TItem="Z100_Org" RowUpdate="@OnUpdateRow" 
-                RowCreate="@OnCreateRow" >
+                RowCreate="@OnCreateRow"  >
                 
         <Template Context="datos1">
  
@@ -97,7 +97,7 @@
             </RadzenDataGridColumn>
             
             <RadzenDataGridColumn TItem="Z100_Org" Property="RazonSocial" Title="Razon Social" 
-                Filterable="true" Resizable="true" Width="460px" >
+                Filterable="true" Resizable="true" Width="400px" >
                 <Template Context="datos">
                     @datos.RazonSocial@datos.Nombre @datos.Paterno @datos.Materno
                 </Template>
@@ -109,12 +109,12 @@
                     }
                     else
                     {   
-                            <RadzenTextBox Name="Nombre" @bind-Value="datos.Nombre" 
-                                Placeholder="Nombre" Style="width: 30%"  /><br />
-                            <RadzenTextBox Name="Paterno" @bind-Value="datos.Paterno" 
-                                Placeholder="Apellido Paterno" Style="width: 30%"  /><br />
-                            <RadzenTextBox Name="Materno" @bind-Value="datos.Materno" 
-                                Placeholder="Materno" Style="width: 30%"  />   
+                        <RadzenTextBox Name="Nombre" @bind-Value="datos.Nombre" 
+                            Placeholder="Nombre" Style="width: 30%"  /><br />
+                        <RadzenTextBox Name="Paterno" @bind-Value="datos.Paterno" 
+                            Placeholder="Apellido Paterno" Style="width: 30%"  /><br />
+                        <RadzenTextBox Name="Materno" @bind-Value="datos.Materno" 
+                            Placeholder="Materno" Style="width: 30%"  />   
                     }
                 </EditTemplate>
             </RadzenDataGridColumn>
@@ -125,7 +125,7 @@
                 <Template Context="datos">
                     @if (datos.Rfc == Constantes.PgRfc || datos.Rfc == Constantes.SyRfc)
                         {
-                            <label>.</label>
+                            <label> </label>
                         }
                         else
                         {
@@ -141,16 +141,33 @@
                     {
                         <b>Suspendido</b>
                     }
-                </Template>
+                    @if (datos.WebAdmin)
+                    {
+                        <label>Web</label>
+                    }
+                    </Template>
 
                 <EditTemplate Context="datos">
-                        
-                        <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Class="m-1" 
-                        Click="@((args) => CancelEdit(datos))" />
+                    
+                    @if (datos.Estado != 3)
+                    {
+                        <label>Borrar este registro? Si </label>
+                        <RadzenSwitch @bind-Value=@datos.Status Name="Status" /> 
+                        <label>No!</label>
+                        <br />
+                    }
+                    @if(ElUsuario.Nivel == 7 && (datos.WebAdmin || !HayWebMaster))
+                    {
+                        <label>Web Master NO</label>
+                        <RadzenSwitch @bind-Value=datos.WebAdmin />
+                        <label>SI!</label>
+                        <br />
+                    }
 
                     @if (datos.Rfc != null && @OrgDic.ContainsKey(datos.Rfc) && datos.Estado == 3)
                     {
                         <label>El RFC ya esta registrado!</label>
+                        <br />
                     } 
                     else
                     {
@@ -158,20 +175,9 @@
                             Class="m-1" Click="@((args) => SaveRow(datos))">
                         </RadzenButton>
                     }
-                    
-                    @if (datos.Estado != 3)
-                        {
-                            <br />
-                            <label>Borrar este registro? Si </label><RadzenSwitch @bind-Value=@datos.Status Name="Status" 
-                             /> <label>No!</label>
-                        }
-                        @if(ElUsuario.Nivel == 7 && (datos.WebAdmin || !HayWebMaster))
-                        {
-                            <br />
-                            <label>Marcar empresa Web Master NO</label>
-                            <RadzenSwitch @bind-Value=datos.WebAdmin />
-                            <label>SI!</label>
-                        }
+                    <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Class="m-1" 
+                        Click="@((args) => CancelEdit(datos))" />
+
                     </EditTemplate>
 
             </RadzenDataGridColumn>
@@ -186,34 +192,34 @@ else
 
 @code {
 
-        void RowRender(RowRenderEventArgs<Z100_Org> args)
-        {
-            //args.Expandable = args.Data.ShipCountry == "France" || args.Data.ShipCountry == "Brazil";
-        }
-        void Cancel()
-        {
+    void RowRender(RowRenderEventArgs<Z100_Org> args)
+    {
+        //args.Expandable = args.Data.ShipCountry == "France" || args.Data.ShipCountry == "Brazil";
+    }
+    void Cancel()
+    {
 
-        }
-
-
-        Z100_Org OrgToInsert = new();
+    }
 
 
-        async Task EditRow(Z100_Org org)
-        {
-            await OrgGrid.EditRow(org);
-            Editando = !Editando;
-        }
-        async void OnUpdateRow(Z100_Org org)
-        {
-            if (org == OrgToInsert) OrgToInsert = null!;
-            org.Rfc = org.Rfc.ToUpper();
-            Editando = !Editando;
-            await OrgIServ.UpDateOrg(org);
+    Z100_Org OrgToInsert = new();
 
-            string texto = $"Se actualizo un registro {org.Rfc}";
-            texto += $"{org.Comercial} {org.RazonSocial}";
-            await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, texto, false);
+
+    async Task EditRow(Z100_Org org)
+    {
+        await OrgGrid.EditRow(org);
+        Editando = !Editando;
+    }
+    async void OnUpdateRow(Z100_Org org)
+    {
+        if (org == OrgToInsert) OrgToInsert = null!;
+        org.Rfc = org.Rfc.ToUpper();
+        Editando = !Editando;
+        await OrgIServ.UpDateOrg(org);
+
+        string texto = $"Se actualizo un registro {org.Rfc}";
+        texto += $"{org.Comercial} {org.RazonSocial}";
+        await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, texto, false);
 
     }
     async Task SaveRow(Z100_Org org)
@@ -255,6 +261,7 @@ else
 
         Z100_Org resultado = new Z100_Org();
         resultado = await OrgIServ.AddOrg(org);
+        await LeerDatos();
 
         string texto = $"Se creo un registro {org.Rfc}";
             texto += $"{org.Comercial} {org.RazonSocial} desde sistema";

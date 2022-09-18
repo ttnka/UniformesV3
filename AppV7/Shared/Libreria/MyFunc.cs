@@ -54,8 +54,28 @@ namespace AppV7.Shared.Libreria
                     string segcero = lahora.Second < 10 ? "0" : "";
                     return $"{lahora.Hour}:{mincero}{lahora.Minute}:{segcero}{lahora.Second}";
             }
-            
+        }
 
+        public static string FormatoFecha(string formato, DateTime lafecha)
+        {
+            string resultado = string.Empty;
+
+            switch (formato)
+            {
+                case "DD/MMM/AA":
+                    resultado = $"{lafecha.Day} / ";
+                    resultado += $"{MesTitulo(lafecha.Month, 0)} /";
+                    resultado += $"{Ejercicio(lafecha)}";
+                    break;
+                    
+            }
+            return resultado;
+        }
+        public static List<string> LosComopentes()
+        {
+            var resultado = new List<string>();
+            resultado.Add("Contactanos");
+            return resultado;
         }
 
     }

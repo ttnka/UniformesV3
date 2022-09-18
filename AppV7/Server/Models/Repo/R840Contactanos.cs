@@ -30,11 +30,11 @@ namespace AppV7.Server.Models.Repo
                 case "All":
                     //return await querry.OrderByDescending(x => x.Fecha).ToListAsync();
                     break;
-                    /*
-                case "OrgX":
-                    querry = querry.Where(x => x.OrgId == orgX && x.Sistema == false);
+                   
+                case "General":
+                    querry = querry.Where(x => x.General && x.Status);
                     break;
-
+                    /*
                 case "Sistema":
                     querry = orgX == "Vacio" ? querry.Where(x => x.Sistema == true) :
                         querry.Where(x => x.Sistema == true && x.OrgId == orgX);
@@ -66,11 +66,24 @@ namespace AppV7.Server.Models.Repo
                 }
                 else
                 {
-                    res.Directorio = contactanos.Directorio;
+                    res.General = contactanos.General;
                     res.Formato = contactanos.Formato;
+                    res.ParaMail = contactanos.ParaMail;
                     res.Mapa = contactanos.Mapa;
+                    res.Titulo = contactanos.Titulo;
+                    res.Latitud = contactanos.Latitud;
+                    res.Longitud = contactanos.Longitud;
+                    res.Comentario = contactanos.Comentario;
+                    res.Directorio = contactanos.Directorio;
+                    res.Foto = contactanos.Foto;
+                    res.Nombre = contactanos.Nombre;
+                    res.Puesto = contactanos.Puesto;
+                    res.Mail = contactanos.Mail;
+                    res.Tel = contactanos.Tel;
+                    res.Cel = contactanos.Cel;
                     res.Domicilio = contactanos.Domicilio;
-                    
+                    res.Telefonos = contactanos.Telefonos;
+
                     res.Estado = contactanos.Estado;
                     res.Status = contactanos.Status;
                 }

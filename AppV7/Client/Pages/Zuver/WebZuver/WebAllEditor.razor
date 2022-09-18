@@ -1,0 +1,78 @@
+﻿@page "/webeditor"
+@inherits WebAllEditorBase
+@using AppV7.Shared
+
+<h3>Editor de la pagina</h3>
+<RadzenCard>
+@if (mostrar && LosWSAll != null && ElUsuarioAll != null)
+{
+    <AuthorizeView>
+    <Authorized>
+
+    </Authorized>
+    <NotAuthorized>
+
+    </NotAuthorized>
+</AuthorizeView>
+
+<RadzenAccordion>
+    <Items>
+        <RadzenAccordionItem Text="Componentes">
+            <WebComponent ElUsuario=ElUsuarioAll  />
+        </RadzenAccordionItem>
+
+    </Items>
+</RadzenAccordion>
+
+<RadzenCard>
+    <div class="form-grup row">        
+        <div class="col-sm-9">
+            <div class="nav-item px-3">
+                <RadzenButton Icon="refresh" style="margin-bottom: 10px" ButtonStyle="ButtonStyle.Info"                 
+                Click="@LoadData" />
+            </div>
+        </div>
+        
+        <div class="col-sm-3">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href=@($"/")>
+                <span class="oi oi-caret-left" aria-hidden="true"></span> Regresar a Inicio</NavLink>
+            </div>
+        </div>
+    </div>
+    <RadzenTabs @bind-SelectedIndex=@selectedIndex>
+        <Tabs>
+            @foreach(var comp in LosCompAll)
+            {
+                 @if (comp.Estado == 1 && comp.Nivel == 1 
+                    && !string.IsNullOrEmpty(comp.Componente))
+                 {
+                    <RadzenTabsItem Text=@comp.Titulo >      
+                              <DynamicComponent 
+                                  Type=@Type.GetType(
+                                  $"AppV7.Client.Pages.Zuver.WebZuver.{@comp.Componente}") 
+                                  Parameters=Parametros />
+                    </RadzenTabsItem>
+                 }
+            }
+        </Tabs>
+    </RadzenTabs>
+</RadzenCard>    
+}
+else
+{
+    <div class="spinner"></div>
+}
+</RadzenCard>
+
+--Tatanka--
+
+@code {
+    bool mostrar = true;
+    int selectedIndex = 0;
+    async void LoadData()
+    {
+        await LeerDatosContactanos();
+    }
+   
+}

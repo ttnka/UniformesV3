@@ -51,7 +51,6 @@ namespace AppV7.Server.Models.Repo
                 SyUser.Nivel = eAddUsuario.Nivel;
                 SyUser.Estado = Constantes.SyEstado;
                 SyUser.Status = true;
-
                 await _usersIServ.UpDateUsuario(SyUser);
 
                 Z100_Org PgOrg = new();

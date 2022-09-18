@@ -40,3 +40,12 @@ ILogger
 
    11) al iniciar nueva app es necesario corre la hoja de /arranque, esta pagina gerena 
    la org Publico general y Zuverworks
+
+
+
+   KeyPairValue<string, string>
+
+   Dropdown
+
+   <RadzenDropDown Name="Cat" Data=@LosComponentes @bind-Value=@datos.Padre
+                        ValueProperty="Titulo" TextProperty="Titulo" AllowClear="true" Style="width: 120px;" />

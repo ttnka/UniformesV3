@@ -5,21 +5,21 @@
 
 @if (ElUsuario != null)
 {
-    <RadzenTemplateForm Data = "@ElUsuario"  TItem="@Z110_Usuarios"  Submit="@YoCambios">
+    <RadzenTemplateForm Data="@ElUsuario" TItem="@Z110_Usuarios"  Submit="@YoCambios">
         <div class="form-grup row">
-                <label for="habilitar" class="col-sm-3 col-form-label">Hacer cambios!</label>
-                <div class="col-sm-9">
+            <label for="habilitar" class="col-sm-3 col-form-label">Hacer cambios!</label>
+            <div class="col-sm-9">
                     NO <RadzenSwitch Name = "Habilitar" @bind-Value=@Habilitar /> Si    
-                </div>
             </div>
-            <div class="form-grup row">
-                <label for="nombre" class="col-sm-3 col-form-label">Nombre</label>
-                <div class="col-sm-9">
-                    <RadzenTextBox Name = "Nombre" @bind-Value=@ElUsuario.Nombre
-                        style = "display: block; width: 300px;" Disabled="@(!Habilitar)" />
-                    <RadzenRequiredValidator Component="Nombre" Text="El nombre es obligatorio " />     
-                </div>
+        </div>
+        <div class="form-grup row">
+            <label for="nombre" class="col-sm-3 col-form-label">Nombre</label>
+            <div class="col-sm-9">
+                <RadzenTextBox Name = "Nombre" @bind-Value=@ElUsuario.Nombre
+                    style = "display: block; width: 300px;" Disabled="@(!Habilitar)" />
+                <RadzenRequiredValidator Component="Nombre" Text="El nombre es obligatorio " />     
             </div>
+        </div>
             <div class="form-grup row">
                 <label for="paterno" class="col-sm-3 col-form-label">Paterno</label>
                 <div class="col-sm-9">

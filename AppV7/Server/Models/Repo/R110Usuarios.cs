@@ -28,7 +28,9 @@ namespace AppV7.Server.Models.Repo
                 case "All":
                     
                     break;
-                
+                case "Allo":
+                    return await querry.OrderBy(x=>x.OrgId).ToListAsync();
+                    
                 case "Org":
                     querry = querry.Where(x => x.OrgId == orgX);
                     break;

@@ -28,14 +28,14 @@ namespace AppV7.Client.Servicios.Serv
 
         public async Task<IEnumerable<Z800_WebSite>> Buscar(string clave)
         {
-            var resultado = $"/api/C800WebSites/filtro?clave={clave}";
+            var resultado = $"/api/C800WebSite/filtro?clave={clave}";
 
             return await _httpClient.GetFromJsonAsync<IEnumerable<Z800_WebSite>>(resultado);
         }
 
         public async Task<Z800_WebSite> UpdateWebSite(Z800_WebSite webSite)
         {
-            var UpdatewebSite = await _httpClient.PutAsJsonAsync<Z800_WebSite>("/api/C800WebSites", webSite);
+            var UpdatewebSite = await _httpClient.PutAsJsonAsync<Z800_WebSite>("/api/C800WebSite/", webSite);
             if (UpdatewebSite.IsSuccessStatusCode)
             {
                 return await UpdatewebSite.Content.ReadFromJsonAsync<Z800_WebSite>();

@@ -29,6 +29,18 @@ builder.Services.AddHttpClient<I110UsuariosServ, S110UsuariosServ>(client =>
 { client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); });
 builder.Services.AddHttpClient<I190BitacoraServ, S190BitacoraServ>(client =>
 { client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); });
+builder.Services.AddHttpClient<I195MailUsServ, S195MailUsServ>(client =>
+{ client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); });
+builder.Services.AddHttpClient <I202ContactoServ, S202ContactoServ> (client =>
+{ client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); });
+builder.Services.AddHttpClient <I204ContDetServ, S204ContDetServ> (client =>
+{ client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); });
+builder.Services.AddHttpClient <I205DatosTipoServ, S205DatosTipoServ> (client =>
+{ client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); });
+builder.Services.AddHttpClient <I800WebSiteServ, S800WebSiteServ> (client =>
+{ client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); });
+builder.Services.AddHttpClient <I840ContactanosServ, S840ContactanosServ> (client =>
+{ client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); });
 
 builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();

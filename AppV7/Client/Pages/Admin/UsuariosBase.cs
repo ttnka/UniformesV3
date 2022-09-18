@@ -37,7 +37,7 @@ namespace AppV7.Client.Pages.Admin
 
         public async Task LeerUsers()
         {
-            LosUsers = await UserIServ.Buscar("All", "Vacio");
+            LosUsers = await UserIServ.Buscar("Allo", "Vacio");
         }
 
         public async Task LeerOrgs()

@@ -18,8 +18,4 @@
     <ProjectReference Include="..\Shared\AppV7.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Pages\Zuver\Contactonos\" />
-  </ItemGroup>
-
 </Project>

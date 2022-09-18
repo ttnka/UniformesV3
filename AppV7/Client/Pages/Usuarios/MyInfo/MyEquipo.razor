@@ -60,7 +60,7 @@
         
         <Columns>
             <RadzenDataGridColumn TItem="Z110_Usuarios" Property="Nombre" Title="Nombre" 
-                Filterable="true" Width="150px">
+                Filterable="true" Width="120px">
                 <Template Context="datos">
                     @datos.Nombre
                 </Template>
@@ -73,7 +73,7 @@
             </RadzenDataGridColumn>
         
             <RadzenDataGridColumn TItem="Z110_Usuarios" Property="Paterno" Title="Apellidos" 
-                Filterable="true"  Width="170px">
+                Filterable="true"  Width="150px">
                 <Template Context="datos">
                     @datos.Paterno @datos.Materno
                 </Template>
@@ -87,7 +87,7 @@
             </RadzenDataGridColumn>
         
             <RadzenDataGridColumn TItem="Z110_Usuarios" Property="Nivel" Title="Nivel" 
-                Filterable="false" Resizable="true" >
+                Filterable="false" Resizable="true" Width="120px" >
                 <Template Context="datos">
                         @if (@DataDic.ContainsKey($"Nivel_{datos.Nivel}"))
                         {
@@ -101,7 +101,7 @@
                 <EditTemplate Context="datos">
                     <RadzenDropDown Name="Nivel" Data=@LosNiveles @bind-Value=@ElUsuario.Nivel
                         ValueProperty="Key" TextProperty="Value" AllowClear="true" 
-                        Style="width: 300px;" />
+                        Style="width: 120px;" />
                 </EditTemplate>
             </RadzenDataGridColumn>
             

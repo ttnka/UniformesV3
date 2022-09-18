@@ -11,10 +11,14 @@ namespace AppV7.Shared
     {
         [Key]
         public string Id { get; set; } = Guid.NewGuid().ToString();
-        public DateTime Fecha { get; set; } = DateTime.Now;
-        public string Padre { get; set; } = string.Empty;
+        public int Nivel { get; set; } = 1;
+        public string Catalogo { get; set; } = "10-10-10-10";
+        public int Indice { get; set; } = 0;
         public string Titulo { get; set; } = string.Empty;
-        public bool Visible { get; set; } = true;
+        public string? Valor { get; set; } = "Mostrar";
+        public string? Componente { get; set; } = string.Empty;
+        public string? TipoValor { get; set; } = string.Empty;
+        public DateTime Fecha { get; set; } = DateTime.Now;
         public int Estado { get; set; } = 2;
         public bool Status { get; set; } = true;
 

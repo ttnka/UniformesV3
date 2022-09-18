@@ -35,7 +35,8 @@ namespace AppV7.Client.Pages.Admin
             LasOrgs = await OrgIServ.Buscar("All");
             foreach (var org in LasOrgs)
             {
-                if (org.WebAdmin) HayWebMaster = true; 
+                if (org.WebAdmin)
+                    HayWebMaster = true; 
                 if (!OrgDic.ContainsKey(org.Rfc))
                     OrgDic.Add(org.Rfc, org.OrgId);
             }

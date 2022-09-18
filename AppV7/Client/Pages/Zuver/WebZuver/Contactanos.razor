@@ -1,0 +1,258 @@
+﻿
+@inherits ContactanosBase
+@using AppV7.Shared
+
+@if (ElContGeneral != null )
+{
+        <RadzenTemplateForm Data="@ElContGeneral" TItem="Z840_Contactanos" Submit="@SaveCont">
+            <div class="form-grup row">
+                <label for="habilitar" class="col-sm-3 col-form-label">Hacer cambios!</label>
+                <div class="col-sm-9">
+                    NO <RadzenSwitch Name = "Habilitar" @bind-Value=@Habilitar /> Si    
+                </div>
+            </div>
+            
+            <RadzenFieldset AllowCollapse=true >
+                <HeaderTemplate>
+                    <span class="d-inline-flex align-items-center align-middle">
+                        <RadzenIcon Icon="account_box" Class="mr-1" /><b>Directorio</b>
+                    </span>
+                </HeaderTemplate>
+                <ChildContent>
+                    <div class="form-grup row">
+                            <label for="Directorio" class="col-sm-3 col-form-label">Dirctorio</label>
+                            <div class="col-sm-9">
+                                <RadzenSelectBar @bind-Value=@ElContGeneral.Directorio TValue="bool" 
+                                    Disabled=!Habilitar >
+                                    <Items>
+                                        <RadzenSelectBarItem Text="Mostrar" Value="true" />
+                                        <RadzenSelectBarItem Text="Ocultar" Value="false" />
+                                    </Items>
+                                </RadzenSelectBar>
+                            </div>
+                        </div>
+                        <div class="form-grup row">
+                            <label for="foto" class="col-sm-3 col-form-label">Fotografia</label>
+                            <div class="col-sm-9">
+                                <RadzenSelectBar @bind-Value=@ElContGeneral.Foto TValue="bool" 
+                                Disabled=!Habilitar >
+                                    <Items>
+                                        <RadzenSelectBarItem Text="Mostrar" Value="true" />
+                                        <RadzenSelectBarItem Text="Ocultar" Value="false" />
+                                    </Items>
+                                </RadzenSelectBar>
+                            </div>
+                        </div>
+                        <div class="form-grup row">
+                            <label for="nombre" class="col-sm-3 col-form-label">Nombre</label>
+                            <div class="col-sm-9">
+                                <RadzenSelectBar @bind-Value=ElContGeneral.Nombre TValue="bool" 
+                                Disabled=!Habilitar>
+                                    <Items>
+                                        <RadzenSelectBarItem Text="Mostrar" Value="true" />
+                                        <RadzenSelectBarItem Text="Ocultar" Value="false" />
+                                    </Items>
+                                </RadzenSelectBar>
+                            </div>
+                        </div>
+                    
+                        <div class="form-grup row">
+                            <label for="puesto" class="col-sm-3 col-form-label">Puesto</label>
+                            <div class="col-sm-9">
+                                <RadzenSelectBar @bind-Value=ElContGeneral.Puesto TValue="bool" 
+                                Disabled=!Habilitar >
+                                    <Items>
+                                        <RadzenSelectBarItem Text="Mostrar" Value="true" />
+                                        <RadzenSelectBarItem Text="Ocultar" Value="false" />
+                                    </Items>
+                                </RadzenSelectBar>
+                            </div>
+                        </div>
+                        <div class="form-grup row">
+                            <label for="mail" class="col-sm-3 col-form-label">EMail</label>
+                            <div class="col-sm-9">
+                                <RadzenSelectBar @bind-Value=ElContGeneral.Mail TValue="bool" 
+                                Disabled=!Habilitar >
+                                    <Items>
+                                        <RadzenSelectBarItem Text="Mostrar" Value="true" />
+                                        <RadzenSelectBarItem Text="Ocultar" Value="false" />
+                                    </Items>
+                                </RadzenSelectBar>
+                            </div>
+                        </div>
+                        <div class="form-grup row">
+                            <label for="Tel" class="col-sm-3 col-form-label">Telefono Oficina</label>
+                            <div class="col-sm-9">
+                                <RadzenSelectBar @bind-Value=ElContGeneral.Tel TValue="bool" 
+                                Disabled=!Habilitar >
+                                    <Items>
+                                        <RadzenSelectBarItem Text="Mostrar" Value="true" />
+                                        <RadzenSelectBarItem Text="Ocultar" Value="false" />
+                                    </Items>
+                                </RadzenSelectBar>
+                            </div>
+                        </div>
+                    <div class="form-grup row">
+                            <label for="cel" class="col-sm-3 col-form-label">Celular</label>
+                            <div class="col-sm-9">
+                                <RadzenSelectBar @bind-Value=ElContGeneral.Cel TValue="bool" 
+                                Disabled=!Habilitar >
+                                    <Items>
+                                        <RadzenSelectBarItem Text="Mostrar" Value="true" />
+                                        <RadzenSelectBarItem Text="Ocultar" Value="false" />
+                                    </Items>
+                                </RadzenSelectBar>
+                            </div>
+                        </div>
+                        <div class="form-grup row">
+                            <label for="redes" class="col-sm-3 col-form-label">Redes</label>
+                            <div class="col-sm-9">
+                                <RadzenSelectBar @bind-Value=ElContGeneral.Redes TValue="bool" 
+                                Disabled=!Habilitar >
+                                    <Items>
+                                        <RadzenSelectBarItem Text="Mostrar" Value="true" />
+                                        <RadzenSelectBarItem Text="Ocultar" Value="false" />
+                                    </Items>
+                                </RadzenSelectBar>
+                            </div>
+                        </div>
+                </ChildContent>
+            </RadzenFieldset>
+
+            <RadzenFieldset AllowCollapse="true">
+                <HeaderTemplate>
+                    <span class="d-inline-flex align-items-center align-middle">
+                        <RadzenIcon Icon="account_box" Class="mr-1" /><b>Formato de Contacto</b>
+                    </span>
+                </HeaderTemplate>
+                <ChildContent>
+                    <div class="form-grup row">
+                        <label for="formato" class="col-sm-3 col-form-label">Formato de Mail! </label>
+                        <div class="col-sm-9">
+                            <RadzenSelectBar @bind-Value=@ElContGeneral.Formato TValue="bool" 
+                                Disabled=!Habilitar >
+                                <Items>
+                                    <RadzenSelectBarItem Text="Mostrar" Value="true" />
+                                    <RadzenSelectBarItem Text="Ocultar" Value="false" />
+                                </Items>
+                            </RadzenSelectBar>   
+                        </div>
+                    </div>
+                    <div class="form-grup row">
+                        <label for="formato" class="col-sm-3 col-form-label">Enviar una copia a: </label>
+                        <div class="col-sm-9">
+                            <RadzenTextBox style="display: block" Name="ParaMail" @bind-Value=@ElContGeneral.ParaMail Class="w-100"
+                             Disabled=!Habilitar />
+                            <RadzenEmailValidator Component="ParaMail" Text="Requieres una cuenta de Email Valida!" />
+                        </div>
+                    </div>
+                </ChildContent>
+            </RadzenFieldset>
+
+            <RadzenFieldset AllowCollapse=true>
+                <HeaderTemplate>
+                    <span class="d-inline-flex align-items-center align-middle">
+                        <RadzenIcon Icon="account_box" Class="mr-1" /><b>Mapa</b>
+                    </span>
+                </HeaderTemplate>
+                <ChildContent>
+                    <div class="form-grup row">
+                        <label for="mapa" class="col-sm-3 col-form-label">Mostrar Mapa con la ubicacion.</label>
+                        <div class="col-sm-9">
+                            <RadzenSelectBar @bind-Value=@ElContGeneral.Mapa TValue="bool" 
+                                Disabled=!Habilitar >
+                                <Items>
+                                    <RadzenSelectBarItem Text="Mostrar" Value="true" />
+                                    <RadzenSelectBarItem Text="Ocultar" Value="false" />
+                                </Items>
+                            </RadzenSelectBar>
+                        </div>
+                    </div>
+                    <div class="form-grup row">
+                        <label for="titulo" class="col-sm-3 col-form-label">Titulo</label>
+                        <div class="col-sm-9">
+                            <RadzenTextBox Name="Titulo" @bind-Value=ElContGeneral.Titulo Style="width: 90%"
+                            Disabled=!Habilitar />
+                        </div>
+                    </div>
+                    <div class="form-grup row">
+                        <label for="latitud" class="col-sm-3 col-form-label">Latitud</label>
+                        <div class="col-sm-9">
+                            <RadzenTextBox Name="Latitud" @bind-Value=ElContGeneral.Latitud Style="width: 90%" 
+                            Disabled=!Habilitar />
+                        </div>
+                    </div>
+                    <div class="form-grup row">
+                        <label for="longitud" class="col-sm-3 col-form-label">Longitud</label>
+                        <div class="col-sm-9">
+                            <RadzenTextBox Name="Longitud" @bind-Value=ElContGeneral.Longitud Style="width: 90%" 
+                            Disabled=!Habilitar />
+                        </div>
+                    </div>
+                    
+                    <div class="form-grup row">
+                        <label for="Comentario" class="col-sm-3 col-form-label">Comentarios </label>
+                        <div class="col-sm-9">
+                            <RadzenTextArea Name="Comentario" @bind-Value=@ElContGeneral.Comentario Style="width: 90%" 
+                            Disabled=!Habilitar />   
+                        </div>
+                    </div>
+                </ChildContent>
+            </RadzenFieldset>
+
+            <RadzenFieldset AllowCollapse="true">
+                <HeaderTemplate>
+                    <span class="d-inline-flex align-items-center align-middle">
+                        <RadzenIcon Icon="account_box" Class="mr-1" /><b>Informacion</b>
+                    </span>
+                </HeaderTemplate>
+                <ChildContent>
+                    <div class="form-grup row">
+                        <label for="Domicilio" class="col-sm-3 col-form-label">Domicilio </label>
+                        <div class="col-sm-9">
+                            <RadzenTextArea Name="Domicilio" @bind-Value=@ElContGeneral.Domicilio 
+                            Style="width: 90%" Disabled=!Habilitar />   
+                        </div>
+                    </div>
+                    <div class="form-grup row">
+                        <label for="telefonos" class="col-sm-3 col-form-label">Telefonos </label>
+                        <div class="col-sm-9">
+                            <RadzenTextArea Name="Telefonos" @bind-Value=@ElContGeneral.Telefonos 
+                            Style="width: 90%"  Disabled=!Habilitar />   
+                        </div>
+                    </div>
+                    
+                </ChildContent>
+            </RadzenFieldset>
+            
+            <br />
+            <br />
+            <div class="form-grup row">
+                <label for="botones" class="col-sm-8 col-form-label"></label>
+                <div class="col-sm-2">
+                    <RadzenButton style="margin-bottom: 10px" Text="Cancelar" 
+                        ButtonType="ButtonType.Reset" ButtonStyle="ButtonStyle.Danger" 
+                        Disabled="@(!Habilitar)"/>
+                </div>
+                <div class="col-sm-2">
+                    <RadzenButton ButtonType="ButtonType.Submit" Text="Actualizar" 
+                        Disabled="@(!Habilitar)" />
+                </div>
+            </div>
+            
+        </RadzenTemplateForm>
+    
+}
+else
+{
+    <div class="spinner"></div>
+}
+
+@code {
+
+    async void SaveCont()
+    {
+        await SaveContactanos();
+    }
+    
+}

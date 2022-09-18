@@ -8,8 +8,6 @@ namespace AppV7.Shared
 {
     public static class Constantes
     {
-    
-
         public const string ElDominio = "Zuverworks.com";
 
         // Mail 01

@@ -86,6 +86,7 @@ namespace AppV7.Server.Models.Repo
                     res.Rfc = org.Rfc;
                     res.Comercial = org.Comercial;
                     res.Moral = org.Moral;
+                    res.WebAdmin = org.WebAdmin;
 
                     res.RazonSocial = org.RazonSocial;
                     res.Nombre = org.Nombre;

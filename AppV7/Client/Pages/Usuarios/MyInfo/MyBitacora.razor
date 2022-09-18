@@ -38,7 +38,8 @@
             <RadzenDataGridColumn TItem="@Z190_Bitacora" Filterable="false" 
                 Title="Fecha" Frozen="true" Width="90px" TextAlign="TextAlign.Left">
                 <Template Context=Data>
-                    <label>@($"{@Data.Fecha.Day}/{@MyFunc.MesTitulo(@Data.Fecha.Month,0)}/{@MyFunc.Ejercicio(@Data.Fecha)}")</label>
+                    
+                    <label>@($"{@MyFunc.FormatoFecha("DD/MMM/AA",Data.Fecha)}")</label>
                     <br />
                     <label>@($"{@MyFunc.LaHora(@Data.Fecha, "S")}")</label>
                 </Template>
