@@ -102,8 +102,32 @@
                 </EditTemplate>
             </RadzenDataGridColumn>
 
-            <RadzenDataGridColumn TItem="Z800_WebSite" Property="Componente" Title="Componente" Filterable="false"  
-                Width="200px">
+            <RadzenDataGridColumn TItem="Z800_WebSite" Property="Web" Title="Web" 
+                Filterable="false" Width="200px">
+                <Template Context="datos">
+                    @datos.Web
+                </Template>
+                <EditTemplate Context="datos">
+                    <RadzenDropDown Name="Web" Data=@LasWebs AllowClear="true" 
+                        Style="width: 300px;" @bind-Value=@datos.Web 
+                        ValueProperty="Key" TextProperty="Value" />
+                </EditTemplate>
+            </RadzenDataGridColumn>
+
+            <RadzenDataGridColumn TItem="Z800_WebSite" Property="Captura" 
+                Title="Configuracion" Filterable="false" Width="200px">
+                <Template Context="datos">
+                    @datos.Captura
+                </Template>
+                <EditTemplate Context="datos">
+                    <RadzenDropDown Name="Captura" Data=@LaCapt AllowClear="true" 
+                        Style="width: 300px;" @bind-Value=@datos.Captura 
+                        ValueProperty="Key" TextProperty="Value" />
+                </EditTemplate>
+            </RadzenDataGridColumn>
+
+            <RadzenDataGridColumn TItem="Z800_WebSite" Property="Componente" 
+                Title="Configuracion" Filterable="false" Width="200px">
                 <Template Context="datos">
                     @datos.Componente
                 </Template>

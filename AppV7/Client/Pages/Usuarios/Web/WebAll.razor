@@ -16,25 +16,21 @@
 <RadzenCard>
     <RadzenTabs @bind-SelectedIndex=@selectedIndex>
         <Tabs>
-            <RadzenTabsItem Text="Inicio" >
-
-            </RadzenTabsItem>
-            <RadzenTabsItem Text="CANACO">
-
-            </RadzenTabsItem>
-            <RadzenTabsItem Text="Servicios">
-
-            </RadzenTabsItem>
-            <RadzenTabsItem Text="Noticias">
-
-            </RadzenTabsItem>
-            <RadzenTabsItem Text="Bolsa de Trabajo">
-
-            </RadzenTabsItem>
-            <RadzenTabsItem Text="Contacto">
-
-            </RadzenTabsItem>
+        @foreach(var comp in WsMenu)
+        {   
+                <RadzenTabsItem Text=@comp.Titulo >      
+                              <DynamicComponent 
+                                  Type=@Type.GetType(
+                                  $"AppV7.Client.Pages.Usuarios.Web.{@comp.Web}") 
+                                  Parameters=Parametros />
+                    </RadzenTabsItem>
+            
+        }   
+        <RadzenTabsItem Text="fijo"  >
+           <ContactanosWeb />
+        </RadzenTabsItem>
         </Tabs>
+
     </RadzenTabs>
 </RadzenCard>
 

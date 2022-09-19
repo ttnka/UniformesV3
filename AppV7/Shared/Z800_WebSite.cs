@@ -17,6 +17,8 @@ namespace AppV7.Shared
         public string Titulo { get; set; } = string.Empty;
         public string? Valor { get; set; } = "Mostrar";
         public string? Componente { get; set; } = string.Empty;
+        public string? Web { get; set; } = string.Empty;
+        public string? Captura { get; set; } = string.Empty;
         public string? TipoValor { get; set; } = string.Empty;
         public DateTime Fecha { get; set; } = DateTime.Now;
         public int Estado { get; set; } = 2;

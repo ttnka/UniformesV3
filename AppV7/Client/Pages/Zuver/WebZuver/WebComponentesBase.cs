@@ -17,6 +17,10 @@ namespace AppV7.Client.Pages.Zuver.WebZuver
             new List<Z800_WebSite>();
         public List<KeyValuePair<string, string>> LosComp { get; set; } =
             new List<KeyValuePair<string, string>>();
+        public List<KeyValuePair<string, string>> LasWebs { get; set; } =
+            new List<KeyValuePair<string, string>>();
+        public List<KeyValuePair<string, string>> LaCapt { get; set; } =
+            new List<KeyValuePair<string, string>>();
         public Z800_WebSite ElWebSite { get; set; } = new();
         public RadzenDataGrid<Z800_WebSite> WSGrid { get; set; } =
             new RadzenDataGrid<Z800_WebSite>();
@@ -51,12 +55,23 @@ namespace AppV7.Client.Pages.Zuver.WebZuver
             LosCats = WsAct;
 
 //  Lee los componentes y los ponen en una lista
-            var losComponentes = MyFunc.LosComopentes();
+            var losComponentes = MyFunc.Componentes();
             foreach (var lcs in losComponentes)
             {
                 if (LosComp == null || !LosComp.Any(x => x.Key == lcs)) 
-                LosComp!.Add(new KeyValuePair<string, string>(
-                    lcs, lcs));
+                LosComp!.Add(new KeyValuePair<string, string>(lcs, lcs));
+            }
+            var lasWebsTemp = MyFunc.WebSites();
+            foreach (var lws in lasWebsTemp)
+            {
+                if (LasWebs == null || !LasWebs.Any(x => x.Key == lws))
+                    LasWebs!.Add(new KeyValuePair<string, string>(lws, lws));
+            }
+            var laCaptTemp = MyFunc.Captura();
+            foreach (var lct in laCaptTemp)
+            {
+                if (LaCapt == null || !LaCapt.Any(x => x.Key == lct))
+                    LaCapt!.Add(new KeyValuePair<string, string>(lct, lct));
             }
         }
         

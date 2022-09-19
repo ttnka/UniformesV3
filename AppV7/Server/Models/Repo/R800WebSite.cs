@@ -77,6 +77,8 @@ namespace AppV7.Server.Models.Repo
                     res.Valor = webSite.Valor;
                     res.TipoValor = webSite.TipoValor;
                     res.Componente = webSite.Componente;
+                    res.Web = webSite.Web;
+                    res.Captura = webSite.Captura;
                     res.Fecha = webSite.Fecha;
 
                     res.Estado = webSite.Estado;
