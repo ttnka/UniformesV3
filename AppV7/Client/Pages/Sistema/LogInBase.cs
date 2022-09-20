@@ -15,12 +15,13 @@ namespace AppV7.Client.Pages.Sistema
         public string ElMensaje { get; set; } = string.Empty;
         [Parameter]
         public string LaUrl { get; set; } = "/";
-
+        /*
         protected async override Task OnInitializedAsync()
         {
 
             //LaUrl = NM.Uri;
         }
+        */
         public async Task FirmaInn()
         {
             ElNuevo.FirmaIn = true;

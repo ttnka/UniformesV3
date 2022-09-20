@@ -20,8 +20,6 @@ namespace AppV7.Shared
         public string? Titulo { get; set; } 
         public string? Latitud { get; set; }
         public string? Longitud { get; set; }
-        
-
         public bool Directorio { get; set; } = false;
         public bool Foto { get; set; } = false;
         public bool Nombre { get; set; } = false;

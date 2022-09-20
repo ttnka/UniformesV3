@@ -21,10 +21,10 @@ namespace AppV7.Client.Pages.Usuarios.Web
         {
             await LeerDatosWebSites();
 
-            await SIndex();
+            SIndex();
 
         }
-        public async Task SIndex()
+        public void SIndex()
         {
             var valor = DateTime.Now.Second;
             for (int i = 0; i < 15; i++)

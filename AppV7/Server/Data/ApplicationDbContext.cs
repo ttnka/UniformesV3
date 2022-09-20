@@ -4,6 +4,7 @@ using Duende.IdentityServer.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Org.BouncyCastle.Asn1.Mozilla;
 
 namespace AppV7.Server.Data
 {
@@ -24,6 +25,8 @@ namespace AppV7.Server.Data
         public DbSet<Z204_ContDet> ContDet { get; set; }
         public DbSet<Z205_DatosTipo> DatosTipo { get; set; }
         public DbSet<Z800_WebSite> WebSite { get; set; }
+        public DbSet<Z802_WebConfig> WebConfig { get; set; }
+        public DbSet<Z804_WebCaptura> WebCaptura { get; set; }
         public DbSet<Z840_Contactanos> Contactanos { get; set; }
 
 

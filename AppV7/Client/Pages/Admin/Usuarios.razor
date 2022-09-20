@@ -27,8 +27,7 @@
                 AllowSorting="true" AllowColumnResize="true"
                 ExpandMode="DataGridExpandMode.Single" AllowGrouping="false"
                 EditMode="DataGridEditMode.Single" 
-                Data="@LosUsers" TItem="Z110_Usuarios" RowUpdate="@OnUpdateRow" 
-                RowCreate="@OnCreateRow" >
+                Data="@LosUsers" TItem="Z110_Usuarios" RowUpdate="@OnUpdateRow" >
                 
         <Template Context="datos1">
  
@@ -196,20 +195,23 @@ else
         Editando = !Editando; 
         UsersGrid.CancelEditRow(user);
     }
+    /*
     async Task InsertRow()
     {
-        /*
+        
         UserToInsert = new Z110_Usuarios();
         UserToInsert.userId = Guid.NewGuid().ToString();
         UserToInsert.Estado = 3;
         Editando = !Editando;
 
         await UsersGrid.InsertRow(UserToInsert); 
-    */
+    
     }
+    */
+   /*
     async void OnCreateRow(Z110_Usuarios user)
     {
-        /*
+        
         if (user == UserToInsert) UserToInsert = null;
 
         Z110_Usuarios resultado = new Z110_Usuarios();
@@ -218,9 +220,9 @@ else
         string texto = $"Se creo un registro {user.Rfc}";
             texto += $"{user.Comercial} {user.RazonSocial} desde sistema";
             await Escribir(ElUsuario.UsuariosId, ElUsuario.userId, texto, false);
-    */
+    
     }
-
+    */
     public void ShowNotification(NotificationMessage message)
     {
         NS.Notify(message);

@@ -18,11 +18,11 @@ namespace AppV7.Client.Pages.Sistema
             EaddUsuario.Mail = mail;
             EaddUsuario.ConfirmacionCode = code;
         }
-
+        /*
         public async Task ResetP()
         {
 
         }
-
+        */
     }
 }

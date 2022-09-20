@@ -196,16 +196,18 @@ else
         Editando = !Editando; 
         UsersGrid.CancelEditRow(user);
     }
+    
     async Task InsertRow()
-    {/*
+    {
         UserToInsert = new Z110_Usuarios();
-        UserToInsert.userId = Guid.NewGuid().ToString();
+        UserToInsert.UsuariosId = Guid.NewGuid().ToString();
         UserToInsert.Estado = 3;
         Editando = !Editando;
 
         await UsersGrid.InsertRow(UserToInsert); 
-      */
+      
     }
+    
     async void OnCreateRow(Z110_Usuarios user)
     {
         if (user == UserToInsert) UserToInsert = null;

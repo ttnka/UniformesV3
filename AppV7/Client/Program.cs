@@ -39,6 +39,10 @@ builder.Services.AddHttpClient <I205DatosTipoServ, S205DatosTipoServ> (client =>
 { client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); });
 builder.Services.AddHttpClient <I800WebSiteServ, S800WebSiteServ> (client =>
 { client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); });
+builder.Services.AddHttpClient<I802WebConfigServ, S802WebConfigServ>(client =>
+{ client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); });
+builder.Services.AddHttpClient<I804WebCapturaServ, S804WebCapturaServ>(client =>
+{ client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); });
 builder.Services.AddHttpClient <I840ContactanosServ, S840ContactanosServ> (client =>
 { client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); });
 

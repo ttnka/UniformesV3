@@ -12,10 +12,12 @@ namespace AppV7.Client.Pages.Sistema
         [Parameter]
         public string Clave { get; set; } = string.Empty;
         public EAddUsuario NewAddUsuario { get; set; } = new();
+        /*
         public async void ActualizarPass()
         {
            
         }
+        */
         [Inject]
         public I190BitacoraServ BitacoraIServ { get; set; }
         public MyFunc MyFunc { get; set; } = new MyFunc();

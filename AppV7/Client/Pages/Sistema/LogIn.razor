@@ -27,26 +27,38 @@
             <br />
             </div>
         </div>
+        
         <div class="form-grup row">
-            <label for="recordarme" class="col-sm-3 col-form-label">RecordarMe </label>
-            <div class="col-sm-9">
+            <div class="col-sm-3">
+
+            </div>
+            <div class="col-sm-3">
+                <RadzenButton ButtonType="ButtonType.Reset" Text="Cancelar"
+                 Shade="Shade.Lighter" Click=@(args => OnClick()) />
+            </div>
+            <div class="col-sm-3">
+                <RadzenButton ButtonType="ButtonType.Submit" Text="Registro"
+                    Shade="Shade.Lighter"  />
+            </div>
+        </div>
+        <div class="form-grup row">
+            <label for="recordarme" class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-6">
                 <NavLink class="nav-link" href="/recuperar">Olvide Mi Password</NavLink>
             </div>
         </div>
         <div class="form-grup row">
-                <label for="botones" class="col-sm-3 col-form-label">
-                No<RadzenSwitch Name="RecordarMe" @bind-Value=@ElNuevo.RecordarMe /> Si
-                </label>
-                <div class="col-sm-2">
-                    <NavLink class="nav-link" href="/">Cancelar</NavLink>
-                    
-                </div>
-                <div class="col-sm-2">
-                    <RadzenButton ButtonType="ButtonType.Submit" Text="Registro" />
-                </div>
-                
-                <label for="botones" class="col-sm-5 col-form-label"></label>
+            <label for="recordarme" class="col-sm-3 col-form-label">Recordarme </label>
+            <div class="col-sm-9">
+                <RadzenSelectBar @bind-Value=@ElNuevo.RecordarMe TValue="bool">
+                    <Items>
+                        <RadzenSelectBarItem Text="No, gracias!" Value="false" />
+                        <RadzenSelectBarItem Text="Recordarme!" Value="true" />
+                    </Items>
+                </RadzenSelectBar>
             </div>
+        </div>
+
     </RadzenTemplateForm>
 
 </RadzenCard>
@@ -60,6 +72,9 @@
     async void Firma()
     {
         await FirmaInn();
+    }
+    void OnClick(){
+        NM.NavigateTo("/");
     }
 
 }

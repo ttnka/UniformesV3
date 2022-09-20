@@ -12,6 +12,7 @@ namespace AppV7.Client.Pages.Usuarios.MyInfo
         public I110UsuariosServ UserIServ { get; set; }
         [Parameter]
         public Z110_Usuarios ElUsuarioPara { get; set; }
+        
         public Z110_Usuarios ElUsuario { get; set; } = new();
         public string LaOrg { get; set; } = "Vacia";
         public string ElNiv { get; set; } = "Vacio";
@@ -28,8 +29,8 @@ namespace AppV7.Client.Pages.Usuarios.MyInfo
         {
             LeerUsuario(); 
             LeerInfo();
-            //await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId,
-            //    "Consulto sus datos", false);
+            await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId,
+                "Consulto sus datos", false);
         }
         
         public void LeerUsuario()
