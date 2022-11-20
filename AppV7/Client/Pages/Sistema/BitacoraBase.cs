@@ -12,8 +12,8 @@ namespace AppV7.Client.Pages.Sistema
         public I190BitacoraServ BitacoraIServ { get; set; }
         public IEnumerable<Z190_Bitacora> LasBitacoras { get; set; } =
                     Enumerable.Empty<Z190_Bitacora>();
-        public RadzenDataGrid<Z190_Bitacora> BitacoraGrid { get; set; } =
-            new RadzenDataGrid<Z190_Bitacora>();
+        public RadzenDataGrid<Z190_Bitacora>? BitacoraGrid { get; set; } = default!;
+            //new RadzenDataGrid<Z190_Bitacora>();
         [Parameter]
         public Dictionary<string, string> NombresDic { get; set; } = new();
 

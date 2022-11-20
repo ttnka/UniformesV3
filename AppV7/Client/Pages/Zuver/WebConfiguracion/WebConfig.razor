@@ -1,25 +1,238 @@
-﻿
-@inherits WebConfigBase 
+﻿@page "/old/web/config"
+@inherits WebConfigBase
 @using AppV7.Shared
 
-@if(mostrar) {
-    <RadzenCard>
-        <RadzenAccordion>
+<RadzenCard>
+    @if (mostrar) 
+    {
+        <RadzenDataGrid @ref="WSiteGrid" Data="@LasWSites" TItem="Z800_WebSite"
+                    AllowFiltering="true" AllowPaging="true" PageSize="50"
+                    AllowSorting="true" AllowColumnResize="true"
+                    ExpandMode="DataGridExpandMode.Single" AllowGrouping="false"
+                    EditMode="DataGridEditMode.Single"
+                    RowUpdate="@OnUpdateRow"
+                    RowCreate="@OnCreateRow">
 
-        </RadzenAccordion>
-        <RadzenTabs>
-            <Tabs>
-                <RadzenTabsItem>
+            <Template Context="datos1">
 
-                </RadzenTabsItem>
-            </Tabs>
-        </RadzenTabs>
-    </RadzenCard>
-}
-else {
+                <RadzenTabs>
+                    <Tabs>
+                        <RadzenTabsItem Text="Detalle Empresas ">
+                            Uno
+                        </RadzenTabsItem>
+                        <RadzenTabsItem Text="Extras">
+                            <RadzenDataList WrapItems="true" AllowPaging="true" Data="@LasWSites"
+                                        TItem="Z800_WebSite" PageSize="10">
+                                <Template Context="datos2">
+                                    <RadzenCard Style="width:100px; height:100px">
+                                        <h4 class="text-thin">Organizacion</h4>
+                                        <b>@datos2.Ceja</b>
+                                    </RadzenCard>
+                                </Template>
+                            </RadzenDataList>
+                        </RadzenTabsItem>
+                    </Tabs>
+                </RadzenTabs>
+            </Template>
+            <!-- AQUI EMPIEZA REPORTE-->
 
-}
+            <Columns>
+                <RadzenDataGridColumn TItem="Z800_WebSite" Property="Fecha" Title="Fecha" Filterable="true"
+                                  Width="150px">
+                    <Template Context="datos">
+                        @datos.Fecha
+                    </Template>
+                    <EditTemplate Context="datos">
+                        <RadzenDatePicker Name="Fecha" @bind-Value="datos.Fecha" Style="width: 90%" /> <br>
+                        
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+
+                <RadzenDataGridColumn TItem="Z800_WebSite" Property="Indice" Title="Indice"
+                                  Filterable="true" Width="170px">
+                    <Template Context="datos">
+                        @datos.Indice
+                    </Template>
+                    <EditTemplate Context="datos">
+                        <RadzenNumeric Name="Indice" @bind-Value="datos.Indice" 
+                         Min="0" Max="20" ShowUpDown="false" Style="width: 90%" />
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+
+                <RadzenDataGridColumn TItem="Z800_WebSite" Property="Titulo" Title="Titulo"
+                                  Filterable="true" Width="170px">
+                    <Template Context="datos">
+                        @datos.Titulo
+                    </Template>
+                    <EditTemplate Context="datos">
+                        <RadzenTextBox Name="Titulo" @bind-Value="datos.Titulo" Style="width: 90%" /><br>
+                        <RadzenRequiredValidator Component="Titulo" Text="El Titulo es Obligatorio." />
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+
+                <RadzenDataGridColumn TItem="Z800_WebSite" Property="Ceja" Title="Ceja"
+                                  Filterable="true" Width="170px">
+                    <Template Context="datos">
+                        @datos.Ceja
+                    </Template>
+                    <EditTemplate Context="datos">
+                        <RadzenTextBox Name="Ceja" @bind-Value="datos.Ceja" Style="width: 90%" /><br>
+                        
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+
+                <RadzenDataGridColumn TItem="Z800_WebSite" Property="Ayuda" Title="Ayuda"
+                                  Filterable="true" Width="170px">
+                    <Template Context="datos">
+                        @datos.Ayuda
+                    </Template>
+                    <EditTemplate Context="datos">
+                        <RadzenTextBox Name="Ayuda" @bind-Value="datos.Ayuda" Style="width: 90%" /><br>
+                        
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+
+                <RadzenDataGridColumn TItem="Z800_WebSite" Property="Componente" Title="Componente"
+                                  Filterable="true" Width="170px">
+                    <Template Context="datos">
+                        @datos.Componente
+                    </Template>
+                    <EditTemplate Context="datos">
+                        <RadzenTextBox Name="Componente" @bind-Value="datos.Componente" Style="width: 90%" /><br>
+                        
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+
+                <RadzenDataGridColumn TItem="Z800_WebSite" Property="Visible" Title="Visible"
+                                  Filterable="true" Width="100px">
+                    <Template Context="datos">
+                        @if(datos.Visible) {
+                            <label>Si</label>
+                        }else {
+                            <label>No</label>
+                        }
+                    </Template>
+                    <EditTemplate Context="datos">
+                        <label>Ocultar? Si </label>
+                        <RadzenSwitch @bind-Value=@datos.Visible Name="Visible" />
+                        <label>No!</label>
+                        
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+
+                <RadzenDataGridColumn TItem="Z800_WebSite" Context="sampleBlazorModelsSampleOrder"
+                            Filterable="false" Sortable="false" TextAlign="TextAlign.Center"
+                            Width="250px" Title="Estado">
+                    <Template Context="datos">
+                        <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Secondary"
+                                Class="m-1" Click="@((args) => EditRow(datos))" Visible="@(!Editando)">
+                        </RadzenButton>
+                        
+                        @if (datos.Status)
+                        {
+                            <label>Activo</label>
+                        }
+                        else
+                        {
+                            <label>Suspendido</label>
+                        }
+                        
+                    </Template>
+
+                    <EditTemplate Context="datos">
+
+                        @if (datos.Estado != 3)
+                        {
+                            <label>Borrar este registro? Si </label>
+                            <RadzenSwitch @bind-Value=@datos.Status Name="Status" />
+                            <label>No!</label>
+                            <br />
+                        }
+                        
+                        <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Primary"
+                                Class="m-1" Click="@((args) => SaveRow(datos))">
+                        </RadzenButton>
+                        
+                        <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Class="m-1"
+                                  Click="@((args) => CancelEdit(datos))" />
+
+                    </EditTemplate>
+
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    } 
+    else 
+    {<div class="spinner"></div>}
+</RadzenCard>
+
 
 @code {
     bool mostrar = true;
+    Z800_WebSite SiteToInsert = new();
+    async Task EditRow(Z800_WebSite site)
+    {
+        await WSiteGrid!.EditRow(site);
+        Editando = !Editando;
+    }
+    async void OnUpdateRow(Z800_WebSite site)
+    {
+        if (site == SiteToInsert) SiteToInsert = null!;
+
+        Editando = !Editando;
+        await WebSiteIServ.UpdateWebSite(site);
+
+        string texto = $"Se actualizo un registro {site.Titulo}";
+        texto += $"Indice {site.Indice}, ceja {site.Ceja}, ayuda {site.Ayuda}";
+        texto += $"fecha {site.Fecha} ,componente {site.Componente}, visible {site.Visible} ";
+        await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, texto, false);
+
+    }
+    async Task SaveRow(Z800_WebSite site)
+    {
+        await WSiteGrid!.UpdateRow(site);
+    }
+    void CancelEdit(Z800_WebSite site)
+    {
+        if (site == SiteToInsert) SiteToInsert = null!;
+        Editando = !Editando;
+        WSiteGrid!.CancelEditRow(site);
+    }
+    async Task InsertRow()
+    {
+        SiteToInsert = new Z800_WebSite();
+        SiteToInsert.Id = Guid.NewGuid().ToString();
+        SiteToInsert.Estado = 3;
+        Editando = !Editando;
+
+        await WSiteGrid!.InsertRow(SiteToInsert);
+
+    }
+    async void OnCreateRow(Z800_WebSite site)
+    {
+        if (site == SiteToInsert) SiteToInsert = null;
+        site.Estado = 1;
+
+        Editando = !Editando;
+
+        Z800_WebSite resultado = new Z800_WebSite();
+        resultado = await WebSiteIServ.AddWebSite(site);
+        await LeerDatos();
+
+        string texto = $"Se creo un registro {site.Titulo}";
+        texto += $"ceja {site.Ceja}, ayuda {site.Ayuda}, componente {site.Componente}, ";
+        texto += $"visible {site.Visible}, indice {site.Indice}";
+        await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, texto, false);
+    }
+
+    public void ShowNotification(NotificationMessage message)
+    {
+       // NS.Notify(message);
+    }
+
+    async Task LoadData()
+    {
+        LasWSites = await WebSiteIServ.Buscar("Allo");
+    }
+
 }

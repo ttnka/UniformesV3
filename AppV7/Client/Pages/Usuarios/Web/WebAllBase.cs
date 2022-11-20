@@ -41,8 +41,8 @@ namespace AppV7.Client.Pages.Usuarios.Web
             WsAll = await WebSiteIServ.Buscar("Allo");
             foreach (var lws in WsAll)
             {
-                if (lws.Nivel == 1 && lws.Status && lws.Estado == 1 &&
-                    !string.IsNullOrEmpty(lws.Web)) WsMenu.Add(lws);
+                if (lws.Status && lws.Estado == 1 &&
+                    !string.IsNullOrEmpty(lws.Ceja)) WsMenu.Add(lws);
 
             }
 

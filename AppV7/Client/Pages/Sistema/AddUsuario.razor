@@ -7,13 +7,14 @@
 <RadzenCard>
     @if (LasOrgs != null && LosNiveles != null)
     {
-        <RadzenTemplateForm Data="@NewAddUsuario"  TItem="@EAddUsuario"  Submit="@ElNewUsuario">
+        <RadzenTemplateForm @ref="AddUsuarioForm" Data="@NewAddUsuario" 
+            TItem="@EAddUsuario" Submit="@ElNewUsuario" >
             <div class="form-grup row">
                 <label for="mail" class="col-sm-3 col-form-label">Email</label>
                 <div class="col-sm-9">
                         
                     <RadzenTextBox Name="Mail" @bind-Value=@NewAddUsuario.Mail
-                        style="display: block; width: 300px;" />
+                        style="display: block; width: 300px;" AutoComplete="false" />
                     <RadzenRequiredValidator Component="Mail" Text="El Mail es obligatorio " />
                     <RadzenEmailValidator Component="Mail" Text="El Formato de Mail es Incorrecto!" />
                 </div>
@@ -23,8 +24,10 @@
                 <label for="pass" class="col-sm-3 col-form-label">Password </label>
                 <div class="col-sm-9">
                     <RadzenPassword Name="Pass" @bind-Value=@NewAddUsuario.Pass 
-                        Placeholder="6 Caracteres, 1 numero, 1 letra como minimo!" Style="width: 300px;" />
-                    <RadzenRequiredValidator Component="Pass" Text="El Password es obligatorio!" />
+                        Placeholder="6 Caracteres, 1 numero, 1 letra como minimo!" 
+                        Change="@Valido" Style="width: 300px;" AutoComplete="false"  />
+                        
+                        <RadzenRequiredValidator Component="Pass" Text="El Password es obligatorio!" />
                 <br />
                 </div>
             </div>
@@ -56,9 +59,47 @@
             <div class="form-grup row">
                 <label for="botones" class="col-sm-3 col-form-label"></label>
                 <div class="col-sm-7">
-                    <label>Tu password debe ser 6 caracteres mínimo, contener </label>
-                    <label>1 mayúscula, 1 minúscula, 1 numero.</label> 
+                    <label>Tu password debe contener <br /> 6 caracteres minimo
+                        @if (IsLargo)
+                        {
+                            <RadzenIcon Icon="done_all" IconStyle="IconStyle.Success" />
+                        }           
+                        else 
+                        {
+                            <RadzenIcon Icon="alarm_off" IconStyle="IconStyle.Danger" />
+                        }
+                    </label> <br />
+                    <label>Una letra mayúscula 
+                        @if(Mayuscula)
+                        {
+                            <RadzenIcon Icon="done_all" IconStyle="IconStyle.Success" />
+                        }
+                        else 
+                        {
+                            <RadzenIcon Icon="alarm_off" IconStyle="IconStyle.Danger" />
+                        }
                     
+                    </label><br/>
+                    <label>Una letra minúscula 
+                        @if (Minuscula)
+                        {
+                              <RadzenIcon Icon="done_all" IconStyle="IconStyle.Success" />
+                        }
+                        else 
+                        {
+                            <RadzenIcon Icon="alarm_off" IconStyle="IconStyle.Danger" />
+                        }
+                    </label><br/>
+                    <label>Un numero 
+                        @if (Numero)
+                        {
+                            <RadzenIcon Icon="done_all" IconStyle="IconStyle.Success" />
+                        }
+                        else
+                        {
+                            <RadzenIcon Icon="alarm_off" IconStyle="IconStyle.Danger" />
+                        }
+                    </label>
                 </div>
                 <div class="col-sm-2">
                     
@@ -66,12 +107,13 @@
             </div>
             <div class="form-grup row">
                 <label for="botones" class="col-sm-6 col-form-label"></label>
+                
                 <div class="col-sm-2">
                     <NavLink class="nav-link" href="/">Cancelar</NavLink>
                     
                 </div>
                 <div class="col-sm-2">
-                    <RadzenButton ButtonType="ButtonType.Submit" Text="Registro" />
+                    <RadzenButton ButtonType="ButtonType.Submit" Text="Registro" Disabled =!IsRegistro />
                 </div>
                 <div class="col-sm-2">
                 </div>

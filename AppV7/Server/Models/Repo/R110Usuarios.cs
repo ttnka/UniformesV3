@@ -23,6 +23,7 @@ namespace AppV7.Server.Models.Repo
         public async Task<IEnumerable<Z110_Usuarios>> Buscar(string clave, string orgX)
         {
             IQueryable<Z110_Usuarios> querry = _appDbContext.Usuarios;
+            
             switch (clave)
             {
                 case "All":
@@ -46,16 +47,16 @@ namespace AppV7.Server.Models.Repo
                     {
                         if (!ParamDic.ContainsKey(parametro[i]))
                             ParamDic.Add(parametro[i], parametro[i + 1]);
-
                     }
-                    switch (parametro[0])
+                        switch (parametro[0])
                     {
                         case "UserId":
                             querry = querry.Where(x => x.UsuariosId == ParamDic["UserId"]);
-                            break;
-                        case "OldEMail":
+                            return await querry.ToListAsync();
+
+                        case "OldEmail":
                             querry = querry.Where(x => x.OldEmail == ParamDic["OldEmail"]);
-                            break;
+                            return await querry.ToListAsync();
                     }
                     
                     break;

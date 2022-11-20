@@ -1,0 +1,22 @@
+﻿@page "/inicioweb"
+@inherits InicioWebBase
+@using AppV7.Shared
+@using AppV7.Client.Pages.LaWeb
+
+<RadzenCard>
+    
+    <RadzenImage Path="FotosWeb\banner-home-canaco.jpg" />
+    
+<AuthorizeView>
+    <Authorized>
+        
+    </Authorized>
+
+    <NotAuthorized>
+
+    </NotAuthorized>
+</AuthorizeView>
+</RadzenCard>
+@code {
+
+}

@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/WebAll"
 @inherits WebAllBase
 @using AppV7.Shared
 
@@ -16,18 +16,9 @@
 <RadzenCard>
     <RadzenTabs @bind-SelectedIndex=@selectedIndex>
         <Tabs>
-        @foreach(var comp in WsMenu)
-        {   
-                <RadzenTabsItem Text=@comp.Titulo >      
-                              <DynamicComponent 
-                                  Type=@Type.GetType(
-                                  $"AppV7.Client.Pages.Usuarios.Web.{@comp.Web}") 
-                                  Parameters=Parametros />
-                    </RadzenTabsItem>
             
-        }   
         <RadzenTabsItem Text="fijo"  >
-           <ContactanosWeb />
+           
         </RadzenTabsItem>
         </Tabs>
 

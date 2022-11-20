@@ -8,15 +8,15 @@ namespace AppV7.Client.Pages.Usuarios.MyInfo
 {
     public class MyEquipoBase : ComponentBase 
     {
-        public bool Permiso { get; set; } = false;
+        public bool Permiso { get; set; } = true;
         public bool Editando { get; set; } = false;
         [Parameter]
         public Z110_Usuarios ElUsuario { get; set; } = new();
         [Inject]
-        public I110UsuariosServ UserIServ { get; set; }
+        public I110UsuariosServ UserIServ { get; set; } = default!;
         public IEnumerable<Z110_Usuarios> ElTeam { get; set; } = new List<Z110_Usuarios>();
         [Inject]
-        public I100OrgServ OrgIServ { get; set; }
+        public I100OrgServ OrgIServ { get; set; } = default!;
         [Parameter]
         public Dictionary<string, string> DataDic { get; set; } = 
             new Dictionary<string, string>();
@@ -24,8 +24,8 @@ namespace AppV7.Client.Pages.Usuarios.MyInfo
         public List<KeyValuePair<int, string>> LosNiveles { get; set; } =
             new List<KeyValuePair<int, string>>();
 
-        public RadzenDataGrid<Z110_Usuarios> UsersGrid { get; set; } =
-           new RadzenDataGrid<Z110_Usuarios>();
+        public RadzenDataGrid<Z110_Usuarios>? UsersGrid { get; set; } = default!;
+           //new RadzenDataGrid<Z110_Usuarios>();
 
         protected async override Task OnInitializedAsync()
         {

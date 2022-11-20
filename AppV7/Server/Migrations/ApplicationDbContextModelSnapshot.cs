@@ -326,11 +326,10 @@ namespace AppV7.Server.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<string>("Captura")
+                    b.Property<string>("Ayuda")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Catalogo")
-                        .IsRequired()
+                    b.Property<string>("Ceja")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Componente")
@@ -345,28 +344,102 @@ namespace AppV7.Server.Migrations
                     b.Property<int>("Indice")
                         .HasColumnType("int");
 
-                    b.Property<int>("Nivel")
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("Visible")
+                        .HasColumnType("tinyint(1)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WebSite");
+                });
+
+            modelBuilder.Entity("AppV7.Shared.Z810_General", b =>
+                {
+                    b.Property<string>("GeneralId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Comentario")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Estado")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Nota")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Org")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Pagina")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<bool>("Status")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("TipoValor")
+                    b.Property<string>("Subtitulo")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Titulo")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Valor")
+                    b.HasKey("GeneralId");
+
+                    b.ToTable("GeneralWeb");
+                });
+
+            modelBuilder.Entity("AppV7.Shared.Z812_Files", b =>
+                {
+                    b.Property<string>("FileId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Archivo")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Web")
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Fuente")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("Id");
+                    b.Property<string>("FuenteId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
-                    b.ToTable("WebSite");
+                    b.Property<string>("Gpo")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Org")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("FileId");
+
+                    b.ToTable("FilesWeb");
                 });
 
             modelBuilder.Entity("AppV7.Shared.Z840_Contactanos", b =>

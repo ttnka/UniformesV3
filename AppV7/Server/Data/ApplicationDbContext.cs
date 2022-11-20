@@ -25,8 +25,8 @@ namespace AppV7.Server.Data
         public DbSet<Z204_ContDet> ContDet { get; set; }
         public DbSet<Z205_DatosTipo> DatosTipo { get; set; }
         public DbSet<Z800_WebSite> WebSite { get; set; }
-        public DbSet<Z802_WebConfig> WebConfig { get; set; }
-        public DbSet<Z804_WebCaptura> WebCaptura { get; set; }
+        public DbSet<Z810_General> GeneralWeb { get; set; }
+        public DbSet<Z812_Files> FilesWeb { get; set; }
         public DbSet<Z840_Contactanos> Contactanos { get; set; }
 
 

@@ -13,7 +13,7 @@
             <div class="col-sm-9">
                         
                 <RadzenTextBox Name="Mail" @bind-Value=@ElNuevo.Mail
-                    style="display: block; width: 300px;" />
+                    style="display: block; width: 90%;" />
                 <RadzenRequiredValidator Component="Mail" Text="El Mail es obligatorio " />
                 <RadzenEmailValidator Component="Mail" Text="El Formato de Mail es Incorrecto!" />
             </div>
@@ -22,7 +22,7 @@
         <div class="form-grup row">
             <label for="pass" class="col-sm-3 col-form-label">Password </label>
             <div class="col-sm-9">
-                <RadzenPassword Name="Pass" @bind-Value=@ElNuevo.Pass Style="width: 300px;" />
+                <RadzenPassword Name="Pass" @bind-Value=@ElNuevo.Pass Style="width: 90%;" />
                 <RadzenRequiredValidator Component="Pass" Text="El Password es obligatorio!" />
             <br />
             </div>

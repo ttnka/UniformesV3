@@ -28,7 +28,6 @@ namespace AppV7.Client.Servicios.Serv
         public async Task<IEnumerable<Z100_Org>> Buscar(string clave)
         {
             var resultado = $"/api/C100Org/filtro?clave={clave}";
-
             return await _httpClient.GetFromJsonAsync<IEnumerable<Z100_Org>>(resultado);
         }
 

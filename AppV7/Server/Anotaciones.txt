@@ -11,13 +11,13 @@
 
 4) Es necesario borrar todas migration para volver a hacer la del diseño por que esta en sQL
 
-4) Scaffold    
+5) Scaffold    
     Scaffold-DbContext ""Connexion"" software conector POMONA -Tables xxx -Context "Dbcontext" -OutputDir "xx" 
-5) Nuevo usuario 
+6) Nuevo usuario 
     CREATE TRIGGER AgregarUser AFTER INSERT ON AspNetUsers FOR EACH ROW INSERT INTO 
 Users (UserId, Email, Nombre, Paterno, Nivel, OrgId, Estado, Status) VALUES (AspNetUsers.Id, AspNetUsers.Email, AspNetUsers.NormalizedEmail, "Cambiar", "1", "Invitado", "2", "1")
 
-6) Mailkit instalar
+7) Mailkit instalar
 
 ILogger
  Trace, Debug, Information, Warning, Error, Critical
@@ -42,6 +42,27 @@ ILogger
    la org Publico general y Zuverworks
 
 
+   ----------*****************************Como Arrancar el Sistema ***********************************--------------------
+   1) Correr una pagina que se llama "/arranque"
+   2)
+
+
+   ----------*************************** FALTANTES ***********************************--------------------
+   1) SISTEMA DE DESBLOQUEO DE PASSWORD
+   2) RECUPERAR PASSWORD
+
+   3) Bitacoras en cada una de las hojas
+   4) bitacora del sistema de los procesos.
+
+   5 faltan todas la notificaciones de cada accion en pantalla
+
+   6) falta la pagina de mensaje cuando debe cambiar.
+
+
+
+   ----------******************************* Apuntes ********************--------------------
+
+
 
    KeyPairValue<string, string>
 
@@ -49,3 +70,11 @@ ILogger
 
    <RadzenDropDown Name="Cat" Data=@LosComponentes @bind-Value=@datos.Padre
                         ValueProperty="Titulo" TextProperty="Titulo" AllowClear="true" Style="width: 120px;" />
+
+ dinamic componente
+ <RadzenTabsItem Text=@comp.Titulo >      
+                              <DynamicComponent 
+                                  Type=@Type.GetType(
+                                  $"AppV7.Client.Pages.Usuarios.Web.{@comp.Web}") 
+                                  Parameters=Parametros />
+                    </RadzenTabsItem>

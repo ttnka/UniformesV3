@@ -2,6 +2,7 @@
 @inherits MyEquipoBase
 @using AppV7.Shared
 
+<h2>My equipo</h2>
 
 <div class="form-grup row">        
         <div class="col-sm-9">
@@ -25,38 +26,16 @@
         </div>
     </div>
 
-@if (ElTeam != null)
+@if (ElTeam.Any())
 {
     <RadzenCard>       
     <RadzenDataGrid @ref="UsersGrid" AllowFiltering="true" AllowPaging="true" PageSize="50" 
                 AllowSorting="true" AllowColumnResize="true"
                 ExpandMode="DataGridExpandMode.Single" AllowGrouping="false"
                 EditMode="DataGridEditMode.Single" 
-                Data="@ElTeam" TItem="Z110_Usuarios" RowUpdate="@OnUpdateRow" 
+                Data="@ElTeam" TItem="Z110_Usuarios" RowUpdate="@OnUpdateRow"
                 RowCreate="@OnCreateRow" >
-                
-        <Template Context="datos1">
- 
-            <RadzenTabs>
-                <Tabs>
-                    <RadzenTabsItem Text="Detalle ">
-                        Uno 
-                    </RadzenTabsItem>
-                    <RadzenTabsItem Text="Extras">
-                        <RadzenDataList WrapItems="true" AllowPaging="true" Data="@ElTeam" 
-                            TItem="Z110_Usuarios" PageSize="10">
-                            <Template Context="datos2">
-                                <RadzenCard Style="width:100px; height:100px">
-                                    <h4 class="text-thin">Usuarios</h4>
-                                    <b>@datos2.Nombre</b>
-                                </RadzenCard>
-                            </Template>
-                        </RadzenDataList>
-                    </RadzenTabsItem>
-                </Tabs>
-            </RadzenTabs>
-        </Template>
-<!-- AQUI EMPIEZA REPORTE-->
+        
         
         <Columns>
             <RadzenDataGridColumn TItem="Z110_Usuarios" Property="Nombre" Title="Nombre" 
@@ -81,7 +60,7 @@
                     <RadzenTextBox Name="Paterno" @bind-Value="datos.Paterno" Style="width: 90%" 
                     Placeholder="Paterno" />
                     <RadzenTextBox Name="Materno" @bind-Value="datos.Materno" Style="width: 90%" 
-                    Placeholder="Paterno" /><br>
+                    Placeholder="Marteno" /><br />
                     <RadzenRequiredValidator Component="Paterno" Text="El Apellido Paterno es Obligatorio." />
                 </EditTemplate>
             </RadzenDataGridColumn>
@@ -108,7 +87,7 @@
             
             <RadzenDataGridColumn TItem="Z110_Usuarios" Context="sampleBlazorModelsSampleOrder" 
                     Filterable="false" Sortable="false" TextAlign="TextAlign.Center" 
-                    Width="250px" Title="Estado">
+                    Width="250px" Title="Estado" >
                 <Template Context="datos">
                     @if(Permiso)
                     {
@@ -132,14 +111,15 @@
                         Click="@((args) => CancelEdit(datos))" />
 
                         <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Primary" 
-                            Class="m-1" Click="@((args) => SaveRow(datos))">
-                        </RadzenButton>
+                            Class="m-1" Click="@((args) => SaveRow(datos))" />
+                       
                     
                     @if (datos.Estado != 3)
                         {
                             <br />
-                            <label>Borrar este registro? Si </label><RadzenSwitch @bind-Value=@datos.Status Name="Status" 
-                             /> <label>No!</label>
+                            <label>Borrar este registro? Si </label>
+                            <RadzenSwitch @bind-Value=@datos.Status Name="Status" /> 
+                            <label>No!</label>
                         }
                 </EditTemplate>
 
@@ -154,23 +134,18 @@ else
 }
 
 @code {
-        /*
-        void RowRender(RowRenderEventArgs<Z100_Org> args)
-            {
-            //args.Expandable = args.Data.ShipCountry == "France" || args.Data.ShipCountry == "Brazil";
-        }
+       
         void Cancel()
         {
 
     }
 
-    */
     Z110_Usuarios UserToInsert = new();
 
 
     async Task EditRow(Z110_Usuarios user)
     {
-        await UsersGrid.EditRow(user);
+        await UsersGrid!.EditRow(user);
         Editando = !Editando;
     }
     async void OnUpdateRow(Z110_Usuarios user)
@@ -187,14 +162,14 @@ else
     }
     async Task SaveRow(Z110_Usuarios user)
     {
-        await UsersGrid.UpdateRow(user);
+        await UsersGrid!.UpdateRow(user);
     }
 
     void CancelEdit(Z110_Usuarios user)
     {
         if (user == UserToInsert) UserToInsert = null!;
         Editando = !Editando; 
-        UsersGrid.CancelEditRow(user);
+        UsersGrid!.CancelEditRow(user);
     }
     
     async Task InsertRow()
@@ -204,7 +179,7 @@ else
         UserToInsert.Estado = 3;
         Editando = !Editando;
 
-        await UsersGrid.InsertRow(UserToInsert); 
+        await UsersGrid!.InsertRow(UserToInsert); 
       
     }
     
@@ -212,15 +187,15 @@ else
     {
         if (user == UserToInsert) UserToInsert = null;
         Editando = !Editando;
-        /*
+        
         Z110_Usuarios resultado = new Z110_Usuarios();
         
-        resultado = await userIServ.Adduser(user);
-
-        string texto = $"Se creo un registro {user.Rfc}";
-        texto += $"{user.Comercial} {user.RazonSocial}";
-        await Escribir(ElUsuario.UsuariosId, ElUsuario.userId, texto, false);
-        */
+        resultado = await UserIServ.AddUsuario(user);
+        
+        string texto = $"Se creo un registro {user.UsuariosId}";
+        texto += $"{user.Nombre} {user.Paterno}";
+        await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, texto, false);
+        
     }
 
     public void ShowNotification(NotificationMessage message)

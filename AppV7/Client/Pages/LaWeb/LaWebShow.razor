@@ -1,0 +1,65 @@
+﻿@page "/"
+@inherits LaWebShowBase
+@using AppV7.Shared
+
+<RadzenCard>
+<AuthorizeView>
+    <Authorized>
+        <div class="form-grup row">        
+        <div class="col-sm-6">
+            <div class="nav-item px-6">
+                
+            </div>
+        </div>
+
+            <div class="col-sm-6">
+            <div class="nav-item px-6">
+                <label>Editar No!</label><RadzenSwitch Name="EditSwitch" @bind-Value="Editar" ></RadzenSwitch> <label>Si!</label>
+            </div>
+        </div>
+    </div>
+    @if (Editar) {
+            <RadzenPanel AllowCollapse="true">
+                    <HeaderTemplate>
+                        <h4 class="m-0 d-flex align-items-center">
+                            <RadzenIcon Icon="account_box" Class="me-1" /><b>Editar Páginas</b>
+                        </h4>
+                    </HeaderTemplate>
+                    <ChildContent>
+                        <LaWebConfig />
+                    </ChildContent>
+            </RadzenPanel>
+    }
+            <RadzenTabs @bind-SelectedIndex=@SelectedIndex>
+                <Tabs>
+                    <RadzenTabsItem Text="Inicio">
+                        <InicioWeb />
+                    </RadzenTabsItem>
+                    <RadzenTabsItem Text="Varias">
+                        <News ElUsuario="ElUsuarioAll" />
+                    </RadzenTabsItem>
+                </Tabs>
+
+            </RadzenTabs>
+    </Authorized>
+    <NotAuthorized>
+            <h3>La web sin firma</h3>
+            <RadzenTabs @bind-SelectedIndex=@SelectedIndex>
+                <Tabs>
+
+                    <RadzenTabsItem Text="La Web Sin">
+
+                    </RadzenTabsItem>
+                </Tabs>
+
+            </RadzenTabs>
+    </NotAuthorized>
+</AuthorizeView>
+ </RadzenCard>
+<RadzenCard>
+    
+</RadzenCard>
+
+@code {
+    bool Editar = false;
+}

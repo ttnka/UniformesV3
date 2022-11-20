@@ -9,9 +9,9 @@ namespace AppV7.Client.Pages.Admin
     public class MyTeamAddBase : ComponentBase 
     {
         [Inject]
-        public I100OrgServ OrgIServ { get; set; }
+        public I100OrgServ OrgIServ { get; set; } = default!;
         [Inject]
-        public IAddUsuarioServ AddUserIServ { get; set; }
+        public IAddUsuarioServ AddUserIServ { get; set; } = default!;
         public EAddUsuario NewAddUsuario { get; set; } = new();
         public List<KeyValuePair<int, string>> LosNiveles { get; set; } =
             new List<KeyValuePair<int, string>>();

@@ -22,6 +22,7 @@ namespace AppV7.Server.Controllers
             try
             {
                 var resultado = await _userIFace.Buscar(clave, orgX);
+                
                 return Ok(resultado);
 
             }

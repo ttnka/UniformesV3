@@ -9,10 +9,10 @@ namespace AppV7.Client.Pages.Usuarios.MyInfo
     public class MyInfoEditBase : ComponentBase 
     {
         [Inject]
-        public I110UsuariosServ UserIServ { get; set; }
+        public I110UsuariosServ UserIServ { get; set; } = default!;
         [Parameter]
-        public Z110_Usuarios ElUsuarioPara { get; set; }
-        
+        public Z110_Usuarios ElUsuarioPara { get; set; } = default!;
+
         public Z110_Usuarios ElUsuario { get; set; } = new();
         public string LaOrg { get; set; } = "Vacia";
         public string ElNiv { get; set; } = "Vacio";
@@ -24,7 +24,7 @@ namespace AppV7.Client.Pages.Usuarios.MyInfo
         public bool Habilitar = false;
 
         [Inject]
-        NavigationManager NM { get; set; } 
+        NavigationManager NM { get; set; } = default!;
         protected override async Task OnInitializedAsync()
         {
             LeerUsuario(); 

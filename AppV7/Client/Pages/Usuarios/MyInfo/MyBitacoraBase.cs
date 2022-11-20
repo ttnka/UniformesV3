@@ -14,16 +14,14 @@ namespace AppV7.Client.Pages.Usuarios.MyInfo
         public Dictionary<string, string> DataDic { get; set; } = 
             new Dictionary<string, string>();
         [Inject]
-        public I100OrgServ OrgsIServ { get; set; }
+        public I100OrgServ OrgsIServ { get; set; } = default!;
         [Inject]
-        public I110UsuariosServ UsersIServ { get; set; }
+        public I110UsuariosServ UsersIServ { get; set; } = default!;
         [Inject]
-        public I190BitacoraServ BitaIServ { get; set; }
+        public I190BitacoraServ BitaIServ { get; set; } = default!;
         public IEnumerable<Z190_Bitacora> LasBits { get; set; } = 
             new List<Z190_Bitacora>();
         
-        public RadzenDataGrid<Z190_Bitacora> BitaGrid { get; set; } =
-           new RadzenDataGrid<Z190_Bitacora>();
         public bool ElSystema { get; set; } = false;
         protected async override Task OnInitializedAsync()
         {

@@ -72,22 +72,27 @@ namespace AppV7.Shared.Libreria
             return resultado;
         }
 
-        public static List<string> Componentes()
-        {
-            var resultado = new List<string>();
-            resultado.Add("Contactanos");
-            return resultado;
-        }
         public static List<string> WebSites()
-        {
+        {// Donde se muestra en la pagina
             var resultado = new List<string>();
+            resultado.Add("GeneralWeb");
             resultado.Add("ContactanosWeb");
             return resultado;
         }
         public static List<string> Captura()
-        {
+        { // donde se captura los datos a mostrar
             var resultado = new List<string>();
+            resultado.Add("GeneralCapt");
             resultado.Add("Vacio");
+
+            return resultado;
+        }
+
+        public static List<string> Componentes()
+        { // donde se configura que se mostrara de la pagina
+            var resultado = new List<string>();
+            resultado.Add("WebConfig");
+            resultado.Add("ContactanosConfig");
             return resultado;
         }
     }

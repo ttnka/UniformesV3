@@ -12,22 +12,22 @@ namespace AppV7.Client.Pages.Admin
         public I100OrgServ OrgIServ { get; set; }
         [Inject]
         public I110UsuariosServ UserIServ { get; set; }
-        
+
         [Parameter]
-        public Z110_Usuarios ElUsuario { get; set; }
+        public Z110_Usuarios ElUsuario { get; set; } = new();
         public IEnumerable<Z110_Usuarios> LosUsers { get; set; } = 
             new List<Z110_Usuarios>();
         public IEnumerable<Z100_Org> LasOrgs { get; set; } =
                 Enumerable.Empty<Z100_Org>();
-        public List<KeyValuePair<int, string>> LosNiveles { get; set; } =
+        public List<KeyValuePair<int, string>> LosNiveles { get; set; } = 
             new List<KeyValuePair<int, string>>();
         [Parameter]
         public Dictionary<string, string> DatosDic { get; set; } = 
             new Dictionary<string, string>();   
-        public RadzenDataGrid<Z110_Usuarios> UsersGrid { get; set; } =
-            new RadzenDataGrid<Z110_Usuarios>();
+        
         public bool Editando { get; set; } = false;
 
+        public RadzenDataGrid<Z110_Usuarios>? UsersGrid = default!;
         protected async override Task OnInitializedAsync()
         {
             await LeerUsers();

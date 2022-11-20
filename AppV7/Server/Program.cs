@@ -50,8 +50,8 @@ builder.Services.AddScoped<I202Contacto, R202Contacto>();
 builder.Services.AddScoped<I204ContDet, R204ContDet>();
 builder.Services.AddScoped<I205DatosTipo, R205DatosTipo>();
 builder.Services.AddScoped<I800WebSite, R800WebSite>();
-builder.Services.AddScoped<I802WebConfig , R802WebConfig>();
-builder.Services.AddScoped<I804WebCaptura, R804WebCaptura>();
+builder.Services.AddScoped<I810General , R810General>();
+builder.Services.AddScoped<I812Files, R812Files>();
 builder.Services.AddScoped<I840Contactanos, R840Contactanos>();
 
 builder.Services.AddControllersWithViews();

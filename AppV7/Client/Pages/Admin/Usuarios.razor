@@ -23,26 +23,11 @@
         </div>
     </div>
 
-    <RadzenDataGrid @ref="UsersGrid" AllowFiltering="true" AllowPaging="true" PageSize="55" 
-                AllowSorting="true" AllowColumnResize="true"
-                ExpandMode="DataGridExpandMode.Single" AllowGrouping="false"
-                EditMode="DataGridEditMode.Single" 
+    <RadzenDataGrid @ref="UsersGrid"  AllowFiltering="true" AllowPaging="true" PageSize="55" 
+                AllowSorting="true" AllowColumnResize="true" AllowGrouping="false"
+                 EditMode="DataGridEditMode.Single" 
                 Data="@LosUsers" TItem="Z110_Usuarios" RowUpdate="@OnUpdateRow" >
                 
-        <Template Context="datos1">
- 
-            <RadzenTabs>
-                <Tabs>
-                    <RadzenTabsItem Text="Detalle Empresas ">
-                        Uno 
-                    </RadzenTabsItem>
-                    <RadzenTabsItem Text="Extras">
-                        
-                    </RadzenTabsItem>
-                </Tabs>
-            </RadzenTabs>
-        </Template>
-<!-- AQUI EMPIEZA REPORTE-->
         
         <Columns>
             <RadzenDataGridColumn TItem="Z110_Usuarios" Property="Nombre" Title="Nombre" 
@@ -51,7 +36,7 @@
                     @datos.Nombre
                 </Template>
                 <EditTemplate Context="datos">
-                    <RadzenTextBox Name="Nombre" @bind-Value="datos.Nombre" Style="width: 90%" /> <br>
+                    <RadzenTextBox Name="Nombre" @bind-Value="@datos.Nombre" Style="width: 90%" /> <br>
                     <RadzenLengthValidator Component="Nombre" Min="1" Max="30" 
                         Text="El Nombre es Obligatorio" />
 
@@ -117,7 +102,7 @@
             </RadzenDataGridColumn>
          
 
-            <RadzenDataGridColumn TItem="Z110_Usuarios" Context="sampleBlazorModelsSampleOrder" 
+            <RadzenDataGridColumn TItem="Z110_Usuarios"  
                     Filterable="false" Sortable="false" TextAlign="TextAlign.Center" 
                     Width="250px" Title="Estado">
                 <Template Context="datos">
@@ -155,7 +140,6 @@
             </RadzenDataGridColumn>
         </Columns>
     </RadzenDataGrid>
-
 }
 else
 {
@@ -164,12 +148,13 @@ else
 </RadzenCard>
 
 @code {
+    
     Z110_Usuarios UserToInsert = new();
 
 
     async Task EditRow(Z110_Usuarios user)
     {
-        await UsersGrid.EditRow(user);
+        await UsersGrid!.EditRow(user);
         Editando = !Editando;
     }
     async void OnUpdateRow(Z110_Usuarios user)
@@ -185,15 +170,13 @@ else
     }
     async Task SaveRow(Z110_Usuarios user)
     {
-
-
-        await UsersGrid.UpdateRow(user);
+        await UsersGrid!.UpdateRow(user);
     }
     void CancelEdit(Z110_Usuarios user)
     {
         if (user == UserToInsert) UserToInsert = null!;
         Editando = !Editando; 
-        UsersGrid.CancelEditRow(user);
+        UsersGrid!.CancelEditRow(user);
     }
     /*
     async Task InsertRow()

@@ -1,0 +1,41 @@
+﻿
+@inherits FilesListBase
+@using AppV7.Shared
+@using System.Net.Http.Headers
+
+
+@if (Mostrar) 
+{
+    
+
+    <InputFile OnChange="@OIFChange" multiple />
+
+    @if(FileNames.Count > 0 ) {
+        <ul>
+            @foreach(var fn in FileNames) {
+                <li>
+                    Archivo: @fn
+                    <RadzenIcon Icon="done_all" IconStyle="IconStyle.Success" />
+                    
+                </li>
+            }
+        </ul>
+    }
+}
+else
+{
+    <div class="spinner"></div>
+}
+
+
+@code 
+{
+    
+
+    
+    
+
+    
+    
+
+}

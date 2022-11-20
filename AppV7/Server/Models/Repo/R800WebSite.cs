@@ -2,6 +2,7 @@
 using AppV7.Server.Models.IFace;
 using AppV7.Shared;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.X509Certificates;
 
 namespace AppV7.Server.Models.Repo
 {
@@ -32,12 +33,11 @@ namespace AppV7.Server.Models.Repo
                     break;
                 
                 case "Allo":
-                    //querry = querry.Where(x => x.Status);
-                    return await querry.OrderBy(e => e.Nivel).ThenBy(c=> c.Indice).ToListAsync();
-                
-                case "Raiz":
-                    querry = querry.Where(x => x.Nivel == 0);
+                    querry = querry.Where(x => x.Status);
                     break;
+                    //return await querry.OrderBy(e => e.Indice).ToListAsync();
+                
+                
                     /*
                 case "Sistema":
                     querry = orgX == "Vacio" ? querry.Where(x => x.Sistema == true) :
@@ -54,7 +54,7 @@ namespace AppV7.Server.Models.Repo
                     */
             }
 
-            return await querry.OrderBy(e => e.Indice).ThenBy(e => e.Nivel).ToListAsync();
+            return await querry.OrderBy(e => e.Indice).ToListAsync();
         }
 
         public async Task<Z800_WebSite> UpdateWebSite(Z800_WebSite webSite)
@@ -69,18 +69,14 @@ namespace AppV7.Server.Models.Repo
                     res.Status = false;
                 }
                 else
-                {
-                    res.Nivel = webSite.Nivel;
-                    res.Catalogo = webSite.Catalogo;
+                {   
                     res.Indice = webSite.Indice;
                     res.Titulo = webSite.Titulo;
-                    res.Valor = webSite.Valor;
-                    res.TipoValor = webSite.TipoValor;
+                    res.Ceja = webSite.Ceja;
+                    res.Ayuda = webSite.Ayuda;
                     res.Componente = webSite.Componente;
-                    res.Web = webSite.Web;
-                    res.Captura = webSite.Captura;
                     res.Fecha = webSite.Fecha;
-
+                    res.Visible = webSite.Visible;
                     res.Estado = webSite.Estado;
                     res.Status = webSite.Status;
                 }

@@ -5,19 +5,18 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace AppV7.Client.Pages.Usuarios.MyInfo
 {
-    
-    public class MyInfoAllBase : ComponentBase 
+
+    public class MyInfoAllBase : ComponentBase
     {
         [CascadingParameter]
-        public Task<AuthenticationState> AuthStateTask { get; set; }
+        public Task<AuthenticationState> AuthStateTask { get; set; } = default!;
         public string UserIdLogAll { get; set; } = string.Empty;
         [Inject]
         public NavigationManager NM { get; set; }
         [Inject]
-        public I110UsuariosServ UserIServ { get; set; }
+        public I110UsuariosServ UserIServ { get; set; } = default!;
         [Inject]
-        public I100OrgServ OrgIServ { get; set; }
-        
+        public I100OrgServ OrgIServ { get; set; } = default!;
         public Dictionary<string, string> DatosDicAll { get; set; } =
             new Dictionary<string, string>();
         public Z110_Usuarios ElUsuario { get; set; } = new();
