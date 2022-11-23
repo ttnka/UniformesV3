@@ -54,5 +54,23 @@ namespace AppV7.Shared
         public const bool SyStatus = true;
         public const string SyMail = "info@zuverworks.com";
         public const string SysPassword = "24680212Ih.";
+
+        // DATOS PARA UNIFORMES
+        public const string Tipos = "Entrega,Salida";
+        public const string Grupos = "Ropa,Zapatos";
+        public const string RopaTallas = "XCh,Ch,Med,Gde,XGde";
+        public const string ZapatoTallas = "Z16,Z17,Z18,Z19,Z20";
+
+        public const string MpiosTodos = "Aconchi,Agua Prieta,Alamos,Altar,Arivechi," +
+            "Arizpe,Atil,Bacadéhuachi,Bacanora,Bacerac,Bacoachi,Bácum,Banámichi," +
+            "Baviácora,Bavispe,Benjamín Hill,Caborca,Cajeme,Cananea,Carbó,La Colorada," +
+            "Cucurpe,Cumpas,Divisaderos,Empalme,Etchojoa,Fronteras,Granados,Guaymas," +
+            "Hermosillo,Huachinera,Huásabas,Huatabampo,Huépac,Imuris,Magdalena,Mazatán," +
+            "Moctezuma,Naco,Nácori Chico,Nacozari de García,Navojoa,Nogales,Ónavas,Opodepe," +
+            "Oquitoa,Pitiquito,Puerto Peñasco,Quiriego,Rayón,Rosario,Sahuaripa," +
+            "San Felipe de Jesús,San Javier,San Luis Río Colorado,San Miguel de Horcasitas," +
+            "San Pedro de la Cueva,Santa Ana,Santa Cruz,Sáric,Soyopa,Suaqui Grande," +
+            "Tepache,Trincheras,Tubutama,Ures,Villa Hidalgo,Villa Pesqueira,Yécora," +
+            "General Plutarco Elías Calles,Benito Juárez,San Ignacio Río Muerto";
     }
 }

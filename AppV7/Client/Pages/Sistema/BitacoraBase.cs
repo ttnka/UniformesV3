@@ -9,7 +9,7 @@ namespace AppV7.Client.Pages.Sistema
     public class BitacoraBase : ComponentBase 
     {
         [Inject]
-        public I190BitacoraServ BitacoraIServ { get; set; }
+        public I190BitacoraServ BitacoraIServ { get; set; } = default!;
         public IEnumerable<Z190_Bitacora> LasBitacoras { get; set; } =
                     Enumerable.Empty<Z190_Bitacora>();
         public RadzenDataGrid<Z190_Bitacora>? BitacoraGrid { get; set; } = default!;
@@ -18,7 +18,7 @@ namespace AppV7.Client.Pages.Sistema
         public Dictionary<string, string> NombresDic { get; set; } = new();
 
         [Inject]
-        public I100OrgServ OrgIServ { get; set; }
+        public I100OrgServ OrgIServ { get; set; } = default!;
         public IEnumerable<Z100_Org> LasOrgs { get; set; } = 
             Enumerable.Empty<Z100_Org>();
         public Z100_Org LasOrgX { get; set; } = new();
@@ -36,7 +36,7 @@ namespace AppV7.Client.Pages.Sistema
             await LeerOrganizaciones(2);
             
             await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId,
-                            "Consulta de las Organizaciones", false);
+                            "Consulta de la bitacora", false);
             
             
         }
@@ -107,7 +107,7 @@ namespace AppV7.Client.Pages.Sistema
             await BitacoraIServ.AddBitacora(bita);
         }
         [Inject]
-        public I110UsuariosServ UsuariosIServ { get; set; }
+        public I110UsuariosServ UsuariosIServ { get; set; } = default!;
         public Z110_Usuarios ElUsuario { get; set; } = new();
         protected async Task PoblarUsuario(string mail)
         {  // da un userLogiado va a cambiar esto

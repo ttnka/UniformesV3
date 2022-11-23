@@ -11,7 +11,7 @@ namespace AppV7.Client.Pages.Admin
     public class OrganizacionesBase : ComponentBase 
     {
         [Inject]
-        public I100OrgServ OrgIServ { get; set; } 
+        public I100OrgServ OrgIServ { get; set; } = default!;
         public IEnumerable<Z100_Org> LasOrgs { get; set; } = 
             Enumerable.Empty<Z100_Org>();
         
@@ -45,7 +45,7 @@ namespace AppV7.Client.Pages.Admin
             isLoading = false;
         }
         [CascadingParameter]
-        public Task<AuthenticationState> AuthStateTask { get; set; }
+        public Task<AuthenticationState> AuthStateTask { get; set; } = default!;
         public string UserIdLogAll { get; set; } = string.Empty;
 
         [Inject]

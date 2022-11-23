@@ -37,6 +37,16 @@ builder.Services.AddHttpClient <I204ContDetServ, S204ContDetServ> (client =>
 { client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); });
 builder.Services.AddHttpClient <I205DatosTipoServ, S205DatosTipoServ> (client =>
 { client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); });
+
+builder.Services.AddHttpClient<I210AlmacenServ, S210AlmacenServ>(client =>
+{ client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); });
+builder.Services.AddHttpClient <I220ProductoServ, S220ProductoServ> (client =>
+{ client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); });
+builder.Services.AddHttpClient <I230SolicitudServ, S230SolicitudServ> (client =>
+{ client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); });
+builder.Services.AddHttpClient <I232DetSolServ, S232DetSolServ> (client =>
+{ client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); });
+
 builder.Services.AddHttpClient <I800WebSiteServ, S800WebSiteServ> (client =>
 { client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); });
 builder.Services.AddHttpClient<I810GeneralServ , S810GeneralServ>(client =>

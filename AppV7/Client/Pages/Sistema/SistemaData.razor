@@ -11,7 +11,7 @@
     <RadzenTabs  @bind-SelectedIndex=@selectedIndex>
             <Tabs>
                 <RadzenTabsItem Text="Usuarios">
-                    @if (ElUsuarioAll.Nivel > UserNivel.Director)
+                    @if (ElUsuarioAll.Nivel > UserNivel.CANACO_Admin)
                         {
                             <RadzenAccordion>
                                 <Items>

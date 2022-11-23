@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppV7.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221104223759_Donas")]
+    [Migration("20221121050316_Donas")]
     partial class Donas
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

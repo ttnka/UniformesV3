@@ -1,15 +1,13 @@
-﻿@page "/organizaciones"
-@inherits OrganizacionesBase
+﻿@page "/almacenes"
+@inherits AlmacenBase
 @inject NotificationService NS
 @using AppV7.Shared
-
-
  
     <div class="form-grup row">        
         <div class="col-sm-9">
             <div class="nav-item px-3">
                 <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" 
-                Text="Nueva Organizacion" 
+                Text="Nuevo Almacen" 
                 Click="@InsertRow" Disabled="@Editando"/>
                 <RadzenButton Icon="refresh" style="margin-bottom: 10px" ButtonStyle="ButtonStyle.Info"                 
                 Click="@LeerDatos" Disabled="@Editando"/>
@@ -24,10 +22,10 @@
         </div>
     </div>
 
-@if (LasOrgs.Any())
+@if (LosAlmacenes != null)
 {
     <RadzenCard>       
-        <RadzenDataGrid @ref="OrgGrid" Data="@LasOrgs" TItem="Z100_Org" 
+        <RadzenDataGrid @ref="AlmGrid" Data="@LosAlmacenes" TItem="Z210_Almacen" 
             AllowFiltering="true" AllowPaging="true" PageSize="50"
                     AllowSorting="true" AllowColumnResize="true"
                 ExpandMode="DataGridExpandMode.Single" AllowGrouping="false"
@@ -43,12 +41,12 @@
                         Uno 
                     </RadzenTabsItem>
                     <RadzenTabsItem Text="Extras">
-                        <RadzenDataList WrapItems="true" AllowPaging="true" Data="@LasOrgs" 
-                            TItem="Z100_Org" PageSize="10">
+                        <RadzenDataList WrapItems="true" AllowPaging="true" Data="@LosAlmacenes" 
+                            TItem="Z210_Almacen" PageSize="10">
                             <Template Context="datos2">
                                 <RadzenCard Style="width:100px; height:100px">
                                     <h4 class="text-thin">Organizacion</h4>
-                                    <b>@datos2.Comercial</b>
+                                    <b>@datos2.Domicilio @datos2.Municipio</b>
                                 </RadzenCard>
                             </Template>
                         </RadzenDataList>
@@ -59,73 +57,70 @@
 <!-- AQUI EMPIEZA REPORTE-->
         
         <Columns>
-            <RadzenDataGridColumn TItem="Z100_Org" Property="Rfc" Title="RFC" Filterable="true"  
-                Width="150px">
+            <RadzenDataGridColumn TItem="Z210_Almacen" Property="Corto" Title="Corto" 
+                Filterable="true" Width="150px">
                 <Template Context="datos">
-                    @datos.Rfc
+                    @datos.Corto
                 </Template>
                 <EditTemplate Context="datos">
-                    <RadzenTextBox Name="Rfc" @bind-Value="datos.Rfc" Style="width: 90%" /> <br>
+                    <RadzenTextBox Name="Corto" @bind-Value="datos.Corto" Style="width: 90%" /> <br>
                     
-                    <RadzenLengthValidator Component="Rfc" Min="12" Max="13" 
-                        Text="El RFC de P Morales es de 12 digitos y 13 de P Fisicas" />
+                    <RadzenLengthValidator Component="Corto" Min="1" Max="15" 
+                        Text="El Nombre Corto es Requerido!" />
 
                 </EditTemplate>
             </RadzenDataGridColumn>
         
-            <RadzenDataGridColumn TItem="Z100_Org" Property="Comercial" Title="Comercial" 
-                Filterable="true"  Width="170px">
+            <RadzenDataGridColumn TItem="Z210_Almacen" Property="Nombre" Title="Nombre" 
+                Filterable="true"  Width="200px">
                 <Template Context="datos">
-                    @datos.Comercial
+                    @datos.Nombre
                 </Template>
                 <EditTemplate Context="datos">
-                    <RadzenTextBox Name="Comercial" @bind-Value="datos.Comercial" Style="width: 90%" /><br>
-                    <RadzenRequiredValidator Component="Comercial" Text="El Nombre Comercial es Obligatorio." />
+                    <RadzenTextBox Name="Nombre" @bind-Value="datos.Nombre" Style="width: 90%" /><br>
+                    <RadzenRequiredValidator Component="Nombre" Text="El Nombre es Requerido." />
                 </EditTemplate>
             </RadzenDataGridColumn>
         
-            <RadzenDataGridColumn TItem="Z100_Org" Property="Moral" Title="Tipo" 
-                Filterable="true" Resizable="true" >
+            <RadzenDataGridColumn TItem="Z210_Almacen" Property="Desc" Title="Descripcion" 
+                Filterable="true"  Width="270px">
                 <Template Context="datos">
-                @if (datos.Moral)
-                {
-                    <label>P. Moral</label>
-                } else
-                {
-                    <label>P. Fisica</label>
-                }
+                    @datos.Desc
                 </Template>
-                
+                <EditTemplate Context="datos">
+                    <RadzenTextArea Name="Desc" @bind-Value="datos.Desc" Style="width: 90%" /><br>
+                    
+                </EditTemplate>
+            </RadzenDataGridColumn>
+
+            <RadzenDataGridColumn TItem="Z210_Almacen" Property="Domicilio" Title="Domicilio" 
+                Filterable="true"  Width="270px">
+                <Template Context="datos">
+                    @datos.Domicilio
+                </Template>
+                <EditTemplate Context="datos">
+                    <RadzenTextArea Name="Domicilio" @bind-Value="datos.Domicilio" Style="width: 90%" /><br>
+                    
+                </EditTemplate>
             </RadzenDataGridColumn>
             
-            <RadzenDataGridColumn TItem="Z100_Org" Property="RazonSocial" Title="Razon Social" 
-                Filterable="true" Resizable="true" Width="400px" >
+            <RadzenDataGridColumn TItem="Z210_Almacen" Property="Municipio" Title="Municipio" 
+                Filterable="true" Width="200px">
                 <Template Context="datos">
-                    @datos.RazonSocial@datos.Nombre @datos.Paterno @datos.Materno
+                    @datos.Municipio
                 </Template>
                 <EditTemplate Context="datos">
-                    @if(datos.Rfc != null && datos.Rfc.Length == 12)
-                    {
-                        <RadzenTextBox Name="RazonSocial" @bind-Value="datos.RazonSocial" 
-                        Placeholder="Nombre de la Empresa" Style="width: 80%" />
-                    }
-                    else
-                    {   
-                        <RadzenTextBox Name="Nombre" @bind-Value="datos.Nombre" 
-                            Placeholder="Nombre" Style="width: 30%"  /><br />
-                        <RadzenTextBox Name="Paterno" @bind-Value="datos.Paterno" 
-                            Placeholder="Apellido Paterno" Style="width: 30%"  /><br />
-                        <RadzenTextBox Name="Materno" @bind-Value="datos.Materno" 
-                            Placeholder="Materno" Style="width: 30%"  />   
-                    }
+                        <RadzenDropDown Name="Municipio" Data=@LosMpios @bind-Value=@datos.Municipio
+                                    ValueProperty="Value" TextProperty="Value" AllowClear="true" 
+                                    Style="width: 90%;" />
                 </EditTemplate>
             </RadzenDataGridColumn>
 
-            <RadzenDataGridColumn TItem="Z100_Org" Context="sampleBlazorModelsSampleOrder" 
+            <RadzenDataGridColumn TItem="Z210_Almacen" Context="sampleBlazorModelsSampleOrder" 
                     Filterable="false" Sortable="false" TextAlign="TextAlign.Center" 
                     Width="250px" Title="Estado">
                 <Template Context="datos">
-                    @if (datos.Rfc == Constantes.PgRfc || datos.Rfc == Constantes.SyRfc)
+                    @if (datos.Corto == "CANACO_HMO")
                         {
                             <label> </label>
                         }
@@ -143,10 +138,7 @@
                     {
                         <b>Suspendido</b>
                     }
-                    @if (datos.WebAdmin)
-                    {
-                        <label>Web</label>
-                    }
+                    
                     </Template>
 
                 <EditTemplate Context="datos">
@@ -158,17 +150,11 @@
                         <label>No!</label>
                         <br />
                     }
-                    @if(ElUsuario.Nivel == 7 && (datos.WebAdmin || !HayWebMaster))
-                    {
-                        <label>Web Master NO</label>
-                        <RadzenSwitch @bind-Value=datos.WebAdmin />
-                        <label>SI!</label>
-                        <br />
-                    }
+                    
 
-                    @if (datos.Rfc != null && @OrgDic.ContainsKey(datos.Rfc) && datos.Estado == 3)
+                    @if (datos.Corto != null && @AlmDic.ContainsKey(datos.Corto) && datos.Estado == 3)
                     {
-                        <label>El RFC ya esta registrado!</label>
+                        <label>El Almacen ya esta registrado!</label>
                         <br />
                     } 
                     else
@@ -194,68 +180,63 @@ else
 
 @code {
 
-    Z100_Org OrgToInsert = new();
+    Z210_Almacen AlmToInsert = new();
 
-    async Task EditRow(Z100_Org org)
+    async Task EditRow(Z210_Almacen alm)
     {
-        await OrgGrid!.EditRow(org);
+        await AlmGrid!.EditRow(alm);
         Editando = !Editando;
     }
-    async void OnUpdateRow(Z100_Org org)
+    async void OnUpdateRow(Z210_Almacen alm)
     {
-        if (org == OrgToInsert) OrgToInsert = null!;
-        org.Rfc = org.Rfc.ToUpper();
+        if (alm == AlmToInsert) AlmToInsert = null!;
+        alm.Corto = alm.Corto.ToUpper();
         Editando = !Editando;
-        await OrgIServ.UpDateOrg(org);
+        await AlmIServ.UpDateAlmacen(alm);
 
-        string texto = $"Se actualizo un registro {org.Rfc}";
-        texto += $"{org.Comercial} {org.RazonSocial}";
+        string texto = $"Se actualizo un registro {alm.Corto}";
+        texto += $"{alm.Nombre} {alm.Desc} {alm.Domicilio} {alm.Municipio}";
         await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, texto, false);
 
     }
-    async Task SaveRow(Z100_Org org)
+    async Task SaveRow(Z210_Almacen alm)
     {
-        if (string.IsNullOrEmpty(org.Rfc) && string.IsNullOrEmpty(org.Comercial) &&
-            (string.IsNullOrEmpty(org.RazonSocial) || string.IsNullOrEmpty(org.Nombre)))
-        {
-            CancelEdit(org);
-        }
-        org.Moral = org.Rfc.Length == 13 ? false : true;
-        org.Rfc = org.Rfc.ToUpper();
+        alm.Corto = alm.Corto.ToUpper();
 
-        await OrgGrid!.UpdateRow(org);
+        await AlmGrid!.UpdateRow(alm);
     }
-    void CancelEdit(Z100_Org org)
+    void CancelEdit(Z210_Almacen alm)
     {
-        if (org == OrgToInsert) OrgToInsert = null!;
+        if (alm == AlmToInsert) AlmToInsert = null!;
         Editando = !Editando; 
-        OrgGrid!.CancelEditRow(org);
+        AlmGrid!.CancelEditRow(alm);
     }
     async Task InsertRow()
     {
-        OrgToInsert = new Z100_Org();
-        OrgToInsert.OrgId = Guid.NewGuid().ToString();
-        OrgToInsert.Estado = 3;
+        AlmToInsert = new Z210_Almacen();
+        AlmToInsert.AlmacenId = Guid.NewGuid().ToString();
+        AlmToInsert.Estado = 3;
+        AlmToInsert.Municipio = "Hermosillo";
         Editando = !Editando;
 
-        await OrgGrid!.InsertRow(OrgToInsert); 
+        await AlmGrid!.InsertRow(AlmToInsert); 
 
     }
-    async void OnCreateRow(Z100_Org org)
+    async void OnCreateRow(Z210_Almacen alm)
     {
-        if (org == OrgToInsert) OrgToInsert = null;
+        if (alm == AlmToInsert) AlmToInsert = null;
 
-        org.Estado = 1;
+        alm.Estado = 1;
 
-        org.Rfc = org.Rfc.ToUpper();
+        alm.Corto = alm.Corto.ToUpper();
         Editando = !Editando;
 
-        Z100_Org resultado = new Z100_Org();
-        resultado = await OrgIServ.AddOrg(org);
+        Z210_Almacen resultado = new Z210_Almacen();
+        resultado = await AlmIServ.AddAlmacen(alm);
         await LeerDatos();
 
-        string texto = $"Se creo un registro {org.Rfc}";
-            texto += $"{org.Comercial} {org.RazonSocial} desde sistema";
+        string texto = $"Se creo un registro {alm.Corto}";
+        texto += $"{alm.Nombre} {alm.Desc} {alm.Domicilio} {alm.Municipio}";
             await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, texto, false);
     }
 
@@ -266,10 +247,7 @@ else
 
     async Task LoadData()
     {
-        LasOrgs = await OrgIServ.Buscar("All");
+        LosAlmacenes = await AlmIServ.Buscar("Alla");
     }
 
 }
-
-
-

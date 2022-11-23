@@ -3,6 +3,7 @@ using Radzen.Blazor;
 using AppV7.Shared;
 using AppV7.Client.Servicios.IFaceServ;
 using AppV7.Shared.Libreria;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace AppV7.Client.Pages.Sistema
 {
@@ -12,13 +13,9 @@ namespace AppV7.Client.Pages.Sistema
         public I100OrgServ OrgIServ { get; set; } = default!;
         [Inject]
         public IAddUsuarioServ AddUserIServ { get; set; } = default!;
-
-        public EAddUsuario NewAddUsuario { get; set; } = new()
-        {
-            Mail = "",
-            Pass = "",
-            Nivel = 1
-        };
+        [Inject]
+        public I110UsuariosServ UserIServ { get; set; } = default!;
+        public EAddUsuario NewAddUsuario { get; set; } = new();
         public List<KeyValuePair<int, string>> LosNiveles { get; set; } =
             new List<KeyValuePair<int, string>>();
         public RadzenTemplateForm<EAddUsuario>? AddUsuarioForm { get; set; } = new();
@@ -27,63 +24,39 @@ namespace AppV7.Client.Pages.Sistema
         
         protected override async Task OnInitializedAsync()
         {
-            //NewAddUsuario.OrgId = Constantes.PgRfc; // ERRO orgId no es RFC
-            await PoblarUsuario($"{Constantes.SyMail}");
-            
-            NewAddUsuario.OrgId = await AsignaOrgId(Constantes.PgRfc);
-            
+            var autState = await AuthStateTask;
+            var user = autState.User;
+            if (!user.Identity.IsAuthenticated) NM.NavigateTo("/");
+            var uIdTp = user.FindFirst(c => c.Type == "sub")?.Value;
+            ElUsuario = (await UserIServ.Buscar(
+                $"UserId_-_UserId_-_{uIdTp}", "vacio")).FirstOrDefault();
+            if (ElUsuario == null) NM.NavigateTo("/");
+
             LeerNiveles();
             await LeerOrganizaciones();
             
-            
-            //string texto = $"Se actualizo un registro {org.Rfc}";
-            //texto += $"{org.Comercial} {org.RazonSocial}";
             await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, "Consulto Crear nuevo usuario", false);
             Console.WriteLine($"mail {NewAddUsuario.Mail} pass {NewAddUsuario.Pass}");
         }
-        protected async Task<string> AsignaOrgId(string rfc)
-        {
-            var resultado = await OrgIServ.Buscar($"Rfc_-_Rfc_-_{rfc}");
-
-            return resultado.FirstOrDefault().OrgId;
-        }
-
         protected void LeerNiveles() 
         { 
             string[] NomNiveles =  UserNivel.Titulos.Split(",");
             
-            switch (NewAddUsuario.Nivel)
-            {
-                case 1:
-                    LosNiveles.Add(new KeyValuePair<int, string>(1, NomNiveles[0].ToString()));
-                    break;
-                default:
-                        for (int i = 1; i < NomNiveles.Length-1; i++)
-                        { 
-                            LosNiveles.Add(new KeyValuePair<int, string>(i, NomNiveles[i]));
-                        }
-                    break;
+            for (int i = 1; i < NomNiveles.Length-1; i++)
+            {   
+                if (i == ElUsuario.Nivel) break;
+                LosNiveles.Add(new KeyValuePair<int, string>(i, NomNiveles[i]));
             }
         }
         protected async Task LeerOrganizaciones()
         {
-            string LaClave = $"Rfc_-_Rfc_-_{Constantes.PgRfc}";
-            switch (NewAddUsuario.Nivel)
-            {
-                case 5:
-                    LaClave = "Activos";  
-                    break;
-                case int n when(n >= 2):
-                    LaClave = $"Rfc_-_Rfc_-_{Constantes.PgRfc}"; // aqui va la empresa del usuario
-                    break;    
-            }
-            LasOrgs = await OrgIServ.Buscar(LaClave);
-            
+             LasOrgs = await OrgIServ.Buscar("Allo");
         }
         public async Task SaveNewUsuario() 
         {
+            IsRegistro = false;
             await AddUserIServ.AddUsuario(NewAddUsuario);
-            NM.NavigateTo("/");    
+            NM.NavigateTo("/usuarios");    
         }
         [Inject]
         NavigationManager NM { get; set; } = default!;
@@ -97,17 +70,12 @@ namespace AppV7.Client.Pages.Sistema
             bita = MyFunc.WriteBitacora(usuarioId, ordId, desc, sistema);
             await BitacoraIServ.AddBitacora(bita);
         }
+        [CascadingParameter]
+        public Task<AuthenticationState> AuthStateTask { get; set; } = default!;
         [Inject]
         public I110UsuariosServ UsuariosIServ { get; set; } = default!;
         public Z110_Usuarios ElUsuario { get; set; } = new();
-        protected async Task PoblarUsuario(string mail)
-        {
-            var resultado = await UsuariosIServ.Buscar($"OldEmail_-_OldEmail_-_{mail}",
-                "vacio");
-            ElUsuario = resultado.FirstOrDefault() ?? new();
-        }
-
-        public bool Mayuscula { get; set; } = false;
+                public bool Mayuscula { get; set; } = false;
         protected string MayArray = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         public bool Minuscula { get; set; } = false;
         protected string MinArray = "abcdefghijklmnopqrstuvwxyz";
@@ -153,4 +121,22 @@ namespace AppV7.Client.Pages.Sistema
             
         }
     }
+
 }
+
+/*
+        protected async Task PoblarUsuario(string mail)
+        {
+            var resultado = await UsuariosIServ.Buscar($"OldEmail_-_OldEmail_-_{mail}",
+                "vacio");
+            ElUsuario = resultado.FirstOrDefault() ?? new();
+        }
+        
+        protected async Task<string> AsignaOrgId(string rfc)
+        {
+            var resultado = await OrgIServ.Buscar($"Rfc_-_Rfc_-_{rfc}");
+
+            return resultado.FirstOrDefault().OrgId;
+        }
+
+ */

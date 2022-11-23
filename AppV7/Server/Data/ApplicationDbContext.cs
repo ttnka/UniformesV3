@@ -24,6 +24,10 @@ namespace AppV7.Server.Data
         public DbSet<Z202_Contacto> Contactos { get; set; }
         public DbSet<Z204_ContDet> ContDet { get; set; }
         public DbSet<Z205_DatosTipo> DatosTipo { get; set; }
+        public DbSet<Z210_Almacen> Almacenes { get; set; }
+        public DbSet<Z220_Producto> Productos { get; set; }
+        public DbSet<Z230_Solicitud> Solicitudes { get; set; }
+        public DbSet<Z232_DetSol> DetSolicitud { get; set; }
         public DbSet<Z800_WebSite> WebSite { get; set; }
         public DbSet<Z810_General> GeneralWeb { get; set; }
         public DbSet<Z812_Files> FilesWeb { get; set; }

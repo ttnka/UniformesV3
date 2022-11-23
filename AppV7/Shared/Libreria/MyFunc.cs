@@ -63,8 +63,8 @@ namespace AppV7.Shared.Libreria
             switch (formato)
             {
                 case "DD/MMM/AA":
-                    resultado = $"{lafecha.Day} / ";
-                    resultado += $"{MesTitulo(lafecha.Month, 0)} /";
+                    resultado = $"{lafecha.Day}/";
+                    resultado += $"{MesTitulo(lafecha.Month, 0)}/";
                     resultado += $"{Ejercicio(lafecha)}";
                     break;
                     

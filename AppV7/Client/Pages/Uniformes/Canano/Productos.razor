@@ -1,0 +1,266 @@
+﻿@page "/productos"
+@inherits ProductosBase
+@inject NotificationService NS
+@using AppV7.Shared
+
+<div class="form-grup row">
+    <div class="col-sm-9">
+        <div class="nav-item px-3">
+            <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px"
+                          Text="Nuevo Producto"
+                          Click="@InsertRow" Disabled="@Editando" />
+            <RadzenButton Icon="refresh" style="margin-bottom: 10px" ButtonStyle="ButtonStyle.Info"
+                          Click="@LoadData" />
+        </div>
+    </div>
+
+    <div class="col-sm-3">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href=@($"/inicio")>
+                <span class="oi oi-caret-left" aria-hidden="true"></span> Regresar a Inicio
+            </NavLink>
+        </div>
+    </div>
+</div>
+
+@if (LosProductos != null)
+{
+    <RadzenCard>
+        <RadzenDataGrid @ref="ProdGrid" Data="@LosProductos" TItem="Z220_Producto"
+                    AllowFiltering="true" AllowPaging="true" PageSize="50"
+                    AllowSorting="true" AllowColumnResize="true"
+                    ExpandMode="DataGridExpandMode.Single" AllowGrouping="false"
+                    EditMode="DataGridEditMode.Single"
+                    RowUpdate="@OnUpdateRow"
+                    RowCreate="@OnCreateRow">
+
+            <Template Context="datos1">
+
+                <RadzenTabs>
+                    <Tabs>
+                        <RadzenTabsItem Text="Detalle Empresas ">
+                            Uno
+                        </RadzenTabsItem>
+                        <RadzenTabsItem Text="Extras">
+                            <RadzenDataList WrapItems="true" AllowPaging="true" Data="@LosProductos"
+                                        TItem="Z220_Producto" PageSize="10">
+                                <Template Context="datos2">
+                                    <RadzenCard Style="width:100px; height:100px">
+                                        <h4 class="text-thin">Organizacion</h4>
+                                        dos
+                                    </RadzenCard>
+                                </Template>
+                            </RadzenDataList>
+                        </RadzenTabsItem>
+                    </Tabs>
+                </RadzenTabs>
+            </Template>
+            <!-- AQUI EMPIEZA REPORTE-->
+
+            <Columns>
+                <RadzenDataGridColumn TItem="Z220_Producto" Property="Corto" Title="Corto"
+                                  Filterable="true" Width="150px">
+                    <Template Context="datos">
+                        @datos.Corto
+                    </Template>
+                    <EditTemplate Context="datos">
+                        <RadzenTextBox Name="Corto" @bind-Value="datos.Corto" Style="width: 90%" /> <br>
+
+                        <RadzenLengthValidator Component="Corto" Min="1" Max="15"
+                                           Text="El Nombre Corto es Requerido!" />
+
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+
+                <RadzenDataGridColumn TItem="Z220_Producto" Property="Nombre" Title="Nombre"
+                                  Filterable="true" Width="200px">
+                    <Template Context="datos">
+                        @datos.Nombre
+                    </Template>
+                    <EditTemplate Context="datos">
+                        <RadzenTextBox Name="Nombre" @bind-Value="datos.Nombre" Style="width: 90%" /><br>
+                        <RadzenRequiredValidator Component="Nombre" Text="El Nombre es Requerido." />
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+
+                <RadzenDataGridColumn TItem="Z220_Producto" Property="Desc" Title="Descripcion"
+                                  Filterable="true" Width="270px">
+                    <Template Context="datos">
+                        @datos.Desc
+                    </Template>
+                    <EditTemplate Context="datos">
+                        <RadzenTextArea Name="Desc" @bind-Value="datos.Desc" Style="width: 90%" /><br>
+
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+
+                <RadzenDataGridColumn TItem="Z220_Producto" Property="Grupo" Title="Grupo"
+                                  Filterable="true" Width="150px">
+                    <Template Context="datos">
+                        @datos.Grupo
+                    </Template>
+                    <EditTemplate Context="datos">
+                        <RadzenDropDown Name="Grupo" Data=@LosGpos @bind-Value=@datos.Grupo
+                                    ValueProperty="Value" TextProperty="Value" AllowClear="true"
+                                    Style="width: 90%;" />
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+
+                <RadzenDataGridColumn TItem="Z220_Producto" Property="Talla" Title="Tallas"
+                                  Filterable="true" Width="150px">
+                    <Template Context="datos">
+                        @datos.Talla
+                    </Template>
+                    <EditTemplate Context="datos">
+                        @if(datos.Grupo == "Ropa") {
+                            <RadzenDropDown Name="Talla" Data=@LaRopaTallas @bind-Value=@datos.Talla
+                                ValueProperty="Value" TextProperty="Value" AllowClear="true"
+                                Style="width: 90%;" />
+                        } else {
+                            <RadzenDropDown Name="Talla" Data=@LosZapTallas @bind-Value=@datos.Talla
+                                ValueProperty="Value" TextProperty="Value" AllowClear="true"
+                                Style="width: 90%;" />
+                        }
+                        
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+
+                <RadzenDataGridColumn TItem="Z220_Producto" Context="sampleBlazorModelsSampleOrder"
+                                  Filterable="false" Sortable="false" TextAlign="TextAlign.Center"
+                                  Width="250px" Title="Estado">
+                    <Template Context="datos">
+                        @if (datos.Corto == "CANACO_HMO")
+                        {
+                            <label> </label>
+                        }
+                        else
+                        {
+                            <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Secondary"
+                                  Class="m-1" Click="@((args) => EditRow(datos))" Visible="@(!Editando)">
+                            </RadzenButton>
+                        }
+                        @if (datos.Status == true)
+                        {
+                            <b>Activo</b>
+                        }
+                        else
+                        {
+                            <b>Suspendido</b>
+                        }
+
+                    </Template>
+
+                    <EditTemplate Context="datos">
+
+                        @if (datos.Estado != 3)
+                        {
+                            <label>Borrar este registro? Si </label>
+                            <RadzenSwitch @bind-Value=@datos.Status Name="Status" />
+                            <label>No!</label>
+                            <br />
+                        }
+
+
+                        @if (datos.Corto != null && @ProdDic.ContainsKey(datos.Corto) 
+                        && datos.Estado == 3)
+                        {
+                            <label>El Producto ya esta registrado!</label>
+                            <br />
+                        }
+                        else
+                        {
+                            <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Primary"
+                                  Class="m-1" Click="@((args) => SaveRow(datos))">
+                            </RadzenButton>
+                        }
+                        <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Class="m-1"
+                                  Click="@((args) => CancelEdit(datos))" />
+
+                    </EditTemplate>
+
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    </RadzenCard>
+}
+else
+{
+    <div class="spinner"></div>
+}
+
+@code {
+
+    Z220_Producto ProdToInsert = new();
+
+    async Task EditRow(Z220_Producto prod)
+    {
+        await ProdGrid!.EditRow(prod);
+        Editando = !Editando;
+    }
+    async void OnUpdateRow(Z220_Producto prod)
+    {
+        if (prod == ProdToInsert) ProdToInsert = null!;
+        prod.Corto = prod.Corto.ToUpper();
+        Editando = !Editando;
+        await ProductoIServ.UpDateProducto(prod);
+
+        string texto = $"Se actualizo un registro {prod.Corto}";
+        texto += $"{prod.Nombre} {prod.Desc} {prod.Grupo} {prod.Talla}";
+        await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, texto, false);
+
+    }
+    async Task SaveRow(Z220_Producto prod)
+    {
+        prod.Corto = prod.Corto.ToUpper();
+
+        await ProdGrid!.UpdateRow(prod);
+    }
+    void CancelEdit(Z220_Producto prod)
+    {
+        if (prod == ProdToInsert) ProdToInsert = null!;
+        Editando = !Editando;
+        ProdGrid!.CancelEditRow(prod);
+    }
+    async Task InsertRow()
+    {
+        ProdToInsert = new Z220_Producto();
+        ProdToInsert.ProductoId = Guid.NewGuid().ToString();
+        ProdToInsert.Estado = 3;
+
+        Editando = !Editando;
+
+        await ProdGrid!.InsertRow(ProdToInsert);
+
+    }
+    async void OnCreateRow(Z220_Producto prod)
+    {
+        if (prod == ProdToInsert) ProdToInsert = null;
+
+        prod.Estado = 1;
+
+        prod.Corto = prod.Corto.ToUpper();
+        
+
+        Z220_Producto resultado = new Z220_Producto();
+        resultado = await ProductoIServ.AddProducto(prod);
+        
+
+        string texto = $"Se creo un registro {prod.Corto}";
+        texto += $"{prod.Nombre} {prod.Desc} {prod.Grupo} {prod.Talla}";
+        await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, texto, false);
+        
+        await LoadData();
+    }
+
+    public void ShowNotification(NotificationMessage message)
+    {
+        NS.Notify(message);
+    }
+
+    async Task LoadData()
+    {
+        LosProductos = await ProductoIServ.Buscar("Alla");
+        Editando = false;
+    }
+
+}

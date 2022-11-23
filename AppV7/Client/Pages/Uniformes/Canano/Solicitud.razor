@@ -1,0 +1,238 @@
+﻿@page "/solicitudes"
+@inherits SolicitudBase
+@inject NotificationService NS
+@using AppV7.Shared
+@using AppV7.Shared.Libreria
+
+    <div class="form-grup row">        
+        <div class="col-sm-9">
+            <div class="nav-item px-3">
+                <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" 
+                Text="Nueva solicitud" 
+                Click="@InsertRow" Disabled="@Editando"/>
+                <RadzenButton Icon="refresh" style="margin-bottom: 10px" ButtonStyle="ButtonStyle.Info"                 
+                Click="@LoadData" />
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href=@($"/inicio")>
+                <span class="oi oi-caret-left" aria-hidden="true"></span> Regresar a Inicio</NavLink>
+            </div>
+        </div>
+    </div>
+
+@if (LasSolicitudes != null)
+{
+        <RadzenCard>       
+            <RadzenDataGrid @ref="SolGrid" Data="@LasSolicitudes" TItem="Z230_Solicitud" 
+            AllowFiltering="true" AllowPaging="true" PageSize="50"
+                    AllowSorting="true" AllowColumnResize="true"
+                ExpandMode="DataGridExpandMode.Single" AllowGrouping="false"
+                EditMode="DataGridEditMode.Single" 
+                 RowUpdate="@OnUpdateRow" 
+                RowCreate="@OnCreateRow"  >
+
+            <Template Context="datos1">
+                <DetSol ElFolioDet="@datos1.Folio" ElUsuarioDet="@ElUsuario"  />
+                
+            </Template>
+    <!-- AQUI EMPIEZA REPORTE-->
+
+            <Columns>
+                <RadzenDataGridColumn TItem="Z230_Solicitud" Property="Fecha" Title="Fecha" 
+                Filterable="true" Width="90px">
+                    <Template Context="datos">
+                        <label>@($"{@MyFunc.FormatoFecha("DD/MMM/AA", datos.Fecha)}")</label>
+                    </Template>
+                </RadzenDataGridColumn>
+
+                <RadzenDataGridColumn TItem="Z230_Solicitud" Property="Folio" Title="Folio"
+                                  Filterable="true" Width="75px">
+                    <Template Context="datos">
+                        @datos.Folio
+                    </Template>
+                </RadzenDataGridColumn>
+
+                <RadzenDataGridColumn TItem="Z230_Solicitud" Property="Almacen" Title="Almacen" 
+                Filterable="true"  Width="150px">
+                    <Template Context="datos">
+                        @datos.Almacen
+                    </Template>
+                    <EditTemplate Context="datos">
+                        <RadzenDropDown Name="Almacen" Data=@LosAlmacenes @bind-Value=@datos.Almacen
+                                    ValueProperty="Corto" TextProperty="Nombre" AllowClear="true" 
+                                    Style="width: 100%;" />
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+                
+                    <RadzenDataGridColumn TItem="Z230_Solicitud" Property="Usuario" 
+                        Title="Usuario" Filterable="true"  Width="220px">
+                    <Template Context="datos">
+                        @if(DataDic.ContainsKey($"User_{@datos.Usuario}"))
+                        {
+                            @DataDic[$"User_{datos.Usuario}"];
+                        }
+                        else
+                        {
+                            <label>No hay datos!</label>
+                        }
+                        
+                    </Template>
+                    <EditTemplate Context="datos">
+                        <RadzenDropDown Name="Usuario" Data=@LosUsers @bind-Value=@datos.Usuario
+                                    ValueProperty="Key" TextProperty="Value" 
+                                    AllowClear="true" Style="width: 100%;" />
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+                
+                <RadzenDataGridColumn TItem="Z230_Solicitud" Property="Tipo" Title="Tipo" 
+                Filterable="true"  Width="150px">
+                    <Template Context="datos">
+                        @datos.Tipo
+                    </Template>
+                    <EditTemplate Context="datos">
+                        <RadzenDropDown Name="Tipo" Data=@LosTipos @bind-Value=@datos.Tipo
+                                    ValueProperty="Value" TextProperty="Value" AllowClear="true" 
+                                    Style="width: 100%;" />
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+
+                <RadzenDataGridColumn TItem="Z230_Solicitud" Property="Desc" Title="Descripcion" 
+                Filterable="true"  Width="270px">
+                    <Template Context="datos">
+                        @datos.Desc <br>
+                        <label>Estado: @DataDic[$"Sol_Edo{datos.Estado}"] / 
+                            Articulos: @DataDic[$"Fol_Det_{datos.Folio}"]
+                        </label> 
+
+                    </Template>
+                    <EditTemplate Context="datos">
+                        <RadzenTextArea Name="Desc" @bind-Value="datos.Desc" Style="width: 100%" /><br>
+
+                    </EditTemplate>
+                </RadzenDataGridColumn>
+
+                <RadzenDataGridColumn TItem="Z230_Solicitud" Context="sampleBlazorModelsSampleOrder" 
+                    Filterable="false" Sortable="false" TextAlign="TextAlign.Center" 
+                    Width="200px" Title="Estado">
+                    <Template Context="datos">
+                        <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Secondary" 
+                            Class="m-1" Click="@((args) => EditRow(datos))" Visible="@(!Editando)" >
+                        </RadzenButton>
+                        
+                        @if (datos.Status == true)
+                        { 
+                                <b>Activo</b>
+                        }
+                        else
+                        {
+                                <b>Suspendido</b>
+                        }
+
+                    </Template>
+
+                    <EditTemplate Context="datos">
+
+                        @if (datos.Estado != 3)
+                        {
+                                <label>Borrar este registro? Si </label>
+                                <RadzenSwitch @bind-Value=@datos.Status Name="Status" /> 
+                                <label>No!</label>
+                                <br />
+                        }
+
+                        <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Primary" 
+                            Class="m-1" Click="@((args) => SaveRow(datos))">
+                        </RadzenButton>
+                        
+                        <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Class="m-1" 
+                        Click="@((args) => CancelEdit(datos))" />
+
+                        </EditTemplate>
+
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+        </RadzenCard>
+}
+else
+{
+        <div class="spinner"></div>
+}
+
+@code {
+
+    Z230_Solicitud SolToInsert = new();
+
+    async Task EditRow(Z230_Solicitud sol)
+    {
+        await SolGrid!.EditRow(sol);
+        Editando = !Editando;
+    }
+    async void OnUpdateRow(Z230_Solicitud sol)
+    {
+        if (sol == SolToInsert) SolToInsert = null!;
+
+        Editando = !Editando;
+        await SolIServ.UpDateSolicitud(sol);
+
+        string texto = $"Se actualizo un registro Folio {sol.Folio}";
+        texto += $"{sol.Fecha} {sol.Tipo} {sol.Desc} {sol.Almacen}";
+        await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, texto, false);
+
+    }
+    async Task SaveRow(Z230_Solicitud sol)
+    {
+        await SolGrid!.UpdateRow(sol);
+    }
+    void CancelEdit(Z230_Solicitud sol)
+    {
+        if (sol == SolToInsert) SolToInsert = null!;
+        Editando = !Editando;
+        SolGrid!.CancelEditRow(sol);
+    }
+    async Task InsertRow()
+    {
+        SolToInsert = new Z230_Solicitud();
+        SolToInsert.SolicitudId = Guid.NewGuid().ToString();
+        SolToInsert.Folio = await ElFolio();
+        SolToInsert.Usuario = ElUsuario.UsuariosId;
+        SolToInsert.Tipo = "Entrega";
+        SolToInsert.Estado = 3;
+
+        Editando = !Editando;
+
+        await SolGrid!.InsertRow(SolToInsert);
+
+    }
+    async void OnCreateRow(Z230_Solicitud sol)
+    {
+        if (sol == SolToInsert) SolToInsert = null;
+
+        Editando = !Editando;
+
+        Z230_Solicitud resultado = new Z230_Solicitud();
+        resultado = await SolIServ.AddSolicitud(sol);
+        await LeerDatos();
+
+        string texto = $"Se creo un registro Folio {sol.Folio}";
+        texto += $"{sol.Fecha} Almacen {sol.Almacen} Usuario {sol.Usuario} Tipo {sol.Tipo}";
+        await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, texto, false);
+    }
+
+    public void ShowNotification(NotificationMessage message)
+    {
+        NS.Notify(message);
+    }
+
+    async Task LoadData()
+    {
+        string buscar = ElUsuario.Nivel > 2 ? "Alla" :
+                            $"UserSol_-_UserSol_-_{ElUsuario.UsuariosId}";
+        LasSolicitudes = await SolIServ.Buscar(buscar);
+        Editando = false;
+    }
+
+}

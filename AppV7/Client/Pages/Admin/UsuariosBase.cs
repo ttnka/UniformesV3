@@ -9,9 +9,9 @@ namespace AppV7.Client.Pages.Admin
     public class UsuariosBase : ComponentBase 
     {
         [Inject]
-        public I100OrgServ OrgIServ { get; set; }
+        public I100OrgServ OrgIServ { get; set; } = default!;
         [Inject]
-        public I110UsuariosServ UserIServ { get; set; }
+        public I110UsuariosServ UserIServ { get; set; } = default!;
 
         [Parameter]
         public Z110_Usuarios ElUsuario { get; set; } = new();
@@ -32,7 +32,6 @@ namespace AppV7.Client.Pages.Admin
         {
             await LeerUsers();
             await LeerOrgs();
-            
         }
 
         public async Task LeerUsers()
@@ -68,7 +67,7 @@ namespace AppV7.Client.Pages.Admin
         [Inject]
         NavigationManager NM { get; set; }
         [Inject]
-        public I190BitacoraServ BitacoraIServ { get; set; }
+        public I190BitacoraServ BitacoraIServ { get; set; } = default!;
         public MyFunc MyFunc { get; set; } = new MyFunc();
         public async Task Escribir(string usuarioId, string ordId,
             string desc, bool sistema)

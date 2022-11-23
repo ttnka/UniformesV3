@@ -7,62 +7,116 @@
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">AppV7</a>
+        <a class="navbar-brand" href="">Uniformes 2022</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
     </div>
 </div>
 
-
-
-
-        <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-            <nav class="flex-column">
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                        <span class="oi oi-home" aria-hidden="true"></span> Home
-                    </NavLink>
-                </div>
-<AuthorizeView>
-    <Authorized>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/myinfo">
-                <span class="oi oi-plus" aria-hidden="true"></span> Mis Datos
-            </NavLink>
-        </div>
-      <div class="nav-item px-3">
-        <NavLink class="nav-link" href="/sistema">
-            <span class="oi oi-plus" aria-hidden="true"></span> Sistema
+    <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+        <nav class="flex-column">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> Home
+                </NavLink>
+            </div>
+            <AuthorizeView>
+                <Authorized>
+    <div class="nav-item px-3">
+        <NavLink class="nav-link" href="/inicio">
+            <span class="oi oi-plus" aria-hidden="true"></span>Inicio
         </NavLink>
-       </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/webeditor">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Sitio Web
-            </NavLink>
-        </div>
+    </div>
+    <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="" @onclick=@(()=>reducir("Sol")) >
+            <span class="oi oi-plus" aria-hidden="true"></span> Solicitudes
+        </NavLink>
+    </div>
+    @if (expandSol)
+            {
+                <ul class="nav flex-column">
 
-    </Authorized>
-    <NotAuthorized>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/registro">
-                 <span class="oi oi-list-rich" aria-hidden="true"></span> Registro
-           </NavLink>
-        </div>
-    </NotAuthorized>
-</AuthorizeView>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="/solicitudes">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Solicitudes
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Libre
+                        </NavLink>
+                    </li>
+                    
+                </ul>
+            }
 
-          
-                
-            </nav>
-        </div>
+    <div class="nav-item px-3">
+        <NavLink class="nav-link" href="" @onclick=@(()=>reducir("Config")) >
+            <span class="oi oi-list-rich" aria-hidden="true"></span> Configuracion 
+        </NavLink>
+    </div>
+            @if (expandConfig)
+            {
+                <ul class="nav flex-column">
+
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="/usuarios">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Usuarios
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="/organizaciones">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Organizaciones
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="/almacenes">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Almacenes
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="/productos">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Productos
+                        </NavLink>
+                    </li>
+                </ul>
+            }
+    <div class="nav-item px-3">
+        <NavLink class="nav-link" href="/bitacora">
+            <span class="oi oi-plus" aria-hidden="true"></span> Bitacora
+        </NavLink>
+    </div>
+
+</Authorized>
+                <NotAuthorized>
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="/inicio">
+                                <span class="oi oi-list-rich" aria-hidden="true"></span> Firma
+                        </NavLink>
+                    </div>
+                </NotAuthorized>
+            </AuthorizeView>   
+        </nav>
+    </div>
   
 
-
+        
+        
 
 
 @code {
     private bool collapseNavMenu = true;
+    private bool expandConfig;
+    private bool expandSol;
+
+    private void reducir(string nombre)
+    {
+        expandConfig = !expandConfig;
+        if (nombre != "Config") expandConfig = false;
+        expandSol = !expandSol;
+        if (nombre != "Sol") expandSol = false;
+    }
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 

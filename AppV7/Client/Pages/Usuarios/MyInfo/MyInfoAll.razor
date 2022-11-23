@@ -24,7 +24,7 @@
                 @if (ElUsuario.Nivel > 1)
                 {
                     <RadzenTabsItem Text="Mi Equipo">
-                        @if (ElUsuario.Nivel > UserNivel.Director)
+                        @if (ElUsuario.Nivel > UserNivel.CANACO_Admin)
                         {
                             <RadzenAccordion>
                                 <Items>

@@ -29,6 +29,10 @@ namespace AppV7.Server.Models.Repo
                 case "All":
                     
                     break;
+                case "Alla":
+                    querry = querry.Where(x => x.Estado == 1 && x.Status);
+                    querry = querry.OrderBy(x => x.OldEmail);
+                    break;
                 case "Allo":
                     return await querry.OrderBy(x=>x.OrgId).ToListAsync();
                     

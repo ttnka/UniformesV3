@@ -2,6 +2,7 @@
 using AppV7.Server.Models.IFace;
 using AppV7.Shared;
 using Microsoft.EntityFrameworkCore;
+using System.Security.AccessControl;
 
 namespace AppV7.Server.Models.Repo
 {
@@ -28,7 +29,7 @@ namespace AppV7.Server.Models.Repo
                 case "All":
                     querry = querry.OrderByDescending(x => x.Status).ThenBy(z => z.Comercial);
                     return await querry.ToListAsync();
-
+            
                 case "Activos":
                 case "Suspendidos":
 
@@ -36,7 +37,14 @@ namespace AppV7.Server.Models.Repo
                         querry = querry.Where(x => x.Status == AS);
                     
                     return await querry.ToListAsync();
+                
+                case "Allo":
+                    querry = querry.Where(x => x.Estado == 1 && x.Status);
+                    querry = querry.OrderBy(x => x.Comercial);
+                    return await querry.ToListAsync();
+                
             }
+                
 
             string[] parametro = clave.Split("_-_");
             Dictionary<string, string> ParamDic = new Dictionary<string, string>();
