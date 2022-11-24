@@ -1,62 +1,27 @@
-﻿@page "/detSol/{ElFolioDet}"
+﻿
 @inherits DetSolBase
 
 @inject NotificationService NS
 @using AppV7.Shared
 @using AppV7.Shared.Libreria
 
-    
 <div class="form-grup row">
-    <RadzenTemplateForm Data="NewDetalle" Submit="@((Z232_DetSol args) => { AddRenglon(args); })">
-        <div class="row">
-            <div class="col-md-4 align-items-center d-flex">
-                <RadzenLabel Text="Producto" />
-            </div>
-            <div class="col-md-8">
-                <RadzenDropDown Name="Producto" Data=@LosProductos @bind-Value=@NewDetalle.Producto
-                        ValueProperty="ProductoId" TextProperty="Corto" AllowClear="true" 
-                        Style="width: 100%;" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4 align-items-center d-flex">
-                <RadzenLabel Text="Cantidad" />
-            </div>
-            <div class="col-md-8">
-                <RadzenNumeric Name="Cantidad" @bind-Value="NewDetalle.Cantidad" Min="1"
-                            Style="width: 90%" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4 align-items-center d-flex">
-                
-            </div>
-            <div class="col-md-8">
-               <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Guardar" />
-                <RadzenButton ButtonStyle="ButtonStyle.Light" Icon="cancel" 
-                style="display: inline-block; margin-left: 10px;" Text="Cancel" Click="@Cancel" />
-           
-            </div>
-        </div>
-    </RadzenTemplateForm>
-    
-</div>
-
-    <div class="form-grup row">        
-        <div class="col-sm-9">
-            <div class="nav-item px-3">
-                
-                <RadzenButton Icon="refresh" style="margin-bottom: 10px" ButtonStyle="ButtonStyle.Info"                 
-                Click="@LoadData" />
-            </div>
-        </div>
-
-        <div class="col-sm-3">
-            <div class="nav-item px-3">
-
-            </div>
+    <div class="col-sm-9">
+        <div class="nav-item px-3">
+            <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px"
+                          Text="Nuevo producto" ButtonStyle="ButtonStyle.Secondary"
+                          Click="@InsertRow" Disabled="@Editando" />
+            <RadzenButton Icon="refresh" style="margin-bottom: 10px" ButtonStyle="ButtonStyle.Info"
+                          Click="@LoadData" Disabled="@Editando2"/>
         </div>
     </div>
+
+    <div class="col-sm-3">
+        <div class="nav-item px-3">
+            
+        </div>
+    </div>
+</div>
 
 @if (LosDets != null)
 {
@@ -70,11 +35,34 @@
                 RowCreate="@OnCreateRow"  >
 
                 <Columns>
+                    <RadzenDataGridColumn TItem="Z232_DetSol" Title="Editar" Width="50px"
+                        Filterable="false" Sortable="false">
+                        <Template Context=datos>
+                            <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Secondary" 
+                                Class="m-1" Click="@((args) => EditRow(datos))" 
+                                Visible="@(!Editando)" >
+                            </RadzenButton>
+                        </Template>
+                    </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn TItem="Z232_DetSol" Property="Cantidad" Title="Cantidad" 
+                Filterable="true" Sortable="true" Width="75px" TextAlign="TextAlign.Right">
+                        <Template Context="datos">
+                        <label style="text-align:right"> @datos.Cantidad</label>
+                        </Template>
+                        <EditTemplate Context="datos">
+                        <RadzenNumeric Name="Cantidad" @bind-Value="datos.Cantidad" Min="1"
+                            Style="width: 100%" />
+                    </EditTemplate>
+                    </RadzenDataGridColumn>
 
                     <RadzenDataGridColumn TItem="Z232_DetSol" Property="Producto" Title="Producto"
-                                  Filterable="true" Sortable="true" Width="175px">
+                                  Filterable="true" Sortable="true" Width="250px">
                         <Template Context="datos">
-                        @datos.Producto
+                        
+                        @LosProductos.FirstOrDefault(x=>x.ProductoId == datos.Producto).Nombre
+                        @LosProductos.FirstOrDefault(x=>x.ProductoId == datos.Producto).Talla
+                        @LosProductos.FirstOrDefault(x=>x.ProductoId == datos.Producto).Corto
                         </Template>
                         <EditTemplate Context="datos">
                             <RadzenDropDown Name="Producto" Data=@LosProductos @bind-Value=@datos.Producto
@@ -82,18 +70,6 @@
                                     Style="width: 100%;" />
                         </EditTemplate>
                     </RadzenDataGridColumn>
-
-                    <RadzenDataGridColumn TItem="Z232_DetSol" Property="Cantidad" Title="Cantidad" 
-                Filterable="true" Sortable="true" Width="60px">
-                        <Template Context="datos">
-                        @datos.Cantidad
-                        </Template>
-                        <EditTemplate Context="datos">
-                        <RadzenNumeric Name="Cantidad" @bind-Value="datos.Cantidad" Min="1"
-                            Style="width: 90%" />
-                    </EditTemplate>
-                    </RadzenDataGridColumn>
-
                     <RadzenDataGridColumn TItem="Z232_DetSol" Property="Desc" Title="Descripcion" 
                 Filterable="true"  Width="200px">
                         <Template Context="datos">
@@ -110,18 +86,14 @@
                     Filterable="false" Sortable="false" TextAlign="TextAlign.Center" 
                     Width="200px" Title="Estado">
                         <Template Context="datos">
-                            <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Secondary" 
-                                Class="m-1" Click="@((args) => EditRow(datos))" 
-                                Visible="@(!Editando)" >
-                            </RadzenButton>
-
+                            
                         @if (datos.Status == true)
                         { 
                                         <b>Activo</b>
                         }
                         else
                         {
-                                        <b>Suspendido</b>
+                                        <b>Borrado</b>
                         }
 
                         </Template>
@@ -130,7 +102,7 @@
 
                         @if (datos.Estado != 3)
                         {
-                                        <label>Borrar este registro? Si </label>
+                                        <label>Borrar registro? Si </label>
                                         <RadzenSwitch @bind-Value=@datos.Status Name="Status" /> 
                                         <label>No!</label>
                                         <br />
@@ -156,34 +128,6 @@ else
 }
 
 @code {
-
-    void Cancel() {
-
-    }
-    void IsEdit()
-    {
-
-    }
-
-    Z232_DetSol NewDetalle = new();
-
-    async Task AddRenglon(Z232_DetSol det) 
-    {
-        Editando = !Editando;
-        det.DetId = Guid.NewGuid().ToString();
-        det.Desc = "";
-        det.Folio = ElFolioDet;
-        
-        await DetIServ.AddDetalle(det);
-        Editando = false;
-        NewDetalle = new();
-        LosDets = await DetIServ.Buscar($"Folio_-_Folio_-_{ElFolioDet}");
-
-        string texto = $"Se creo un registro Folio {det.Folio} detalle {det.DetId} ";
-        texto += $"Producto {det.Producto}, cantidad {det.Cantidad}, desc {det.Desc}";
-        await Escribir(ElUsuarioDet.UsuariosId, ElUsuarioDet.OrgId, texto, false);
-        //await InvokeAsync(() => {StateHasChanged();});
-    }
     
     Z232_DetSol DetToInsert = new();
 
@@ -218,7 +162,7 @@ else
     {
         DetToInsert = new Z232_DetSol();
         DetToInsert.DetId = Guid.NewGuid().ToString();
-        DetToInsert.Folio = ElFolioDet;
+        DetToInsert.Folio = ElFolioDet.Folio;
         DetToInsert.Estado = 1;
 
         Editando = !Editando;
@@ -234,8 +178,10 @@ else
 
         Z232_DetSol resultado = new Z232_DetSol();
         resultado = await DetIServ.AddDetalle(dsol);
-        //await LeerDatos();
 
+        string texto = $"Se creo un registro Folio {resultado.Folio} detalle {resultado.DetId} ";
+        texto += $"Producto {resultado.Producto}, cantidad {resultado.Cantidad}, desc {resultado.Desc}";
+        await Escribir(ElUsuarioDet.UsuariosId, ElUsuarioDet.OrgId, texto, false);
         
     }
 
@@ -246,7 +192,7 @@ else
 
     async Task LoadData()
     {
-        LosDets = await DetIServ.Buscar($"Folio_-_Folio_-_{ElFolioDet}");
+        LosDets = await DetIServ.Buscar($"Folio_-_Folio_-_{ElFolioDet.Folio}");
         Editando = false;
     }
 

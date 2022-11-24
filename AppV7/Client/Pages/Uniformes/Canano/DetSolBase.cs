@@ -21,7 +21,8 @@ namespace AppV7.Client.Pages.Uniformes.Canano
         public List<string> LosGpos { get; set; } = new();
         public List<string> LaRopaTallas { get; set; } = new();
         public List<string> LosZapTallas { get; set; } = new();
-        public bool Editando { get; set; } = false;
+        public bool Editando { get; set; }  = false;
+        public bool Editando2 { get; set; } = false;
         public Dictionary<string, string> DataDetDic { get; set; } = new();
         public NavigationManager NM { get; set; } = default!;
         public RadzenDataGrid<Z232_DetSol>? DetGrid { get; set; } = default!;
@@ -30,10 +31,21 @@ namespace AppV7.Client.Pages.Uniformes.Canano
         {
             await LeerProductos();
             await LeerDatos();
+            LeerCerrados();
         }
+
+        protected void LeerCerrados()
+        {
+            if(ElFolioDet.Estado == 1 || ElFolioDet.Estado == 4)
+            {
+                Editando = true;
+                Editando2 = true;
+            }
+        }
+
         protected async Task LeerDatos()
         {
-            LosDets = await DetIServ.Buscar($"Folio_-_Folio_-_{ElFolioDet}");
+            LosDets = await DetIServ.Buscar($"Folio_-_Folio_-_{ElFolioDet.Folio}");
         }
         protected async Task LeerProductos()
         {
@@ -57,6 +69,10 @@ namespace AppV7.Client.Pages.Uniformes.Canano
                 LaRopaTallas.Add(rTallas);
             }
         }
+        public async Task ActualizarSol(string solId)
+        {
+
+        }
         
         [CascadingParameter]
         public Task<AuthenticationState> AuthStateTask { get; set; } = default!;
@@ -78,6 +94,6 @@ namespace AppV7.Client.Pages.Uniformes.Canano
         [Parameter]
         public Z110_Usuarios ElUsuarioDet { get; set; } = new();
         [Parameter]
-        public string ElFolioDet { get; set; } = default!;  
+        public Z230_Solicitud ElFolioDet { get; set; } = default!;  
     }
 }

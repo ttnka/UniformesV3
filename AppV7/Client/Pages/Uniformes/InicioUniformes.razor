@@ -1,0 +1,39 @@
+﻿@page "/"
+@page "/inicio"
+@inherits InicioUniformesBase
+@using AppV7.Shared
+
+<RadzenCard>
+<AuthorizeView>
+    <Authorized>
+        <RadzenTabs @bind-SelectedIndex=@SelectedIndex>
+                <Tabs>
+                    <RadzenTabsItem Text="Inicio">
+                        
+                    </RadzenTabsItem>
+                    <RadzenTabsItem Text="Varias">
+                        
+                    </RadzenTabsItem>
+                </Tabs>
+
+            </RadzenTabs>
+    </Authorized>
+    <NotAuthorized>
+            <h3>La web sin firma</h3>
+            <RadzenTabs @bind-SelectedIndex=@SelectedIndex>
+                <Tabs>
+                    <RadzenTabsItem Text="La Web Sin">
+
+                    </RadzenTabsItem>
+                </Tabs>
+            </RadzenTabs>
+    </NotAuthorized>
+</AuthorizeView>
+ </RadzenCard>
+<RadzenCard>
+    
+</RadzenCard>
+
+@code {
+    bool Editar = false;
+}

@@ -55,6 +55,10 @@ namespace AppV7.Shared
         public const string SyMail = "info@zuverworks.com";
         public const string SysPassword = "24680212Ih.";
 
+        // Solicitudes Estados
+
+        public const string SolEdos = "Entregado, Proceso, Cancelada";
+
         // DATOS PARA UNIFORMES
         public const string Tipos = "Entrega,Salida";
         public const string Grupos = "Ropa,Zapatos";

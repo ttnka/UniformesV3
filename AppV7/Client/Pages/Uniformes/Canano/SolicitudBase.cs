@@ -24,6 +24,8 @@ namespace AppV7.Client.Pages.Uniformes.Canano
         public List<KeyValuePair<string, string>> LosUsers { get; set; } =
             new List<KeyValuePair<string, string>>();
         public List<string> LosTipos { get; set; } = new();
+        public List<KeyValuePair<int, string>> LosEdos { get; set; } =
+            new List<KeyValuePair<int, string>>();
         public bool Editando { get; set; } = false;
         public Dictionary<string, string> DataDic { get; set; } = new();
         public NavigationManager NM { get; set; } = default!;
@@ -66,7 +68,7 @@ namespace AppV7.Client.Pages.Uniformes.Canano
             {
                 if(!DataDic.ContainsKey($"Fol_Det_{sol.Folio}")) 
                     DataDic.Add($"Fol_Det_{sol.Folio}", "0");
-                int reg = DetTemp.Count(x => x.Equals(sol.Folio) && x.Status);
+                int reg = DetTemp.Count(x => x.Folio.Equals(sol.Folio) &&  x.Status);
                 if (reg > 0) DataDic[$"Fol_Det_{sol.Folio}"] = reg.ToString();
             }
         }
@@ -92,17 +94,25 @@ namespace AppV7.Client.Pages.Uniformes.Canano
         public void LeerTipos()
         {
             string[] tiposTemp = Constantes.Tipos.Split(",");
-            foreach(var tipo in tiposTemp)
+            foreach (var tipo in tiposTemp)
             {
                 LosTipos.Add(tipo);
             }
-            if(!DataDic.ContainsKey("Sol_Edo"))
+            string[] eti = { "success", "info", "warning" };
+            var SolEdo = Constantes.SolEdos.Split(",");
+            if (!DataDic.ContainsKey("Sol_Edo"))
             {
                 DataDic.Add("Sol_Edo", "Ok");
-                DataDic.Add($"Sol_Edo{1}", "Entregado");
-                DataDic.Add($"Sol_Edo{2}", "Solicitado");
-                DataDic.Add($"Sol_Edo{3}", "Borrador");
-                DataDic.Add($"Sol_Edo{4}", "Cancelada");
+                for (var i=0; i < SolEdo.Length; i++ )
+                {
+                    DataDic.Add($"Sol_Edo_{i+1}", SolEdo[i]);
+                    DataDic.Add($"Etiqueta_{i+1}", $"etiqueta {eti[i]}");
+                }
+                
+                if (ElUsuario.Nivel > 2)
+                    LosEdos.Add(new KeyValuePair<int, string>(1, "Entregado"));
+                LosEdos.Add(new KeyValuePair<int, string>(2, "Proceso"));
+                LosEdos.Add(new KeyValuePair<int, string>(3, "Cancelada"));
             }
         }
 
