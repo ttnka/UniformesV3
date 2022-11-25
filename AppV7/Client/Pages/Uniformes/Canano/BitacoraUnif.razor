@@ -1,0 +1,51 @@
+﻿@page "/bitacora"
+@inherits BitacoraUnifBase
+@using AppV7.Shared
+@using AppV7.Shared.Libreria
+
+@if (LasBitacoras != null)
+{
+ 
+    <RadzenCard>
+
+        <RadzenDataGrid @ref="BitacoraGrid" Data="@LasBitacoras" TItem="@Z190_Bitacora" ColumnWidth="200px"
+                    AllowSorting="true" AllowFiltering="true" AllowPaging="true" PageSize="55"
+                    PagerHorizontalAlign="HorizontalAlign.Center">
+
+            <Columns>
+                <RadzenDataGridColumn TItem="@Z190_Bitacora" Filterable="false"
+                                  Title="Fecha" Frozen="true" Width="70px" TextAlign="TextAlign.Left">
+                    <Template Context=Data>
+                        <label>@($"{@MyFunc.FormatoFecha("DD/MMM/AA", Data.Fecha)}")</label>
+                        <br />
+                        <label>@($"{@MyFunc.LaHora(@Data.Fecha, "S")}")</label>
+                    </Template>
+                </RadzenDataGridColumn>
+
+                <RadzenDataGridColumn TItem="@Z190_Bitacora" Filterable="false"
+                                  Title="Usuarios" Frozen="true" Width="160px" TextAlign="TextAlign.Left">
+                    <Template Context=Data>
+                        <span>
+                            @LosUsers.FirstOrDefault(x=>x.UsuariosId == Data.UsuariosId)!.Nombre 
+                            @LosUsers.FirstOrDefault(x=>x.UsuariosId == Data.UsuariosId)!.Paterno 
+                            @LosUsers.FirstOrDefault(x=>x.UsuariosId == Data.UsuariosId)!.OldEmail
+                        </span>
+                    </Template>
+                </RadzenDataGridColumn>
+                
+                <RadzenDataGridColumn TItem="@Z190_Bitacora" Property="Desc" Filterable="true"
+                                  Title="Descripcion" Width="400px" TextAlign="TextAlign.Left" />
+            </Columns>
+        </RadzenDataGrid>
+
+    </RadzenCard>
+}
+else
+{
+    <div class="spinner">
+    </div>
+}
+--Tatanka--
+@code {
+
+}

@@ -6,66 +6,15 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Radzen.Blazor;
 using Radzen;
 
-namespace AppV7.Client.Pages.Uniformes.Canano
+namespace AppV7.Client.Pages.Uniformes
 {
-    public class ProductosBase : ComponentBase 
+    public class MisDatosBase : ComponentBase 
     {
-        [Inject]
-        public I220ProductoServ ProductoIServ { get; set; } = default!;
-        public IEnumerable<Z220_Producto> LosProductos { get; set; } = 
-            Enumerable.Empty<Z220_Producto>();
-        public List<string> LosZapTallas { get; set; } = new List<string>();
-        public List<string> LaRopaTallas { get; set; } = new List<string>();
-        public List<string> LosGpos { get; set; } = new List<string>();
-        public bool Editando { get; set; } = false;
-        public Dictionary<string, Z220_Producto> ProdDic { get; set; } = new();
-        public RadzenDataGrid<Z220_Producto>? ProdGrid { get; set; } = default!;
+        public bool Editar { get; set; } = false;
+        public RadzenTemplateForm<Z110_Usuarios>? MyInfoForm { get; set; } = new();
         protected override async Task OnInitializedAsync()
         {
-            var autState = await AuthStateTask;
-            var user = autState.User;
-            if (!user.Identity!.IsAuthenticated) NM.NavigateTo("/firma?laurl=/inicio");
-            UserIdLogAll = user.FindFirst(c => c.Type == "sub")?.Value!;
-            var UserList = await UserIServ.Buscar($"UserId_-_UserId_-_{UserIdLogAll}", "vacio");
-            ElUsuario = UserList.FirstOrDefault()!;
-            //LeerMunicipios();
-            await LeerDatos();
-            LeerGpoTallas();
-            await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId,
-                            "Consulta de lista de productos", false);
-        }
-
-        protected async Task LeerDatos()
-        {
-            LosProductos = await ProductoIServ.Buscar("Alla");
-            /*
-            if (LosProductos.Any())
-            {
-                foreach(var prod in LosProductos)
-                {
-                    if (!ProdDic.ContainsKey(prod.Corto)) ProdDic.Add(prod.Corto, prod);
-                }
-            }
-            */
-        }
-
-        protected void LeerGpoTallas()
-        {
-            string[] gpoTemp = Constantes.Grupos.Split(",");
-            foreach(var gpo in gpoTemp)
-            {
-                LosGpos.Add(gpo);
-            }
-            string[] ztallaTemp = Constantes.ZapatoTallas.Split(",");
-            foreach(var ztalla in ztallaTemp)
-            {
-                LosZapTallas.Add(ztalla);
-            }
-            string[] rTallasTemp = Constantes.RopaTallas.Split(",");
-            foreach(var rTallas in rTallasTemp)
-            {
-                LaRopaTallas.Add(rTallas);
-            }
+            await LeerUser();
         }
 
         [CascadingParameter]
@@ -105,10 +54,12 @@ namespace AppV7.Client.Pages.Uniformes.Canano
             respuesta.Duration = 4000 + duracion;
             return respuesta;
         }
+
         [Inject]
         public I110UsuariosServ UserIServ { get; set; } = default!;
         [Parameter]
         public Z110_Usuarios ElUsuario { get; set; } = new();
+
         public NavigationManager NM { get; set; } = default!;
         public async Task LeerUser()
         {
@@ -117,7 +68,7 @@ namespace AppV7.Client.Pages.Uniformes.Canano
             if (!user.Identity!.IsAuthenticated) NM.NavigateTo("/firma?laurl=/inicio");
             UserIdLogAll = user.FindFirst(c => c.Type == "sub")?.Value!;
             /*
-            LosUsers = await UserIServ.Buscar("Allo", "Vacio");
+            LosUsers = await UserIServ.Buscar("All", "Vacio");
             ElUsuario = LosUsers.FirstOrDefault(x => x.UsuariosId == UserIdLogAll)!;
             */
             
@@ -125,6 +76,5 @@ namespace AppV7.Client.Pages.Uniformes.Canano
             ElUsuario = UserList.FirstOrDefault()!;
             
         }
-
     }
 }

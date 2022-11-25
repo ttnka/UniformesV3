@@ -28,6 +28,8 @@ namespace AppV7.Client.Pages.Sistema
         public MyFunc MyFunc { get; set; } = new(); 
         protected override async Task OnInitializedAsync()
         {
+
+
             await LeerDatos("All","",false);   // Lee los datos de bitacora
             await LeerNombres(LasBitacoras);   // Lee los nombres de creadores bitacoras
             

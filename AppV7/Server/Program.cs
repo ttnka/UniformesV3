@@ -53,6 +53,10 @@ builder.Services.AddScoped<I210Almacen, R210Almacen>();
 builder.Services.AddScoped<I220Producto, R220Producto>();
 builder.Services.AddScoped<I230Solicitud, R230Solicitud>();
 builder.Services.AddScoped<I232DetSol, R232DetSol>();
+
+builder.Services.AddScoped<I260Folio, R260Folio >();
+builder.Services.AddScoped<I290Meta, R290Meta >();
+
 builder.Services.AddScoped<I800WebSite, R800WebSite>();
 builder.Services.AddScoped<I810General , R810General>();
 builder.Services.AddScoped<I812Files, R812Files>();

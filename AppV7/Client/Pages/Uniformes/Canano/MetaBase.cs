@@ -3,69 +3,40 @@ using AppV7.Shared.Libreria;
 using AppV7.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Radzen.Blazor;
 using Radzen;
+using Radzen.Blazor;
 
 namespace AppV7.Client.Pages.Uniformes.Canano
 {
-    public class ProductosBase : ComponentBase 
+    public class MetaBase : ComponentBase 
     {
         [Inject]
-        public I220ProductoServ ProductoIServ { get; set; } = default!;
-        public IEnumerable<Z220_Producto> LosProductos { get; set; } = 
-            Enumerable.Empty<Z220_Producto>();
-        public List<string> LosZapTallas { get; set; } = new List<string>();
-        public List<string> LaRopaTallas { get; set; } = new List<string>();
-        public List<string> LosGpos { get; set; } = new List<string>();
+        public I290MetaServ MetaIServ { get; set; } = default!;
+        public IEnumerable<Z290_Meta> LasMetas { get; set; } = new List<Z290_Meta>();
+        public List<string> LosTipos { get; set; } = new List<string>();
+        public List<string> LosMpios { get; set; } = new List<string>();
         public bool Editando { get; set; } = false;
-        public Dictionary<string, Z220_Producto> ProdDic { get; set; } = new();
-        public RadzenDataGrid<Z220_Producto>? ProdGrid { get; set; } = default!;
+        public RadzenDataGrid<Z290_Meta>? MetaGrid { get; set; } = default!;
         protected override async Task OnInitializedAsync()
         {
-            var autState = await AuthStateTask;
-            var user = autState.User;
-            if (!user.Identity!.IsAuthenticated) NM.NavigateTo("/firma?laurl=/inicio");
-            UserIdLogAll = user.FindFirst(c => c.Type == "sub")?.Value!;
-            var UserList = await UserIServ.Buscar($"UserId_-_UserId_-_{UserIdLogAll}", "vacio");
-            ElUsuario = UserList.FirstOrDefault()!;
-            //LeerMunicipios();
-            await LeerDatos();
-            LeerGpoTallas();
+            await LeerUser();
+            LeerTipos();
             await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId,
-                            "Consulta de lista de productos", false);
+                            "Consulta del listado de metas", false);
         }
-
-        protected async Task LeerDatos()
+        public void LeerTipos()
         {
-            LosProductos = await ProductoIServ.Buscar("Alla");
-            /*
-            if (LosProductos.Any())
+            string[] tiposTemp = Constantes.MetasTipo.Split(",");
+            foreach (var tipo in tiposTemp)
             {
-                foreach(var prod in LosProductos)
-                {
-                    if (!ProdDic.ContainsKey(prod.Corto)) ProdDic.Add(prod.Corto, prod);
-                }
+                LosTipos.Add(tipo);
             }
-            */
-        }
+            string[] NomMpios = Constantes.MpiosTodos.Split(",");
+            for (int i = 0; i < NomMpios.Length; i++)
+            {
+                LosMpios.Add(NomMpios[i]);
+            }
 
-        protected void LeerGpoTallas()
-        {
-            string[] gpoTemp = Constantes.Grupos.Split(",");
-            foreach(var gpo in gpoTemp)
-            {
-                LosGpos.Add(gpo);
-            }
-            string[] ztallaTemp = Constantes.ZapatoTallas.Split(",");
-            foreach(var ztalla in ztallaTemp)
-            {
-                LosZapTallas.Add(ztalla);
-            }
-            string[] rTallasTemp = Constantes.RopaTallas.Split(",");
-            foreach(var rTallas in rTallasTemp)
-            {
-                LaRopaTallas.Add(rTallas);
-            }
         }
 
         [CascadingParameter]
@@ -105,10 +76,13 @@ namespace AppV7.Client.Pages.Uniformes.Canano
             respuesta.Duration = 4000 + duracion;
             return respuesta;
         }
+
         [Inject]
         public I110UsuariosServ UserIServ { get; set; } = default!;
         [Parameter]
         public Z110_Usuarios ElUsuario { get; set; } = new();
+        public IEnumerable<Z110_Usuarios> LosUsers { get; set; } = 
+            Enumerable.Empty<Z110_Usuarios>();
         public NavigationManager NM { get; set; } = default!;
         public async Task LeerUser()
         {
@@ -116,14 +90,14 @@ namespace AppV7.Client.Pages.Uniformes.Canano
             var user = autState.User;
             if (!user.Identity!.IsAuthenticated) NM.NavigateTo("/firma?laurl=/inicio");
             UserIdLogAll = user.FindFirst(c => c.Type == "sub")?.Value!;
-            /*
-            LosUsers = await UserIServ.Buscar("Allo", "Vacio");
+
+            LosUsers = await UserIServ.Buscar("Alla", "Vacio");
             ElUsuario = LosUsers.FirstOrDefault(x => x.UsuariosId == UserIdLogAll)!;
-            */
-            
+
+            /*
             var UserList = await UserIServ.Buscar($"UserId_-_UserId_-_{UserIdLogAll}", "vacio");
             ElUsuario = UserList.FirstOrDefault()!;
-            
+            */
         }
 
     }

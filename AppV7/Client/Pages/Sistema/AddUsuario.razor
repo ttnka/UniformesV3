@@ -1,5 +1,6 @@
 ﻿@page "/registro"
 @inherits AddUsuarioBase
+@inject NotificationService NS
 @using AppV7.Shared
 
 <h3>Registro Nuevo Usuario</h3>
@@ -129,8 +130,13 @@
 --Tatanka--
 
 @code {
+    public void ShowNotification(NotificationMessage message)
+    {
+        NS.Notify(message);
+    }
     async void ElNewUsuario()
     {
+        ShowNotification(ElMsn("info", "Nuevo Usuario", $"Estamos Creando tu nuevo usuario {NewAddUsuario.UsuarioMail}", 0));
         await SaveNewUsuario();
     }
 

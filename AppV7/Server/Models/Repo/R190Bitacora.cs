@@ -38,15 +38,14 @@ namespace AppV7.Server.Models.Repo
                     querry = orgX == "Vacio" ? querry.Where(x => x.Sistema == true) :
                         querry.Where (x => x.Sistema == true && x.OrgId == orgX); 
                     break;
-                case "Nombres":
-                   // IQueryable<Z190_Bitacora> querryN = _appDbContext.Bitacoras.
-                   //     Select(x => x.UsuariosId);
-                    
-                   // break;
+                case "Comerciante":
+                    querry = querry.Where(x=> x.UsuariosId == orgX);  
+                    break;
+                /*
                 default:
                     
                     break;
-
+                */
             }
 
             return await querry.OrderByDescending(x => x.Fecha).ToListAsync();

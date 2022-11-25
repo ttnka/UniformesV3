@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppV7.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221121050316_Donas")]
-    partial class Donas
+    [Migration("20221125023536_Donasbimbo")]
+    partial class Donasbimbo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -139,6 +139,9 @@ namespace AppV7.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Materno")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Municipio")
                         .HasColumnType("longtext");
 
                     b.Property<int>("Nivel")
@@ -321,6 +324,144 @@ namespace AppV7.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DatosTipo");
+                });
+
+            modelBuilder.Entity("AppV7.Shared.Z210_Almacen", b =>
+                {
+                    b.Property<string>("AlmacenId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Corto")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Desc")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Domicilio")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Municipio")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
+
+                    b.HasKey("AlmacenId");
+
+                    b.ToTable("Almacenes");
+                });
+
+            modelBuilder.Entity("AppV7.Shared.Z220_Producto", b =>
+                {
+                    b.Property<string>("ProductoId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Corto")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Desc")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Grupo")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Talla")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("ProductoId");
+
+                    b.ToTable("Productos");
+                });
+
+            modelBuilder.Entity("AppV7.Shared.Z230_Solicitud", b =>
+                {
+                    b.Property<string>("SolicitudId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Almacen")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Desc")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Folio")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Usuario")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("SolicitudId");
+
+                    b.ToTable("Solicitudes");
+                });
+
+            modelBuilder.Entity("AppV7.Shared.Z232_DetSol", b =>
+                {
+                    b.Property<string>("DetId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Desc")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Folio")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Producto")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
+
+                    b.HasKey("DetId");
+
+                    b.ToTable("DetSolicitud");
                 });
 
             modelBuilder.Entity("AppV7.Shared.Z800_WebSite", b =>

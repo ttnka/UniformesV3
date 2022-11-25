@@ -139,6 +139,9 @@ namespace AppV7.Server.Migrations
                     b.Property<string>("Materno")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Municipio")
+                        .HasColumnType("longtext");
+
                     b.Property<int>("Nivel")
                         .HasColumnType("int");
 

@@ -28,6 +28,8 @@ namespace AppV7.Server.Data
         public DbSet<Z220_Producto> Productos { get; set; }
         public DbSet<Z230_Solicitud> Solicitudes { get; set; }
         public DbSet<Z232_DetSol> DetSolicitud { get; set; }
+        public DbSet<Z260_Folio>Folios{ get; set; }
+        public DbSet<Z290_Meta>Metas{get; set;}
         public DbSet<Z800_WebSite> WebSite { get; set; }
         public DbSet<Z810_General> GeneralWeb { get; set; }
         public DbSet<Z812_Files> FilesWeb { get; set; }

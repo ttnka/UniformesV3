@@ -10,7 +10,7 @@
                 Text="Nuevo Almacen" 
                 Click="@InsertRow" Disabled="@Editando"/>
                 <RadzenButton Icon="refresh" style="margin-bottom: 10px" ButtonStyle="ButtonStyle.Info"                 
-                Click="@LeerDatos" Disabled="@Editando"/>
+                Click="@LoadData" />
             </div>
         </div>
         
@@ -111,8 +111,8 @@
                 </Template>
                 <EditTemplate Context="datos">
                         <RadzenDropDown Name="Municipio" Data=@LosMpios @bind-Value=@datos.Municipio
-                                    ValueProperty="Value" TextProperty="Value" AllowClear="true" 
-                                    Style="width: 90%;" />
+                            ValueProperty="Value" TextProperty="Value" AllowClear="true" 
+                            Style="width: 100%;" />
                 </EditTemplate>
             </RadzenDataGridColumn>
 
@@ -121,41 +121,34 @@
                     Width="250px" Title="Estado">
                 <Template Context="datos">
                     @if (datos.Corto == "CANACO_HMO")
-                        {
-                            <label> </label>
-                        }
-                        else
-                        {
+                    {
+                        <label> </label>
+                    }
+                    else
+                    {
                         <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Secondary" 
                             Class="m-1" Click="@((args) => EditRow(datos))" Visible="@(!Editando)" >
                         </RadzenButton>
                     }
-                    @if(datos.Status == true)
-                    { 
-                        <b>Activo</b>
-                    }
-                    else
-                    {
-                        <b>Suspendido</b>
-                    }
+                        @datos.Status ? <b>Activo</b> : <b>Suspendido</b>;
                     
-                    </Template>
+                </Template>
 
                 <EditTemplate Context="datos">
                     
                     @if (datos.Estado != 3)
                     {
-                        <label>Borrar este registro? Si </label>
+                        <label>Borrar este registro? </label><br />
+                        <label> Si </label>
                         <RadzenSwitch @bind-Value=@datos.Status Name="Status" /> 
-                        <label>No!</label>
+                        <label> No!</label>
                         <br />
                     }
-                    
 
-                    @if (datos.Corto != null && @AlmDic.ContainsKey(datos.Corto) && datos.Estado == 3)
+                    @if (datos.Corto != null && LosAlmacenes.Count() > 0 &&
+                    LosAlmacenes.Count(x=>x.Corto==datos.Corto)>0 && datos.Estado == 3)
                     {
-                        <label>El Almacen ya esta registrado!</label>
-                        <br />
+                        <label>El Almacen ya esta registrado!</label><br />
                     } 
                     else
                     {
@@ -163,10 +156,10 @@
                             Class="m-1" Click="@((args) => SaveRow(datos))">
                         </RadzenButton>
                     }
-                    <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Class="m-1" 
-                        Click="@((args) => CancelEdit(datos))" />
+                        <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Class="m-1" 
+                            Click="@((args) => CancelEdit(datos))" />
 
-                    </EditTemplate>
+                </EditTemplate>
 
             </RadzenDataGridColumn>
         </Columns>
@@ -177,7 +170,7 @@ else
 {
     <div class="spinner"></div>
 }
-
+--Tatanka--
 @code {
 
     Z210_Almacen AlmToInsert = new();
@@ -194,10 +187,11 @@ else
         Editando = !Editando;
         await AlmIServ.UpDateAlmacen(alm);
 
-        string texto = $"Se actualizo un registro {alm.Corto}";
+        string texto = $"Se actualizo un almacen {alm.Corto} nombre";
         texto += $"{alm.Nombre} {alm.Desc} {alm.Domicilio} {alm.Municipio}";
         await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, texto, false);
-
+        ShowNotification(ElMsn("Info", "Se Actualizo",
+            $"se actualizo el almacen {alm.Corto} {alm.Nombre} municipio {alm.Municipio}", 0));
     }
     async Task SaveRow(Z210_Almacen alm)
     {
@@ -229,15 +223,16 @@ else
         alm.Estado = 1;
 
         alm.Corto = alm.Corto.ToUpper();
-        Editando = !Editando;
-
+     
         Z210_Almacen resultado = new Z210_Almacen();
         resultado = await AlmIServ.AddAlmacen(alm);
-        await LeerDatos();
-
-        string texto = $"Se creo un registro {alm.Corto}";
+        
+        string texto = $"Se creo un almacen {alm.Corto}";
         texto += $"{alm.Nombre} {alm.Desc} {alm.Domicilio} {alm.Municipio}";
-            await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, texto, false);
+        await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, texto, false);
+        ShowNotification(ElMsn("ok", "Nuevo",
+            $"Nuevo almacen {alm.Corto} {alm.Nombre} ", 0));
+        await LoadData();
     }
 
     public void ShowNotification(NotificationMessage message)
@@ -248,6 +243,7 @@ else
     async Task LoadData()
     {
         LosAlmacenes = await AlmIServ.Buscar("Alla");
+        Editando = false;
     }
 
 }

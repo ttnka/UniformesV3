@@ -21,6 +21,7 @@ namespace AppV7.Shared
         public int Nivel { get; set; } = UserNivel.Participante;
         public string OrgId { get; set; } = null!;
         public string? OldEmail { get; set; }
+        public string? Municipio { get; set; }
         public int Estado { get; set; } = 2;
         public bool Status { get; set; } = true;
    

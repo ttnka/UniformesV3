@@ -1,4 +1,5 @@
-﻿
+﻿@inherits NavMenuBase
+
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
@@ -14,108 +15,122 @@
     </div>
 </div>
 
-    <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-        <nav class="flex-column">
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                    <span class="oi oi-home" aria-hidden="true"></span> Home
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/inicio" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+        <AuthorizeView>
+    <Authorized>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/metas" @onclick=@(()=>reducir("Ini"))>
+                <span aria-hidden="true"></span>Metas
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <span class="nav-link" aria-hidden="true" style="color:white"
+                          @onclick=@(()=>reducir("Inventario"))>+ Inventarios</span>
+        </div>
+
+        @if (expandInventario)
+    {
+        <ul class="nav flex-column">
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/solicitudes">
+                    <span aria-hidden="true"></span> Solicitudes
                 </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/folios">
+                    <span  aria-hidden="true"></span> Folios
+                </NavLink>
+            </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="/invetarios">
+                        <span  aria-hidden="true"></span> Inventarios
+                    </NavLink>
+                </li>
+        </ul>
+    }
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/misdatos" @onclick=@(()=>reducir("MisDatos"))>
+                <span  aria-hidden="true"></span> Mis Datos
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/bitacora" @onclick=@(()=>reducir("Bitacora"))>
+                <span aria-hidden="true"></span> Bitacora
+            </NavLink>
+        </div>
+
+        @if (ElNivel > 3)
+        {
+            <div class="nav-item px-3">
+                <span class="nav-link" aria-hidden="true" style="color:white"
+                @onclick=@(()=>reducir("Config"))>+ Configuracion </span>
             </div>
-            <AuthorizeView>
-                <Authorized>
-    <div class="nav-item px-3">
-        <NavLink class="nav-link" href="/inicio">
-            <span class="oi oi-plus" aria-hidden="true"></span>Inicio
-        </NavLink>
-    </div>
-    <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="" @onclick=@(()=>reducir("Sol")) >
-            <span class="oi oi-plus" aria-hidden="true"></span> Solicitudes
-        </NavLink>
-    </div>
-    @if (expandSol)
-            {
-                <ul class="nav flex-column">
 
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="/solicitudes">
-                            <span class="oi oi-list-rich" aria-hidden="true"></span> Solicitudes
-                        </NavLink>
-                    </li>
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="">
-                            <span class="oi oi-list-rich" aria-hidden="true"></span> Libre
-                        </NavLink>
-                    </li>
-                    
-                </ul>
-            }
-
-    <div class="nav-item px-3">
-        <NavLink class="nav-link" href="" @onclick=@(()=>reducir("Config")) >
-            <span class="oi oi-list-rich" aria-hidden="true"></span> Configuracion 
-        </NavLink>
-    </div>
             @if (expandConfig)
             {
                 <ul class="nav flex-column">
 
                     <li class="nav-item px-3">
                         <NavLink class="nav-link" href="/usuarios">
-                            <span class="oi oi-list-rich" aria-hidden="true"></span> Usuarios
+                                <span aria-hidden="true"></span> Usuarios
                         </NavLink>
                     </li>
                     <li class="nav-item px-3">
                         <NavLink class="nav-link" href="/organizaciones">
-                            <span class="oi oi-list-rich" aria-hidden="true"></span> Organizaciones
+                                <span aria-hidden="true"></span> Organizaciones
                         </NavLink>
                     </li>
                     <li class="nav-item px-3">
                         <NavLink class="nav-link" href="/almacenes">
-                            <span class="oi oi-list-rich" aria-hidden="true"></span> Almacenes
+                                <span aria-hidden="true"></span> Almacenes
                         </NavLink>
                     </li>
                     <li class="nav-item px-3">
                         <NavLink class="nav-link" href="/productos">
-                            <span class="oi oi-list-rich" aria-hidden="true"></span> Productos
+                                <span aria-hidden="true"></span> Productos
                         </NavLink>
                     </li>
                 </ul>
             }
-    <div class="nav-item px-3">
-        <NavLink class="nav-link" href="/bitacora">
-            <span class="oi oi-plus" aria-hidden="true"></span> Bitacora
-        </NavLink>
-    </div>
+        }
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/logout">
+                <button class="nav-link btn btn-link" @onclick="BeginSignOut">Salir </button>
+            </NavLink>
+        </div>
 
-</Authorized>
-                <NotAuthorized>
-                    <div class="nav-item px-3">
-                        <NavLink class="nav-link" href="/inicio">
-                                <span class="oi oi-list-rich" aria-hidden="true"></span> Firma
-                        </NavLink>
-                    </div>
-                </NotAuthorized>
-            </AuthorizeView>   
-        </nav>
-    </div>
+    </Authorized>
+        <NotAuthorized>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/firma">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> Firma
+                </NavLink>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>   
+    </nav>
+</div>
   
-
-        
-        
-
 
 @code {
     private bool collapseNavMenu = true;
     private bool expandConfig;
-    private bool expandSol;
+    private bool expandInventario;
 
     private void reducir(string nombre)
     {
+        expandInventario = !expandInventario;
+        if (nombre != "Inventario") expandInventario = false;
         expandConfig = !expandConfig;
         if (nombre != "Config") expandConfig = false;
-        expandSol = !expandSol;
-        if (nombre != "Sol") expandSol = false;
     }
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
@@ -124,4 +139,10 @@
     {
         collapseNavMenu = !collapseNavMenu;
     }
+    private async Task BeginSignOut(MouseEventArgs args)
+    {
+        await SignOutManager.SetSignOutState();
+        Navigation.NavigateTo("authentication/logout");
+    }
+    
 }

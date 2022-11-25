@@ -4,6 +4,7 @@ using AppV7.Shared;
 using AppV7.Client.Servicios.IFaceServ;
 using AppV7.Shared.Libreria;
 using Microsoft.AspNetCore.Components.Authorization;
+using Radzen;
 
 namespace AppV7.Client.Pages.Sistema
 {
@@ -21,17 +22,19 @@ namespace AppV7.Client.Pages.Sistema
         public RadzenTemplateForm<EAddUsuario>? AddUsuarioForm { get; set; } = new();
         public IEnumerable<Z100_Org> LasOrgs { get; set; } =
                 Enumerable.Empty<Z100_Org>();
-        
+
         protected override async Task OnInitializedAsync()
         {
+            /*
             var autState = await AuthStateTask;
             var user = autState.User;
-            if (!user.Identity.IsAuthenticated) NM.NavigateTo("/");
+            if (!user.Identity!.IsAuthenticated) NM.NavigateTo("/");
             var uIdTp = user.FindFirst(c => c.Type == "sub")?.Value;
             ElUsuario = (await UserIServ.Buscar(
                 $"UserId_-_UserId_-_{uIdTp}", "vacio")).FirstOrDefault();
             if (ElUsuario == null) NM.NavigateTo("/");
-
+            */
+            await LeerUser();
             LeerNiveles();
             await LeerOrganizaciones();
             
@@ -42,10 +45,10 @@ namespace AppV7.Client.Pages.Sistema
         { 
             string[] NomNiveles =  UserNivel.Titulos.Split(",");
             
-            for (int i = 1; i < NomNiveles.Length-1; i++)
+            for (int i = 0; i < NomNiveles.Length ; i++)
             {   
                 if (i == ElUsuario.Nivel) break;
-                LosNiveles.Add(new KeyValuePair<int, string>(i, NomNiveles[i]));
+                LosNiveles.Add(new KeyValuePair<int, string>(i+1, NomNiveles[i]));
             }
         }
         protected async Task LeerOrganizaciones()
@@ -70,6 +73,31 @@ namespace AppV7.Client.Pages.Sistema
             bita = MyFunc.WriteBitacora(usuarioId, ordId, desc, sistema);
             await BitacoraIServ.AddBitacora(bita);
         }
+
+        public NotificationMessage ElMsn(string tipo, string titulo, string mensaje, int duracion)
+        {
+            NotificationMessage respuesta = new();
+            switch (tipo.ToLower())
+            {
+                case "info":
+                    respuesta.Severity = NotificationSeverity.Info;
+                    break;
+                case "error":
+                    respuesta.Severity = NotificationSeverity.Error;
+                    break;
+                case "warning":
+                    respuesta.Severity = NotificationSeverity.Warning;
+                    break;
+                default:
+                    respuesta.Severity = NotificationSeverity.Success;
+                    break;
+            }
+            respuesta.Summary = titulo;
+            respuesta.Detail = mensaje;
+            respuesta.Duration = 4000 + duracion;
+            return respuesta;
+        }
+
         [CascadingParameter]
         public Task<AuthenticationState> AuthStateTask { get; set; } = default!;
         [Inject]
@@ -120,8 +148,21 @@ namespace AppV7.Client.Pages.Sistema
             IsRegistro = IsValido && IsLargo && Mayuscula && Minuscula && Numero;
             
         }
+        public async Task LeerUser()
+        {
+            var autState = await AuthStateTask;
+            var user = autState.User;
+            if (!user.Identity!.IsAuthenticated) NM.NavigateTo("/firma?laurl=/inicio");
+            var UserIdLogAll = user.FindFirst(c => c.Type == "sub")?.Value!;
+            /*
+            LosUsers = await UserIServ.Buscar("Allo", "Vacio");
+            ElUsuario = LosUsers.FirstOrDefault(x => x.UsuariosId == UserIdLogAll)!;
+            */
+            var UserList = await UserIServ.Buscar($"UserId_-_UserId_-_{UserIdLogAll}", "vacio");
+            ElUsuario = UserList.FirstOrDefault()!;
+            
+        }
     }
-
 }
 
 /*

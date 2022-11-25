@@ -47,6 +47,11 @@ builder.Services.AddHttpClient <I230SolicitudServ, S230SolicitudServ> (client =>
 builder.Services.AddHttpClient <I232DetSolServ, S232DetSolServ> (client =>
 { client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); });
 
+builder.Services.AddHttpClient<I260FolioServ, S260FolioServ >(client =>
+{ client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); });
+builder.Services.AddHttpClient<I290MetaServ, S290MetaServ >(client =>
+{ client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); });
+
 builder.Services.AddHttpClient <I800WebSiteServ, S800WebSiteServ> (client =>
 { client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress); });
 builder.Services.AddHttpClient<I810GeneralServ , S810GeneralServ>(client =>

@@ -128,7 +128,7 @@ else
 }
 
 @code {
-    
+
     Z232_DetSol DetToInsert = new();
 
     async Task EditRow(Z232_DetSol dsol)
@@ -146,7 +146,7 @@ else
         string texto = $"Se actualizo un registro Folio {dsol.Folio} del detalle {dsol.DetId} ";
         texto += $"Producto {dsol.Producto}, cantidad {dsol.Cantidad}, desc {dsol.Desc}  ";
         await Escribir(ElUsuarioDet.UsuariosId, ElUsuarioDet.OrgId, texto, false);
-
+        ShowNotification(ElMsn("info", "Actualizacion", $"Se actualizo el registro {dsol.Folio}", 0));
     }
     async Task SaveRow(Z232_DetSol dsol)
     {
@@ -182,7 +182,7 @@ else
         string texto = $"Se creo un registro Folio {resultado.Folio} detalle {resultado.DetId} ";
         texto += $"Producto {resultado.Producto}, cantidad {resultado.Cantidad}, desc {resultado.Desc}";
         await Escribir(ElUsuarioDet.UsuariosId, ElUsuarioDet.OrgId, texto, false);
-        
+        ShowNotification(ElMsn("Ok", "Nuevo Folio", $"Se creo el nuevo folio {resultado.Folio}", 0));
     }
 
     public void ShowNotification(NotificationMessage message)

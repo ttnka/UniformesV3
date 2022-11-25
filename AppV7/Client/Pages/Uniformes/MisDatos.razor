@@ -1,0 +1,79 @@
+﻿@page "/misdatos"
+@inherits MisDatosBase
+@inject NotificationService NS
+@using AppV7.Shared
+
+<h3>MisDatos</h3>
+@if(ElUsuario != null) 
+{
+    <RadzenTemplateForm @ref="MyInfoForm" Data="@ElUsuario" 
+                TItem="@Z110_Usuarios" Submit="@EditMyInfo" >
+        <div class="form-grup row">
+            <label for="mail" class="col-sm-3 col-form-label">Email</label>
+            <div class="col-sm-9">
+                @ElUsuario.OldEmail
+            </div>
+        </div>
+        <div class="form-grup row">
+            <label for="nombre" class="col-sm-3 col-form-label">Nombre</label>
+            <div class="col-sm-9">
+                <RadzenTextBox Name="Nombre" @bind-Value=@ElUsuario.Nombre
+                           style="display: block; width: 250px;" AutoComplete="false" />
+                <RadzenRequiredValidator Component="Nombre" Text="El Nombre es obligatorio " />
+            </div>
+        </div>
+        <div class="form-grup row">
+            <label for="paterno" class="col-sm-3 col-form-label">Paterno</label>
+            <div class="col-sm-9">
+
+                <RadzenTextBox Name="Paterno" @bind-Value=@ElUsuario.Paterno
+                           style="display: block; width: 250px;" AutoComplete="false" />
+                <RadzenRequiredValidator Component="Paterno" Text="El Apellido Paterno es obligatorio " />
+
+            </div>
+        </div>
+        <div class="form-grup row">
+            <label for="materno" class="col-sm-3 col-form-label">Materno</label>
+            <div class="col-sm-9">
+
+                <RadzenTextBox Name="Materno" @bind-Value=@ElUsuario.Materno
+                           style="display: block; width: 250px;" AutoComplete="false" />
+                
+            </div>
+        </div>
+        <div class="form-grup row">
+            <label for="botones" class="col-sm-3 col-form-label">
+               Editar Mis Datos? 
+            </label>
+
+            <div class="col-sm-2">
+                No <RadzenSwitch Name="Editar" @bind-Value=Editar /> Si
+            </div>
+            <div class="col-sm-5">
+                <RadzenButton ButtonType="ButtonType.Submit" Text="Registro" Disabled=!Editar />
+                <NavLink class="nav-link" href="/">Cancelar</NavLink>
+            </div>
+            <div class="col-sm-2">
+            </div>
+        </div>
+    </RadzenTemplateForm>
+}
+else
+{
+    <div class="spinner"></div>
+}
+--Tatanka--
+@code {
+
+    public void ShowNotification(NotificationMessage message)
+    {
+        NS.Notify(message);
+    }
+
+    async void EditMyInfo()
+    {
+        await UserIServ.UpDateUsuario(ElUsuario);
+        ShowNotification(ElMsn("Ok", "Se Actualizo", "Se hicieron cambios en tus datos", 0));
+        Editar = !Editar;
+    }
+}

@@ -2,35 +2,34 @@
 using AppV7.Shared;
 using AppV7.Shared.Libreria;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Radzen;
 using Radzen.Blazor;
 
 namespace AppV7.Client.Pages.Admin
 {
-    public class UsuariosBase : ComponentBase 
+    public class UsuariosBase : ComponentBase
     {
         [Inject]
         public I100OrgServ OrgIServ { get; set; } = default!;
-        [Inject]
-        public I110UsuariosServ UserIServ { get; set; } = default!;
-
-        [Parameter]
-        public Z110_Usuarios ElUsuario { get; set; } = new();
-        public IEnumerable<Z110_Usuarios> LosUsers { get; set; } = 
+        public IEnumerable<Z110_Usuarios> LosUsers { get; set; } =
             new List<Z110_Usuarios>();
         public IEnumerable<Z100_Org> LasOrgs { get; set; } =
                 Enumerable.Empty<Z100_Org>();
-        public List<KeyValuePair<int, string>> LosNiveles { get; set; } = 
+        public List<KeyValuePair<int, string>> LosNiveles { get; set; } =
             new List<KeyValuePair<int, string>>();
+        public List<string> LosMpios { get; set; } = new List<string>();
         [Parameter]
-        public Dictionary<string, string> DatosDic { get; set; } = 
-            new Dictionary<string, string>();   
-        
+        public Dictionary<string, string> DatosDic { get; set; } =
+            new Dictionary<string, string>();
+
         public bool Editando { get; set; } = false;
 
         public RadzenDataGrid<Z110_Usuarios>? UsersGrid = default!;
         protected async override Task OnInitializedAsync()
         {
-            await LeerUsers();
+            await LeerUser();
+            LeerMunicipios();
             await LeerOrgs();
         }
 
@@ -39,6 +38,14 @@ namespace AppV7.Client.Pages.Admin
             LosUsers = await UserIServ.Buscar("Allo", "Vacio");
         }
 
+        protected void LeerMunicipios()
+        {
+            string[] NomMpios = Constantes.MpiosTodos.Split(",");
+            for (int i = 0; i < NomMpios.Length; i++)
+            {
+                LosMpios.Add(NomMpios[i]);
+            }
+        }
         public async Task LeerOrgs()
         {
             LasOrgs = await OrgIServ.Buscar("All");
@@ -55,8 +62,8 @@ namespace AppV7.Client.Pages.Admin
                 string[] titulos = UserNivel.Titulos.Split(",");
                 for (int i = 0; i < titulos.Length; i++)
                 {
-                    if (ElUsuario.Nivel > i +1 ) 
-                        LosNiveles.Add(new KeyValuePair<int, string>(i+1, titulos[i]));
+                    if (ElUsuario.Nivel > i + 1)
+                        LosNiveles.Add(new KeyValuePair<int, string>(i + 1, titulos[i]));
                     DatosDic.Add($"Nivel_{i + 1}", titulos[i]);
                 }
                 DatosDic.Add("UsersNivel", "Ok");
@@ -64,17 +71,63 @@ namespace AppV7.Client.Pages.Admin
 
         }
 
-        [Inject]
-        NavigationManager NM { get; set; }
+        [CascadingParameter]
+        public Task<AuthenticationState> AuthStateTask { get; set; } = default!;
+        public string UserIdLogAll { get; set; } = string.Empty;
+
         [Inject]
         public I190BitacoraServ BitacoraIServ { get; set; } = default!;
         public MyFunc MyFunc { get; set; } = new MyFunc();
         public async Task Escribir(string usuarioId, string ordId,
             string desc, bool sistema)
         {
-            Z190_Bitacora bita = new Z190_Bitacora();
-            bita = MyFunc.WriteBitacora(usuarioId, ordId, desc, sistema);
+            var bita = MyFunc.WriteBitacora(usuarioId, ordId, desc, sistema);
             await BitacoraIServ.AddBitacora(bita);
+        }
+
+        public NotificationMessage ElMsn(string tipo, string titulo, string mensaje, int duracion )
+        {
+            NotificationMessage respuesta = new();
+            switch (tipo.ToLower())
+            {
+                case "info": 
+                    respuesta.Severity = NotificationSeverity.Info;
+                    break;
+                case "error":
+                    respuesta.Severity = NotificationSeverity.Error;
+                    break;
+                case "warning":
+                    respuesta.Severity = NotificationSeverity.Warning;
+                    break;
+                default:
+                    respuesta.Severity = NotificationSeverity.Success;
+                    break;
+            }
+            respuesta.Summary = titulo;
+            respuesta.Detail = mensaje;
+            respuesta.Duration = 4000 + duracion; 
+            return respuesta;
+        }
+        [Inject]
+        public I110UsuariosServ UserIServ { get; set; } = default!;
+        [Parameter]
+        public Z110_Usuarios ElUsuario { get; set; } = new();
+
+        public NavigationManager NM { get; set; } = default!;
+        public async Task LeerUser()
+        {
+            var autState = await AuthStateTask;
+            var user = autState.User;
+            if (!user.Identity!.IsAuthenticated) NM.NavigateTo("/firma?laurl=/inicio");
+            UserIdLogAll = user.FindFirst(c => c.Type == "sub")?.Value!;
+            
+            LosUsers = await UserIServ.Buscar("Allo", "Vacio");
+            ElUsuario = LosUsers.FirstOrDefault(x => x.UsuariosId == UserIdLogAll)!;
+            
+            /*
+            var UserList = await UserIServ.Buscar($"UserId_-_UserId_-_{UserIdLogAll}", "vacio");
+            ElUsuario = UserList.FirstOrDefault()!;
+            */
         }
     }
 }

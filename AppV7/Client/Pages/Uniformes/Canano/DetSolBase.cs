@@ -88,6 +88,29 @@ namespace AppV7.Client.Pages.Uniformes.Canano
             bita = MyFunc.WriteBitacora(usuarioId, ordId, desc, sistema);
             await BitacoraIServ.AddBitacora(bita);
         }
+        public NotificationMessage ElMsn(string tipo, string titulo, string mensaje, int duracion)
+        {
+            NotificationMessage respuesta = new();
+            switch (tipo.ToLower())
+            {
+                case "info":
+                    respuesta.Severity = NotificationSeverity.Info;
+                    break;
+                case "error":
+                    respuesta.Severity = NotificationSeverity.Error;
+                    break;
+                case "warning":
+                    respuesta.Severity = NotificationSeverity.Warning;
+                    break;
+                default:
+                    respuesta.Severity = NotificationSeverity.Success;
+                    break;
+            }
+            respuesta.Summary = titulo;
+            respuesta.Detail = mensaje;
+            respuesta.Duration = 4000 + duracion;
+            return respuesta;
+        }
 
         [Inject]
         public I110UsuariosServ UsuariosIServ { get; set; } = default!;

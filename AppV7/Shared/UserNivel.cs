@@ -11,14 +11,14 @@ namespace AppV7.Shared
         public const int Participante = 1;
         public const int Comerciante = 2;
         // CANACO
-        public const int Canaco = 3;
-        public const int CANACO_Admin = 4;
-        public const int Director = 5;
+        public const int Directores = 3;
+        public const int CANACO = 4;
+        public const int CANACO_Admin = 5;
         // Zuverworks
         public const int Zuverworks = 6;
         public const int ADB = 7;
         
         public const string Titulos =
-            "Participante,Comerciante,Canaco,CANACO_Admin,Master,Zuverworks,ADB";
+            "Participante,Comerciante,Director,CANACO,CANACO_Admin,Zuverworks,ADB";
     } 
 }

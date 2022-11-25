@@ -70,20 +70,21 @@
                     <RadzenDataGridColumn TItem="Z230_Solicitud" Property="Usuario" 
                         Title="Usuario" Filterable="true"  Width="220px">
                     <Template Context="datos">
-                        @if(DataDic.ContainsKey($"User_{@datos.Usuario}"))
-                        {
-                            @DataDic[$"User_{datos.Usuario}"];
-                        }
-                        else
-                        {
-                            <label>No hay datos!</label>
-                        }
+                        @LosUsers.FirstOrDefault(x=>x.UsuariosId==datos.Usuario)!.
+                        @LosUsers.FirstOrDefault(x=>x.UsuariosId==datos.Usuario)!.Paterno
                         
                     </Template>
                     <EditTemplate Context="datos">
-                        <RadzenDropDown Name="Usuario" Data=@LosUsers @bind-Value=@datos.Usuario
-                                    ValueProperty="Key" TextProperty="Value" 
-                                    AllowClear="true" Style="width: 100%;" />
+                        @if(ElUsuario.Nivel < 4) 
+                        {
+                            @LosUsers.FirstOrDefault(x=>x.UsuariosId==datos.Usuario)!.OldEmail
+                        }
+                        else
+                        {
+                            <RadzenDropDown Name="Usuario" Data=@LosUsers @bind-Value=@datos.Usuario
+                                ValueProperty="UsuariosId" TextProperty="OldEMail"
+                                AllowClear="true" Style="width: 100%;" />
+                        }
                     </EditTemplate>
                 </RadzenDataGridColumn>
                 
@@ -120,7 +121,7 @@
                         {
                             <label class="@DataDic[$"Etiqueta_{@datos.Estado}"]" >
                                 @DataDic[$"Sol_Edo_{datos.Estado}"] / 
-                                @datos.Estado
+                                
                             </label>
                         }
                     </Template>
@@ -135,18 +136,13 @@
                     Filterable="false" Sortable="false" TextAlign="TextAlign.Center" 
                     Width="200px" Title="Estado">
                     <Template Context="datos">
-                        <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Secondary" 
-                            Class="m-1" Click="@((args) => EditRow(datos))" Visible="@(!Editando)" >
-                        </RadzenButton>
-                        
-                        @if (datos.Status == true)
-                        { 
-                                <b>Activo</b>
-                        }
-                        else
+                        @if(datos.Estado > 1 && datos.Estado < 4)
                         {
-                                <b>Suspendido</b>
+                            <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Secondary" 
+                                Class="m-1" Click="@((args) => EditRow(datos))" Visible="@(!Editando)" >
+                            </RadzenButton>
                         }
+                        @datos.Status ? <label>Activo</label> : <label>Borrado</label>;
 
                     </Template>
 
@@ -178,7 +174,7 @@ else
 {
         <div class="spinner"></div>
 }
-
+--Tatanka--
 @code {
 
     Z230_Solicitud SolToInsert = new();
@@ -198,6 +194,7 @@ else
         string texto = $"Se actualizo un registro Folio {sol.Folio}";
         texto += $"{sol.Fecha} {sol.Tipo} {sol.Desc} {sol.Almacen}";
         await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, texto, false);
+        ShowNotification(ElMsn("info", "Actualizo", $"Se actualizo el folio {sol.Folio} {sol.Tipo}", 0));
 
     }
     async Task SaveRow(Z230_Solicitud sol)
@@ -237,6 +234,7 @@ else
         string texto = $"Se creo un registro Folio {sol.Folio}";
         texto += $"{sol.Fecha} Almacen {sol.Almacen} Usuario {sol.Usuario} Tipo {sol.Tipo}";
         await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, texto, false);
+        ShowNotification(ElMsn("Ok","Nuevo",$"Se creo un nuevo folio {sol.Folio} {sol.Tipo}",0));
     }
 
     public void ShowNotification(NotificationMessage message)

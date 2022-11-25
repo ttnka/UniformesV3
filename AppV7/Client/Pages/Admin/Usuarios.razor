@@ -1,7 +1,8 @@
 ﻿@page "/usuarios"
 @inherits UsuariosBase
 @inject NotificationService NS
-@inject NavigationManager NM1
+@inject NavigationManager NavM
+
 @using AppV7.Shared
 
 <RadzenCard>
@@ -14,7 +15,7 @@
                 Text="Nuevo Usuario" 
                 Click="@NMto" />
                 <RadzenButton Icon="refresh" style="margin-bottom: 10px" ButtonStyle="ButtonStyle.Info"                 
-                Click="@LeerUsers" Disabled="@Editando"/>
+                Click="@LeerUsers"/>
             </div>
         </div>
         
@@ -39,7 +40,7 @@
                     @datos.Nombre
                 </Template>
                 <EditTemplate Context="datos">
-                    <RadzenTextBox Name="Nombre" @bind-Value="@datos.Nombre" Style="width: 90%" /> <br>
+                    <RadzenTextBox Name="Nombre" @bind-Value="@datos.Nombre" Style="width: 100%" /> <br>
                     <RadzenLengthValidator Component="Nombre" Min="1" Max="30" 
                         Text="El Nombre es Obligatorio" />
 
@@ -53,16 +54,16 @@
                 </Template>
                 <EditTemplate Context="datos">
                     <RadzenTextBox Name="Paterno" @bind-Value="datos.Paterno" 
-                    Style="width: 90%" Placeholder="Paterno" /><br />
+                    Style="width: 100%" Placeholder="Paterno" /><br />
                     <RadzenTextBox Name="Paterno" @bind-Value="datos.Materno" 
-                    Style="width: 90%" Placeholder="Materno" /><br />
+                    Style="width: 100%" Placeholder="Materno" /><br />
                     <RadzenRequiredValidator Component="Paterno" Text="El Paterno es Obligatorio." />
                 </EditTemplate>
             </RadzenDataGridColumn>
 
 
             <RadzenDataGridColumn TItem="Z110_Usuarios" Property="Nivel" Title="Nivel" 
-                Filterable="false" Resizable="true" Width="120px" >
+                Filterable="false" Resizable="true" Width="180px" >
                 <Template Context="datos">
                         @if (DatosDic.ContainsKey($"Nivel_{datos.Nivel}"))
                         {
@@ -74,7 +75,20 @@
                 </Template>
                 <EditTemplate Context="datos">
                     <RadzenDropDown Name="Nivel" Data=@LosNiveles @bind-Value=@datos.Nivel
-                        ValueProperty="Key" TextProperty="Value" AllowClear="true" Style="width: 300px;" />
+                        ValueProperty="Key" TextProperty="Value" AllowClear="true" 
+                        AllowFiltering="false" Style="width: 100%;" />
+                </EditTemplate>
+            </RadzenDataGridColumn>
+
+            <RadzenDataGridColumn TItem="Z110_Usuarios" Property="Municipio" Title="Municipio" 
+                Filterable="false" Resizable="true" Width="180px" >
+                <Template Context="datos">
+                        @datos.Municipio
+                </Template>
+                <EditTemplate Context="datos">
+                    <RadzenDropDown Name="Municipio" Data=@LosMpios @bind-Value=@datos.Municipio
+                        ValueProperty="Value" TextProperty="Value" AllowClear="true" 
+                        AllowFiltering="false" Style="width: 100%;" />
                 </EditTemplate>
             </RadzenDataGridColumn>
         
@@ -91,7 +105,8 @@
                 </Template>
                 <EditTemplate Context="datos">
                     <RadzenDropDown Name="Org" Data=@LasOrgs @bind-Value=@datos.OrgId
-                        ValueProperty="OrgId" TextProperty="Comercial" AllowClear="true" Style="width: 300px;" />
+                        ValueProperty="OrgId" TextProperty="Comercial" AllowClear="true" 
+                        Style="width: 100%;" />
                 </EditTemplate>
                 
             </RadzenDataGridColumn>
@@ -107,7 +122,7 @@
 
             <RadzenDataGridColumn TItem="Z110_Usuarios"  
                     Filterable="false" Sortable="false" TextAlign="TextAlign.Center" 
-                    Width="250px" Title="Estado">
+                    Width="200px" Title="Estado">
                 <Template Context="datos">
                     @if(datos.OldEmail == Constantes.SyMail || datos.OldEmail == Constantes.DeMail01) {
                         <label></label>
@@ -138,7 +153,8 @@
                     <br />
                     @if (datos.Estado != 3)
                         {
-                            <label>Borrar este registro? Si </label>
+                            <label>Borrar este registro?</label><br />
+                            <label>Si</label>
                             <RadzenSwitch @bind-Value=@datos.Status Name="Status" /> 
                             <label>No!</label>
                         }
@@ -153,7 +169,7 @@ else
     <div class="spinner"></div>
 }
 </RadzenCard>
-
+--Tatanka--
 @code {
 
     Z110_Usuarios UserToInsert = new();
@@ -174,6 +190,8 @@ else
         string texto = $"Se actualizo un registro {user.Nombre}";
         texto += $"{user.Paterno} {user.Materno} {user.OldEmail}";
         await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, texto, false);
+        ShowNotification(ElMsn("Ok", "Actualizo", 
+            $"El registro de {user.OldEmail} {user.Nombre} {user.Paterno}", 0));
     }
     async Task SaveRow(Z110_Usuarios user)
     {
@@ -186,36 +204,9 @@ else
         UsersGrid!.CancelEditRow(user);
     }
     void NMto() {
-        NM1.NavigateTo("/Registro");
+        NavM.NavigateTo("/Registro");
     }
-    /*
-    async Task InsertRow()
-    {
         
-        UserToInsert = new Z110_Usuarios();
-        UserToInsert.userId = Guid.NewGuid().ToString();
-        UserToInsert.Estado = 3;
-        Editando = !Editando;
-
-        await UsersGrid.InsertRow(UserToInsert); 
-    
-    }
-    */
-   /*
-    async void OnCreateRow(Z110_Usuarios user)
-    {
-        
-        if (user == UserToInsert) UserToInsert = null;
-
-        Z110_Usuarios resultado = new Z110_Usuarios();
-        resultado = await userIServ.Adduser(user);
-
-        string texto = $"Se creo un registro {user.Rfc}";
-            texto += $"{user.Comercial} {user.RazonSocial} desde sistema";
-            await Escribir(ElUsuario.UsuariosId, ElUsuario.userId, texto, false);
-    
-    }
-    */
     public void ShowNotification(NotificationMessage message)
     {
         NS.Notify(message);
@@ -223,7 +214,7 @@ else
 
     async Task LoadData()
     {
-        LosUsers = await UserIServ.Buscar("All", "Vacio");
-        
+        LosUsers = await UserIServ.Buscar("Allo", "Vacio");
+        Editando = false;
     }
 }

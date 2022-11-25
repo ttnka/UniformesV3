@@ -4,6 +4,7 @@ using AppV7.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Radzen.Blazor;
+using Radzen;
 
 namespace AppV7.Client.Pages.Uniformes.Canano
 {
@@ -11,8 +12,7 @@ namespace AppV7.Client.Pages.Uniformes.Canano
     {
         [Inject]
         public I210AlmacenServ AlmIServ { get; set; } = default!;
-        [Inject]
-        public I110UsuariosServ UserIServ { get; set; } = default!;
+        
         [Inject]
         public I230SolicitudServ SolIServ { get; set; } = default!;
         [Inject]
@@ -21,32 +21,26 @@ namespace AppV7.Client.Pages.Uniformes.Canano
             Enumerable.Empty<Z210_Almacen>();
         public IEnumerable<Z230_Solicitud> LasSolicitudes { get; set; } =
             Enumerable.Empty<Z230_Solicitud>();
-        public List<KeyValuePair<string, string>> LosUsers { get; set; } =
-            new List<KeyValuePair<string, string>>();
+        public IEnumerable<Z110_Usuarios> LosUsers { get; set; } =
+            Enumerable.Empty<Z110_Usuarios>();
         public List<string> LosTipos { get; set; } = new();
         public List<KeyValuePair<int, string>> LosEdos { get; set; } =
             new List<KeyValuePair<int, string>>();
         public bool Editando { get; set; } = false;
         public Dictionary<string, string> DataDic { get; set; } = new();
-        public NavigationManager NM { get; set; } = default!;
         public RadzenDataGrid<Z230_Solicitud>? SolGrid { get; set; } = default!;
         protected async override Task OnInitializedAsync()
         {
-            var autState = await AuthStateTask;
-            var user = autState.User;
-            if (!user.Identity.IsAuthenticated) NM.NavigateTo("/firma?laurl=/inicio");
-            UserIdLogAll = user.FindFirst(c => c.Type == "sub")?.Value!;
-            var UserList = await UserIServ.Buscar($"UserId_-_UserId_-_{UserIdLogAll}", "vacio");
-            ElUsuario = UserList.FirstOrDefault()!;
-
+            await LeerUser();
             LeerTipos();
             await LeerDatos();
             await LeerAlmacenes();
             await LeerDetalle();
-            if (ElUsuario.Nivel > 2) await LeerUsers();
+            
             await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId,
                             "Consulta del listado de solicitudes", false);
         }
+        
         public async Task LeerDatos()
         {
             string buscar = ElUsuario.Nivel > 2 ? "Alla" :
@@ -72,28 +66,13 @@ namespace AppV7.Client.Pages.Uniformes.Canano
                 if (reg > 0) DataDic[$"Fol_Det_{sol.Folio}"] = reg.ToString();
             }
         }
-        public async Task LeerUsers()
-        {
-            var UsersTemp = await UserIServ.Buscar("Alla", "Vacio");
-            foreach(var usr in UsersTemp)
-            {
-                if (!DataDic.ContainsKey($"User_{usr.UsuariosId}"))
-                {
-                    string nombre = usr.Nombre == usr.OldEmail ? usr.OldEmail :
-                        $"{usr.Nombre} {usr.Paterno} {usr.OldEmail}";
-
-                    DataDic.Add($"User_{usr.UsuariosId}", nombre);
-                    LosUsers.Add(new KeyValuePair<string, string>(usr.UsuariosId, nombre));
-                }
-            }
-        }
         public async Task LeerAlmacenes()
         {
             LosAlmacenes = await AlmIServ.Buscar("Alla");
         }
         public void LeerTipos()
         {
-            string[] tiposTemp = Constantes.Tipos.Split(",");
+            string[] tiposTemp = Constantes.SolicitudTipo.Split(",");
             foreach (var tipo in tiposTemp)
             {
                 LosTipos.Add(tipo);
@@ -115,7 +94,29 @@ namespace AppV7.Client.Pages.Uniformes.Canano
                 LosEdos.Add(new KeyValuePair<int, string>(3, "Cancelada"));
             }
         }
-
+        public NotificationMessage ElMsn(string tipo, string titulo, string mensaje, int duracion)
+        {
+            NotificationMessage respuesta = new();
+            switch (tipo.ToLower())
+            {
+                case "info":
+                    respuesta.Severity = NotificationSeverity.Info;
+                    break;
+                case "error":
+                    respuesta.Severity = NotificationSeverity.Error;
+                    break;
+                case "warning":
+                    respuesta.Severity = NotificationSeverity.Warning;
+                    break;
+                default:
+                    respuesta.Severity = NotificationSeverity.Success;
+                    break;
+            }
+            respuesta.Summary = titulo;
+            respuesta.Detail = mensaje;
+            respuesta.Duration = 4000 + duracion;
+            return respuesta;
+        }
         [CascadingParameter]
         public Task<AuthenticationState> AuthStateTask { get; set; } = default!;
         public string UserIdLogAll { get; set; } = string.Empty;
@@ -132,7 +133,7 @@ namespace AppV7.Client.Pages.Uniformes.Canano
         }
 
         [Inject]
-        public I110UsuariosServ UsuariosIServ { get; set; } = default!;
+        public I110UsuariosServ UserIServ { get; set; } = default!;
         [Parameter]
         public Z110_Usuarios ElUsuario { get; set; } = new();
 
@@ -147,6 +148,22 @@ namespace AppV7.Client.Pages.Uniformes.Canano
             if (rest.Count() < 10) resultado += "0"; 
             resultado += (rest.Count()+1).ToString();
             return resultado;
+        }
+        public NavigationManager NM { get; set; } = default!;
+        public async Task LeerUser()
+        {
+            var autState = await AuthStateTask;
+            var user = autState.User;
+            if (!user.Identity!.IsAuthenticated) NM.NavigateTo("/firma?laurl=/inicio");
+            UserIdLogAll = user.FindFirst(c => c.Type == "sub")?.Value!;
+
+            LosUsers = await UserIServ.Buscar("Allo", "Vacio");
+            ElUsuario = LosUsers.FirstOrDefault(x => x.UsuariosId == UserIdLogAll)!;
+
+            /*
+            var UserList = await UserIServ.Buscar($"UserId_-_UserId_-_{UserIdLogAll}", "vacio");
+            ElUsuario = UserList.FirstOrDefault()!;
+            */
         }
     }
 }
