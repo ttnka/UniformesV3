@@ -35,12 +35,10 @@ namespace AppV7.Client.Pages.Uniformes.Canano
             LeerTipos();
             await LeerDatos();
             await LeerAlmacenes();
-            await LeerDetalle();
-            
+            await LeerDetalle();   
             await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId,
                             "Consulta del listado de solicitudes", false);
         }
-        
         public async Task LeerDatos()
         {
             string buscar = ElUsuario.Nivel > 2 ? "Alla" :
@@ -133,7 +131,7 @@ namespace AppV7.Client.Pages.Uniformes.Canano
         }
 
         [Inject]
-        public I110UsuariosServ UserIServ { get; set; } = default!;
+        public I110UsuariosServ UsersIServ { get; set; } = default!;
         [Parameter]
         public Z110_Usuarios ElUsuario { get; set; } = new();
 
@@ -149,6 +147,7 @@ namespace AppV7.Client.Pages.Uniformes.Canano
             resultado += (rest.Count()+1).ToString();
             return resultado;
         }
+        [Inject]
         public NavigationManager NM { get; set; } = default!;
         public async Task LeerUser()
         {
@@ -157,11 +156,11 @@ namespace AppV7.Client.Pages.Uniformes.Canano
             if (!user.Identity!.IsAuthenticated) NM.NavigateTo("/firma?laurl=/inicio");
             UserIdLogAll = user.FindFirst(c => c.Type == "sub")?.Value!;
 
-            LosUsers = await UserIServ.Buscar("Allo", "Vacio");
+            LosUsers = await UsersIServ.Buscar("Allo", "Vacio");
             ElUsuario = LosUsers.FirstOrDefault(x => x.UsuariosId == UserIdLogAll)!;
 
             /*
-            var UserList = await UserIServ.Buscar($"UserId_-_UserId_-_{UserIdLogAll}", "vacio");
+            var UserList = await UsersIServ.Buscar($"UserId_-_UserId_-_{UserIdLogAll}", "vacio");
             ElUsuario = UserList.FirstOrDefault()!;
             */
         }

@@ -1,7 +1,9 @@
 ﻿@page "/"
 @page "/inicio"
 @inherits InicioUniformesBase
+@using AppV7.Client.Pages.Uniformes.Canano.Metas
 @using AppV7.Shared
+@using AppV7.Shared.Libreria
 
 <RadzenCard>
 <AuthorizeView>
@@ -9,8 +11,49 @@
         <RadzenTabs @bind-SelectedIndex=@SelectedIndex>
                 <Tabs>
                     <RadzenTabsItem Text="Inicio">
+                        @if ( showRenglon > 50)
+                        {
+                            <div class="form-grup row">
+                                <div class="col-sm-4">
+                                <MetaPorcentaje TituloGrafica="Cuanto falta?" Anotacion="% Avance"
+                                   ShowAnotacion="true" ShowEtiquetas="true" 
+                                   Valor="@showavance" />
+                            </div>
+                            <div class="col-sm-4">
+                                <MetasGeneral TituloGrafica="Almacenes y Comercios" Anotacion=""
+                                    TituloSerie="Puntos de entrega" MinX="0" ShowEtiquetas="false"
+                                    DatosTitulos="Almacenes,Comercios" DatosValores="3,15" />
+                            </div>
+                            <div class="col-sm-4">
+                                <MetasGeneral Anotacion="" ShowAnotacion="false" ShowEtiquetas=true
+                                    TituloGrafica="Avance de Distribucion" SubTituloGrafiaca=""
+                                    TituloSerie="Numeros Metas" TituloY="" MinX="0"
+                                    DatosTitulos="Meta,Inventario,Folio" DatosValores="30,20,10" />
+                             </div>
+                        </div>
+                        } else {
+                        <div class="form-grup row">
+                            <div class="col-sm-4">
+                                <MetaPorcentaje TituloGrafica="Cuanto falta?" Anotacion="% Avance"
+                                                ShowAnotacion="true" ShowEtiquetas="true" Valor="@showavance" />
+                            </div>
+                            <div class="col-sm-4">
+                                <MetasGeneral TituloGrafica="Almacenes y Comercios" Anotacion=""
+                                              TituloSerie="Puntos de entrega" MinX="0" ShowEtiquetas="false"
+                                              DatosTitulos="Almacenes,Comercios" DatosValores="3,15" />
+                            </div>
+                            <div class="col-sm-4">
+                                <MetasGeneral Anotacion="" ShowAnotacion="false" ShowEtiquetas=true
+                                              TituloGrafica="Avance de Distribucion" SubTituloGrafiaca=""
+                                              TituloSerie="Numeros Metas" TituloY="" MinX="0"
+                                              DatosTitulos="Meta,Inventario,Folio" DatosValores="30,20,10" />
+                            </div>
+                        </div>
+                        }
+                        
                         
                     </RadzenTabsItem>
+
                     <RadzenTabsItem Text="Varias">
                         
                     </RadzenTabsItem>
@@ -35,5 +78,5 @@
 </RadzenCard>
 --Tatanka--
 @code {
-    bool Editar = false;
+    
 }

@@ -35,7 +35,7 @@ namespace AppV7.Client.Pages.Admin
 
         public async Task LeerUsers()
         {
-            LosUsers = await UserIServ.Buscar("Allo", "Vacio");
+            LosUsers = await UsersIServ.Buscar("Allo", "Vacio");
         }
 
         protected void LeerMunicipios()
@@ -109,10 +109,10 @@ namespace AppV7.Client.Pages.Admin
             return respuesta;
         }
         [Inject]
-        public I110UsuariosServ UserIServ { get; set; } = default!;
+        public I110UsuariosServ UsersIServ { get; set; } = default!;
         [Parameter]
         public Z110_Usuarios ElUsuario { get; set; } = new();
-
+        [Inject]
         public NavigationManager NM { get; set; } = default!;
         public async Task LeerUser()
         {
@@ -121,11 +121,11 @@ namespace AppV7.Client.Pages.Admin
             if (!user.Identity!.IsAuthenticated) NM.NavigateTo("/firma?laurl=/inicio");
             UserIdLogAll = user.FindFirst(c => c.Type == "sub")?.Value!;
             
-            LosUsers = await UserIServ.Buscar("Allo", "Vacio");
+            LosUsers = await UsersIServ.Buscar("Allo", "Vacio");
             ElUsuario = LosUsers.FirstOrDefault(x => x.UsuariosId == UserIdLogAll)!;
             
             /*
-            var UserList = await UserIServ.Buscar($"UserId_-_UserId_-_{UserIdLogAll}", "vacio");
+            var UserList = await UsersIServ.Buscar($"UserId_-_UserId_-_{UserIdLogAll}", "vacio");
             ElUsuario = UserList.FirstOrDefault()!;
             */
         }

@@ -17,7 +17,7 @@ namespace AppV7.Client.Pages.Uniformes.Canano
         public List<string> LosMpios { get; set; } = new List<string>();
         public bool Editando { get; set; } = false;
         public Dictionary<string, Z210_Almacen> AlmDic { get; set; } = new();
-        public NavigationManager NM { get; set; } = default!;
+        
         public RadzenDataGrid<Z210_Almacen>? AlmGrid { get; set; } = default!;
         protected override async Task OnInitializedAsync()
         {
@@ -88,16 +88,18 @@ namespace AppV7.Client.Pages.Uniformes.Canano
         }
 
         [Inject]
-        public I110UsuariosServ UserIServ { get; set; } = default!;
+        public I110UsuariosServ UsersIServ { get; set; } = default!;
         [Parameter]
         public Z110_Usuarios ElUsuario { get; set; } = new();
+        [Inject]
+        public NavigationManager NM { get; set; } = default!;
         public async Task LeerUser() 
         {
             var autState = await AuthStateTask;
             var user = autState.User;
             if (!user.Identity!.IsAuthenticated) NM.NavigateTo("/firma?laurl=/inicio");
             UserIdLogAll = user.FindFirst(c => c.Type == "sub")?.Value!;
-            var UserList = await UserIServ.Buscar($"UserId_-_UserId_-_{UserIdLogAll}", "vacio");
+            var UserList = await UsersIServ.Buscar($"UserId_-_UserId_-_{UserIdLogAll}", "vacio");
             ElUsuario = UserList.FirstOrDefault()!;
         }
     }

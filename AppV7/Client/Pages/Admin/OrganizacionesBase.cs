@@ -19,22 +19,19 @@ namespace AppV7.Client.Pages.Admin
 
         [Parameter]
         public Dictionary<string, string> OrgDic { get; set; } = new(); 
-        public bool isLoading { get; set; } = false;
+        
         public bool Editando { get; set; } = false;
         public bool HayWebMaster { get; set; } = false;
-        [Inject]
-        public NavigationManager NM { get; set; } = default!;
         public RadzenDataGrid<Z100_Org>? OrgGrid { get; set; } = default!;
         protected async override Task OnInitializedAsync()
         {
+            await LeerUser();
             await LeerDatos();
             await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId,
                             "Consulta de las Organizaciones desde sistema", false);
         }
-        
         protected async Task LeerDatos()
         {
-            isLoading = true;
             LasOrgs = await OrgIServ.Buscar("Allo");
             foreach (var org in LasOrgs)
             {
@@ -43,7 +40,6 @@ namespace AppV7.Client.Pages.Admin
                 if (!OrgDic.ContainsKey(org.Rfc))
                     OrgDic.Add(org.Rfc, org.OrgId);
             }
-            isLoading = false;
         }
         [CascadingParameter]
         public Task<AuthenticationState> AuthStateTask { get; set; } = default!;
@@ -83,10 +79,26 @@ namespace AppV7.Client.Pages.Admin
             return respuesta;
         }
         [Inject]
-        public I110UsuariosServ UsuariosIServ { get; set; } = default!;
+        public I110UsuariosServ UsersIServ { get; set; } = default!;
         [Parameter]
         public Z110_Usuarios ElUsuario { get; set; } = new();
-        
-        
+        [Inject]
+        public NavigationManager NM { get; set; } = default!;
+        public async Task LeerUser()
+        {
+            var autState = await AuthStateTask;
+            var user = autState.User;
+            if (!user.Identity!.IsAuthenticated) NM.NavigateTo("/firma?laurl=/inicio");
+            UserIdLogAll = user.FindFirst(c => c.Type == "sub")?.Value!;
+            /*
+            LosUsers = await UsersIServ.Buscar("Allo", "Vacio");
+            ElUsuario = LosUsers.FirstOrDefault(x => x.UsuariosId == UserIdLogAll)!;
+            */
+            
+            var UserList = await UsersIServ.Buscar($"UserId_-_UserId_-_{UserIdLogAll}", "vacio");
+            ElUsuario = UserList.FirstOrDefault()!;
+            
+        }
+
     }
 }

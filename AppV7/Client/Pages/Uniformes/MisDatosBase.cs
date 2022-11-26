@@ -15,6 +15,8 @@ namespace AppV7.Client.Pages.Uniformes
         protected override async Task OnInitializedAsync()
         {
             await LeerUser();
+            await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId,
+                            "Consulta de los datos del usuario", false);
         }
 
         [CascadingParameter]
@@ -56,10 +58,10 @@ namespace AppV7.Client.Pages.Uniformes
         }
 
         [Inject]
-        public I110UsuariosServ UserIServ { get; set; } = default!;
+        public I110UsuariosServ UsersIServ { get; set; } = default!;
         [Parameter]
         public Z110_Usuarios ElUsuario { get; set; } = new();
-
+        [Inject]
         public NavigationManager NM { get; set; } = default!;
         public async Task LeerUser()
         {
@@ -72,7 +74,7 @@ namespace AppV7.Client.Pages.Uniformes
             ElUsuario = LosUsers.FirstOrDefault(x => x.UsuariosId == UserIdLogAll)!;
             */
             
-            var UserList = await UserIServ.Buscar($"UserId_-_UserId_-_{UserIdLogAll}", "vacio");
+            var UserList = await UsersIServ.Buscar($"UserId_-_UserId_-_{UserIdLogAll}", "vacio");
             ElUsuario = UserList.FirstOrDefault()!;
             
         }

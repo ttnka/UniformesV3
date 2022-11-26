@@ -142,7 +142,14 @@
                                 Class="m-1" Click="@((args) => EditRow(datos))" Visible="@(!Editando)" >
                             </RadzenButton>
                         }
-                        @datos.Status ? <label>Activo</label> : <label>Borrado</label>;
+                        @if (@datos.Status)
+                        {
+                            <b>Activo</b>
+                        }
+                        else
+                        {
+                            <b>Suspendido</b>
+                        }
 
                     </Template>
 

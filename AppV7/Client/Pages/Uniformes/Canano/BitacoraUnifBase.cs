@@ -48,10 +48,10 @@ namespace AppV7.Client.Pages.Uniformes.Canano
         }
 
         [Inject]
-        public I110UsuariosServ UserIServ { get; set; } = default!;
+        public I110UsuariosServ UsersIServ { get; set; } = default!;
         [Parameter]
         public Z110_Usuarios ElUsuario { get; set; } = new();
-        
+        [Inject]
         public NavigationManager NM { get; set; } = default!;
         public async Task LeerUser()
         {
@@ -59,7 +59,7 @@ namespace AppV7.Client.Pages.Uniformes.Canano
             var user = autState.User;
             if (!user.Identity!.IsAuthenticated) NM.NavigateTo("/firma?laurl=/inicio");
             UserIdLogAll = user.FindFirst(c => c.Type == "sub")?.Value!;
-            LosUsers = await UserIServ.Buscar("All", "Vacio");
+            LosUsers = await UsersIServ.Buscar("All", "Vacio");
             ElUsuario = LosUsers.FirstOrDefault(x => x.UsuariosId == UserIdLogAll)!;
             /*
             LosUsers = await UserIServ.Buscar($"UserId_-_UserId_-_{UserIdLogAll}", "vacio");

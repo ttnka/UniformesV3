@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\Zuver\WebZuver\" />
+    <Folder Include="Pages\Uniformes\Folios\" />
     <Folder Include="wwwroot\Librerias\" />
   </ItemGroup>
 

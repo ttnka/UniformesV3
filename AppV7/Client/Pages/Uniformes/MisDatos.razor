@@ -72,7 +72,7 @@ else
 
     async void EditMyInfo()
     {
-        await UserIServ.UpDateUsuario(ElUsuario);
+        await UsersIServ.UpDateUsuario(ElUsuario);
         ShowNotification(ElMsn("Ok", "Se Actualizo", "Se hicieron cambios en tus datos", 0));
         Editar = !Editar;
     }

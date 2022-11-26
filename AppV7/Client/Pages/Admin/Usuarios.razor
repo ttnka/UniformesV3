@@ -185,7 +185,7 @@ else
         if (user == UserToInsert) UserToInsert = null!;
 
         Editando = !Editando;
-        await UserIServ.UpDateUsuario(user);
+        await UsersIServ.UpDateUsuario(user);
 
         string texto = $"Se actualizo un registro {user.Nombre}";
         texto += $"{user.Paterno} {user.Materno} {user.OldEmail}";
@@ -214,7 +214,7 @@ else
 
     async Task LoadData()
     {
-        LosUsers = await UserIServ.Buscar("Allo", "Vacio");
+        LosUsers = await UsersIServ.Buscar("Allo", "Vacio");
         Editando = false;
     }
 }

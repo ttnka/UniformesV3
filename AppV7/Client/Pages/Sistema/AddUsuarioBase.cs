@@ -14,8 +14,6 @@ namespace AppV7.Client.Pages.Sistema
         public I100OrgServ OrgIServ { get; set; } = default!;
         [Inject]
         public IAddUsuarioServ AddUserIServ { get; set; } = default!;
-        [Inject]
-        public I110UsuariosServ UserIServ { get; set; } = default!;
         public EAddUsuario NewAddUsuario { get; set; } = new();
         public List<KeyValuePair<int, string>> LosNiveles { get; set; } =
             new List<KeyValuePair<int, string>>();
@@ -25,21 +23,12 @@ namespace AppV7.Client.Pages.Sistema
 
         protected override async Task OnInitializedAsync()
         {
-            /*
-            var autState = await AuthStateTask;
-            var user = autState.User;
-            if (!user.Identity!.IsAuthenticated) NM.NavigateTo("/");
-            var uIdTp = user.FindFirst(c => c.Type == "sub")?.Value;
-            ElUsuario = (await UserIServ.Buscar(
-                $"UserId_-_UserId_-_{uIdTp}", "vacio")).FirstOrDefault();
-            if (ElUsuario == null) NM.NavigateTo("/");
-            */
             await LeerUser();
             LeerNiveles();
             await LeerOrganizaciones();
             
-            await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, "Consulto Crear nuevo usuario", false);
-            Console.WriteLine($"mail {NewAddUsuario.Mail} pass {NewAddUsuario.Pass}");
+            await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, 
+                "Consulto Crear nuevo usuario", false);
         }
         protected void LeerNiveles() 
         { 
@@ -61,8 +50,7 @@ namespace AppV7.Client.Pages.Sistema
             await AddUserIServ.AddUsuario(NewAddUsuario);
             NM.NavigateTo("/usuarios");    
         }
-        [Inject]
-        NavigationManager NM { get; set; } = default!;
+        
         [Inject]
         public I190BitacoraServ BitacoraIServ { get; set; } = default!;
         public MyFunc MyFunc { get; set; } = new MyFunc();
@@ -101,7 +89,7 @@ namespace AppV7.Client.Pages.Sistema
         [CascadingParameter]
         public Task<AuthenticationState> AuthStateTask { get; set; } = default!;
         [Inject]
-        public I110UsuariosServ UsuariosIServ { get; set; } = default!;
+        public I110UsuariosServ UsersIServ { get; set; } = default!;
         public Z110_Usuarios ElUsuario { get; set; } = new();
                 public bool Mayuscula { get; set; } = false;
         protected string MayArray = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -146,8 +134,9 @@ namespace AppV7.Client.Pages.Sistema
             }
             IsLargo = NewAddUsuario.Pass.Length > 5;
             IsRegistro = IsValido && IsLargo && Mayuscula && Minuscula && Numero;
-            
         }
+        [Inject]
+        NavigationManager NM { get; set; } = default!;
         public async Task LeerUser()
         {
             var autState = await AuthStateTask;
@@ -158,26 +147,10 @@ namespace AppV7.Client.Pages.Sistema
             LosUsers = await UserIServ.Buscar("Allo", "Vacio");
             ElUsuario = LosUsers.FirstOrDefault(x => x.UsuariosId == UserIdLogAll)!;
             */
-            var UserList = await UserIServ.Buscar($"UserId_-_UserId_-_{UserIdLogAll}", "vacio");
+            var UserList = await UsersIServ.Buscar($"UserId_-_UserId_-_{UserIdLogAll}", "vacio");
             ElUsuario = UserList.FirstOrDefault()!;
             
         }
     }
 }
 
-/*
-        protected async Task PoblarUsuario(string mail)
-        {
-            var resultado = await UsuariosIServ.Buscar($"OldEmail_-_OldEmail_-_{mail}",
-                "vacio");
-            ElUsuario = resultado.FirstOrDefault() ?? new();
-        }
-        
-        protected async Task<string> AsignaOrgId(string rfc)
-        {
-            var resultado = await OrgIServ.Buscar($"Rfc_-_Rfc_-_{rfc}");
-
-            return resultado.FirstOrDefault().OrgId;
-        }
-
- */

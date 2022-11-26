@@ -9,8 +9,30 @@ namespace AppV7.Client.Pages.Uniformes
     public class InicioUniformesBase : ComponentBase 
     {
         public int SelectedIndex { get; set; } = 0;
-
+        public int showRenglon { get; set; } = 1;
+        public double showavance { get; set; } = 2;
         
+        public Dictionary<string, string> Graficas { get; set; } = 
+            new Dictionary<string, string>();
+
+        protected override async Task OnInitializedAsync()
+        {
+            await LeerGraficos();
+            showRenglon = MyFunc.DameRandom(1, 100);
+            showavance = MyFunc.DameRandom(1, 100);
+        }
+
+        protected async Task LeerGraficos()
+        {
+            // General  Folios Entregados /  Meta GENERAL 
+
+            // Almacenes y Comercioss sumatoria de los 2
+
+            // Meta vs Almancen vs Folios
+
+
+        } 
+
         [CascadingParameter]
         public Task<AuthenticationState> AuthStateTask { get; set; } = default!;
         public string UserIdLogAll { get; set; } = string.Empty;

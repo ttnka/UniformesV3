@@ -23,7 +23,7 @@
         </div>
     </div>
 
-@if (LasMetas != null)
+@if (LasMetas != null && LasMetas.Count() >=0 )
 {
         <RadzenCard>       
             <RadzenDataGrid @ref="MetaGrid" Data="@LasMetas" TItem="Z290_Meta" 
@@ -71,7 +71,7 @@
                 </RadzenDataGridColumn>
 
                 <RadzenDataGridColumn TItem="Z290_Meta" Property="Tipo" Title="Tipo" 
-                Filterable="true"  Width="120px">
+                Filterable="true"  Width="150px">
                     <Template Context="datos">
                         @datos.Tipo 
                     </Template>
@@ -83,7 +83,7 @@
                 </RadzenDataGridColumn>
 
                 <RadzenDataGridColumn TItem="Z290_Meta" Property="Desc" Title="Descripcion" 
-                Filterable="true"  Width="270px">
+                Filterable="false" Sortable="false"  Width="270px">
                     <Template Context="datos">
                         @datos.Desc
                     </Template>
@@ -94,18 +94,18 @@
                 </RadzenDataGridColumn>
 
                 <RadzenDataGridColumn TItem="Z290_Meta" Property="Cantidad" Title="Cantidad" 
-                Filterable="false" Sortable="false" Width="80px">
+                Filterable="false" Sortable="false" Width="100px" TextAlign="TextAlign.Right" >
                     <Template Context="datos">
-                        @datos.Cantidad
+                        @datos.Cantidad.ToString("N0")
                     </Template>
                     <EditTemplate Context="datos">
                         <RadzenNumeric Name="Cantidad" @bind-Value="datos.Cantidad" Style="width: 100%" 
-                            Min=0  />
+                            Min=0 ShowUpDown="false" />
                     </EditTemplate>
                 </RadzenDataGridColumn>
 
-                <RadzenDataGridColumn TItem="Z290_Meta" Property="Municipio" Title="Municipio" 
-                Filterable="true" Width="150px">
+                <RadzenDataGridColumn TItem="Z290_Meta" Property="Municipio" Title="Municipio"
+                    Filterable="false" Sortable="false" Width="170px">
                     <Template Context="datos">
                         @datos.Municipio
                     </Template>
@@ -116,15 +116,16 @@
                     </EditTemplate>
                 </RadzenDataGridColumn>
 
-                <RadzenDataGridColumn TItem="Z290_Meta" Property="Usuario" Title="Usuario" 
-                Filterable="true" Width="150px">
+                <RadzenDataGridColumn TItem="Z290_Meta" Property="Usuario" Title="Usuario"
+                    Filterable="false" Sortable="false" Width="170px">
                     <Template Context="datos">
-                        @datos.Usuario
+                        @LosUsers.FirstOrDefault(x=>x.UsuariosId==@datos.Usuario).OldEmail /
+                        @LosUsers.FirstOrDefault(x=>x.UsuariosId==@datos.Usuario).Nombre
                     </Template>
                     <EditTemplate Context="datos">
-                            <RadzenDropDown Name="Usuario" Data=@LosMpios @bind-Value=@datos.Municipio
-                            ValueProperty="Value" TextProperty="Value" AllowClear="true" 
-                            Style="width: 100%;" />
+                            <RadzenDropDown Name="Usuario" Data=@LosUsers @bind-Value=@datos.Usuario
+                                    ValueProperty="UsuariosId" TextProperty="OldEmail" AllowClear="true"
+                                    Style="width: 100%;" />
                     </EditTemplate>
                 </RadzenDataGridColumn>
 
@@ -132,46 +133,28 @@
                     Filterable="false" Sortable="false" TextAlign="TextAlign.Center" 
                     Width="250px" Title="Estado">
                     <Template Context="datos">
-                        @if (datos.Tipo == "General")
-                        {
-                                <label> </label>
-                        }
-                        else
-                        {
-                                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Secondary" 
+                        <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Secondary" 
                             Class="m-1" Click="@((args) => EditRow(datos))" Visible="@(!Editando)" >
-                                </RadzenButton>
-                        }
-                        @if (datos.Status == true)
-                        { 
-                                <b>Activo</b>
-                        }
-                        else
-                        {
-                                <b>Suspendido</b>
-                        }
-
+                        </RadzenButton>
+                        @if(@datos.Status)
+                        {<b>Activo</b>} else {<b>Suspendido</b>}
                     </Template>
 
                     <EditTemplate Context="datos">
 
                         @if (datos.Estado != 3)
                         {
-                                <label>Borrar este registro? </label>
-
+                            <label>Borrar este registro? </label><br />
+                            <label> Si </label>
+                            <RadzenSwitch @bind-Value=@datos.Status Name="Status" /> 
+                            <label> No!</label>
                             <br />
-                                <label> Si </label>
-                                <RadzenSwitch @bind-Value=@datos.Status Name="Status" /> 
-                                <label> No!</label>
-                                <br />
                         }
 
                         @if (datos.Titulo != null && LasMetas.Count() > 0 &&
                         LasMetas.Count(x=>x.Titulo == datos.Titulo) > 0 && datos.Estado == 3)
                         {
-                                <label>El titulo de la meta ya esta registrado!</label>
-
-                            <br />
+                            <label>El titulo de la meta ya esta registrado!</label><br />
                         }
                         else
                         {
@@ -233,7 +216,7 @@ else
         MetaToInsert = new Z290_Meta();
         MetaToInsert.MetaId = Guid.NewGuid().ToString();
         MetaToInsert.Estado = 3;
-        MetaToInsert.Municipio = "Hermosillo";
+
         Editando = !Editando;
 
         await MetaGrid!.InsertRow(MetaToInsert);
@@ -269,5 +252,4 @@ else
         LasMetas = await MetaIServ.Buscar("Alla");
         Editando = false;
     }
-
 }

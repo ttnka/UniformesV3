@@ -85,6 +85,7 @@ namespace AppV7.Server.Models.Repo
                     res.OrgId = user.OrgId;
                     res.Nivel = user.Nivel;
                     res.OldEmail = user.OldEmail;
+                    res.Municipio = user.Municipio;
                     res.Estado = user.Estado;
                     res.Status = user.Status;
                 }

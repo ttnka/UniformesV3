@@ -1,0 +1,26 @@
+﻿
+@inherits MetaPorcentajeBase
+
+<RadzenCard>
+    @if(TituloGrafica.Length > 0) 
+    {<h4>@TituloGrafica</h4>}
+    @if (SubTituloGrafiaca.Length > 0) 
+    {<h4>@SubTituloGrafiaca</h4>}
+    <RadzenArcGauge Style="width: 100%; height: 100%;" >
+        <RadzenArcGaugeScale Step="10" Min="0" Max="100" MinorStep="5" Radius="1.5" 
+                TickPosition=GaugeTickPosition.Inside Y="0.9" Margin="0">
+            <RadzenArcGaugeScaleValue Value=@Valor ShowValue=@ShowEtiquetas >
+                <Template Context="pointer">
+                    <h4>
+                @pointer.Value <sup>@Anotacion</sup>
+                    </h4>
+                </Template>
+            </RadzenArcGaugeScaleValue>
+        </RadzenArcGaugeScale>
+    </RadzenArcGauge>
+
+</RadzenCard>
+
+@code {
+
+}

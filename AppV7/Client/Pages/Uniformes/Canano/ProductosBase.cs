@@ -22,33 +22,16 @@ namespace AppV7.Client.Pages.Uniformes.Canano
         public RadzenDataGrid<Z220_Producto>? ProdGrid { get; set; } = default!;
         protected override async Task OnInitializedAsync()
         {
-            var autState = await AuthStateTask;
-            var user = autState.User;
-            if (!user.Identity!.IsAuthenticated) NM.NavigateTo("/firma?laurl=/inicio");
-            UserIdLogAll = user.FindFirst(c => c.Type == "sub")?.Value!;
-            var UserList = await UserIServ.Buscar($"UserId_-_UserId_-_{UserIdLogAll}", "vacio");
-            ElUsuario = UserList.FirstOrDefault()!;
-            //LeerMunicipios();
+            await LeerUser();
             await LeerDatos();
             LeerGpoTallas();
             await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId,
                             "Consulta de lista de productos", false);
         }
-
         protected async Task LeerDatos()
         {
             LosProductos = await ProductoIServ.Buscar("Alla");
-            /*
-            if (LosProductos.Any())
-            {
-                foreach(var prod in LosProductos)
-                {
-                    if (!ProdDic.ContainsKey(prod.Corto)) ProdDic.Add(prod.Corto, prod);
-                }
-            }
-            */
         }
-
         protected void LeerGpoTallas()
         {
             string[] gpoTemp = Constantes.Grupos.Split(",");
@@ -106,9 +89,10 @@ namespace AppV7.Client.Pages.Uniformes.Canano
             return respuesta;
         }
         [Inject]
-        public I110UsuariosServ UserIServ { get; set; } = default!;
+        public I110UsuariosServ UsersIServ { get; set; } = default!;
         [Parameter]
         public Z110_Usuarios ElUsuario { get; set; } = new();
+        [Inject]
         public NavigationManager NM { get; set; } = default!;
         public async Task LeerUser()
         {
@@ -121,7 +105,7 @@ namespace AppV7.Client.Pages.Uniformes.Canano
             ElUsuario = LosUsers.FirstOrDefault(x => x.UsuariosId == UserIdLogAll)!;
             */
             
-            var UserList = await UserIServ.Buscar($"UserId_-_UserId_-_{UserIdLogAll}", "vacio");
+            var UserList = await UsersIServ.Buscar($"UserId_-_UserId_-_{UserIdLogAll}", "vacio");
             ElUsuario = UserList.FirstOrDefault()!;
             
         }
