@@ -19,16 +19,12 @@
     <nav class="flex-column">
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="/inicio" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
+                <span class="oi oi-home" aria-hidden="true" 
+                @onclick=@(()=>reducir("Home") ></span> Home
             </NavLink>
         </div>
         <AuthorizeView>
     <Authorized>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/metas" @onclick=@(()=>reducir("Ini"))>
-                <span aria-hidden="true"></span>Metas
-            </NavLink>
-        </div>
 
         <div class="nav-item px-3">
             <span class="nav-link" aria-hidden="true" style="color:white"
@@ -40,19 +36,24 @@
         <ul class="nav flex-column">
             <li class="nav-item px-3">
                 <NavLink class="nav-link" href="/solicitudes">
-                    <span aria-hidden="true"></span> Solicitudes
+                    <span aria-hidden="true"></span> ...Solicitudes
                 </NavLink>
             </li>
             <li class="nav-item px-3">
                 <NavLink class="nav-link" href="/folios">
-                    <span  aria-hidden="true"></span> Folios
+                    <span  aria-hidden="true"></span> ...Folios
                 </NavLink>
             </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="/invetarios">
-                        <span  aria-hidden="true"></span> Inventarios
-                    </NavLink>
-                </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/invetarios">
+                    <span  aria-hidden="true"></span> ...Inventarios
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/metas">
+                    <span aria-hidden="true"></span> ...Metas
+                </NavLink>
+            </li>
         </ul>
     }
 
@@ -80,22 +81,22 @@
 
                     <li class="nav-item px-3">
                         <NavLink class="nav-link" href="/usuarios">
-                                <span aria-hidden="true"></span> Usuarios
+                                <span aria-hidden="true"></span> ...Usuarios
                         </NavLink>
                     </li>
                     <li class="nav-item px-3">
                         <NavLink class="nav-link" href="/organizaciones">
-                                <span aria-hidden="true"></span> Organizaciones
+                                <span aria-hidden="true"></span> ...Organizaciones
                         </NavLink>
                     </li>
                     <li class="nav-item px-3">
                         <NavLink class="nav-link" href="/almacenes">
-                                <span aria-hidden="true"></span> Almacenes
+                                <span aria-hidden="true"></span> ...Almacenes
                         </NavLink>
                     </li>
                     <li class="nav-item px-3">
                         <NavLink class="nav-link" href="/productos">
-                                <span aria-hidden="true"></span> Productos
+                                <span aria-hidden="true"></span> ...Productos
                         </NavLink>
                     </li>
                 </ul>

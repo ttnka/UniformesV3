@@ -9,45 +9,92 @@
 <AuthorizeView>
     <Authorized>
         <RadzenTabs @bind-SelectedIndex=@SelectedIndex>
-                <Tabs>
+                <Tabs> 
                     <RadzenTabsItem Text="Inicio">
+                        <RadzenButton Icon="refresh" style="margin-bottom: 10px" ButtonStyle="ButtonStyle.Info"
+                                      Click="@LeerGraficos" />
                         @if ( showRenglon > 50)
                         {
-                            <div class="form-grup row">
-                                <div class="col-sm-4">
-                                <MetaPorcentaje TituloGrafica="Cuanto falta?" Anotacion="% Avance"
-                                   ShowAnotacion="true" ShowEtiquetas="true" 
-                                   Valor="@showavance" />
-                            </div>
-                            <div class="col-sm-4">
-                                <MetasGeneral TituloGrafica="Almacenes y Comercios" Anotacion=""
-                                    TituloSerie="Puntos de entrega" MinX="0" ShowEtiquetas="false"
-                                    DatosTitulos="Almacenes,Comercios" DatosValores="3,15" />
-                            </div>
-                            <div class="col-sm-4">
-                                <MetasGeneral Anotacion="" ShowAnotacion="false" ShowEtiquetas=true
-                                    TituloGrafica="Avance Municipio" SubTituloGrafiaca=""
-                                    TituloSerie="Folios Hermosillo" TituloY="" MinX="0"
-                                    DatosTitulos="Folio" DatosValores="@(DataFoliosHillo.toString())" />
-                             </div>
-                        </div>
-                        } else {
                         <div class="form-grup row">
-                            <div class="col-sm-4">
-                                <MetaPorcentaje TituloGrafica="Cuanto falta?" Anotacion="% Avance"
-                                                ShowAnotacion="true" ShowEtiquetas="true" Valor="@showavance" />
+                                @if (showavance < 1) 
+                                {
+                                    <div class="spinner"></div>
+                                } 
+                                else
+                                {
+                                    <div class="col-sm-4">
+                                        <MetaPorcentaje TituloGrafica="Como vamos?" Anotacion="% Avance"
+                                            ShowAnotacion="true" ShowEtiquetas="true" 
+                                            Valor="@showavance" />
+                                    </div>
+                                }
+                                @if (string.IsNullOrEmpty(TxtMpios))
+                                {
+                                    <div class="spinner"></div>
+                                } 
+                                else
+                                {
+                                <div class="col-sm-4">
+                                    <MetasGeneral TituloGrafica="Folios Entregados" Anotacion=""
+                                        TituloSerie="Folios x Mpio" MinX="0" ShowEtiquetas="true"
+                                        DatosTitulos="Hillo, Nog" DatosValores="@TxtMpios" />
+                                </div>
+                                }
+                                @if (string.IsNullOrEmpty(TxtDataFoliosHillo))
+                                {
+                                    <div class="spinner"></div>
+                                } 
+                                else
+                                {
+                                    <div class="col-sm-4">
+                                        <MetasGeneral Anotacion="" ShowAnotacion="false" ShowEtiquetas=true
+                                            TituloGrafica="Avance Municipio" SubTituloGrafiaca=""
+                                            TituloSerie="Folios Hermosillo" TituloY="" MinX="0"
+                                            DatosTitulos="Folio" DatosValores="@TxtDataFoliosHillo" />
+                                    </div>
+                                }
                             </div>
-                            <div class="col-sm-4">
-                                <MetasGeneral TituloGrafica="Almacenes y Comercios" Anotacion=""
-                                              TituloSerie="Folios de Sec" MinX="0" ShowEtiquetas="false"
-                                              DatosTitulos="Almacenes,Comercios" DatosValores="@DataAlmComer" />
-                            </div>
-                            <div class="col-sm-4">
-                                <MetasGeneral Anotacion="" ShowAnotacion="false" ShowEtiquetas=true
-                                              TituloGrafica="Folio Entregados Mpios" SubTituloGrafiaca=""
-                                              TituloSerie="Guaymas" TituloY="" MinX="0"
-                                              DatosTitulos="Folios" DatosValores="@DataFoliosGuaymas" />
-                            </div>
+                        } 
+                        else 
+                        {
+                        <div class="form-grup row">
+                            @if (string.IsNullOrEmpty(TxtMetaGral))
+                            {
+                                <div class="spinner"></div>
+                            } 
+                            else
+                            {
+                                <div class="col-sm-4">
+                                    <MetasGeneral TituloGrafica="Meta Total" Anotacion=""
+                                        TituloSerie="Folios a entregar" MinX="0" ShowEtiquetas="false"
+                                        DatosTitulos="Meta" DatosValores="@TxtMetaGral" />
+                                </div>
+                            }
+                            @if (string.IsNullOrEmpty(TxtDataAlmComer))
+                            {
+                                <div class="spinner"></div>
+                            } 
+                            else
+                            {
+                                <div class="col-sm-4">
+                                    <MetasGeneral TituloGrafica="Almacenes y Comercios" Anotacion=""
+                                        TituloSerie="Folios de Sec" MinX="0" ShowEtiquetas="true"
+                                        DatosTitulos="Almacenes,Comercios" DatosValores="@TxtDataAlmComer" />
+                                </div>
+                            }
+                            @if (string.IsNullOrEmpty(TxtDataFoliosNogales))
+                            {
+                                <div class="spinner"></div>
+                            } 
+                            else
+                            {
+                                <div class="col-sm-4">
+                                    <MetasGeneral Anotacion="" ShowAnotacion="true" ShowEtiquetas=true
+                                        TituloGrafica="Folio Entregados Mpios" SubTituloGrafiaca=""
+                                        TituloSerie="Nogales" TituloY="" MinX="0"
+                                                  DatosTitulos="Folios" DatosValores="@TxtDataFoliosNogales" />
+                                </div>
+                            }
                         </div>
                         }
                         
