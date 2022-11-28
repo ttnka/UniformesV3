@@ -12,22 +12,22 @@ namespace AppV7.Shared
     {
         [Key]
         public string FolioId { get; set; } = Guid.NewGuid().ToString();
-        public string RegId { get; set; } = null!;
+        public string? RegId { get; set; } 
         public DateTime FechaEntrega { get; set; } = DateTime.Now;
-        public int Status { get; set; } = 0;
+        public string? Status { get; set; } 
         public string Folio { get; set; } = null!;
-        public string NombreCompleto { get; set; } = null!;
-        public string Curp { get; set; } = null!;
-        public string TurnoId { get; set; } = null!;
-        public int Grado { get; set; } = 0;
-        public string Codigo { get; set; } = null!;
-        public string EscuelaId { get; set; } = null!;
-        public string InscStatusId { get; set; } = null!;
-        public string GeneroId { get; set; } = null!;
-        public string NivelId { get; set; } = null!;
-        public string TipoValId { get; set; } = null!;
-        public string Localidad { get; set; } = null!;
-        public string Municipio { get; set; } = null!;
+        public string? NombreCompleto { get; set; }
+        public string? Curp { get; set; }
+        public string? TurnoId { get; set; }
+        public string? Grado { get; set; } 
+        public string? Codigo { get; set; } 
+        public string? EscuelaId { get; set; }
+        public string? InscStatusId { get; set; }
+        public string? GeneroId { get; set; }
+        public string? NivelId { get; set; }
+        public string? TipoValId { get; set; }
+        public string? Localidad { get; set; }
+        public string? Municipio { get; set; }
 
     }
 }

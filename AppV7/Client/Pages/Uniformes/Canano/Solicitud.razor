@@ -23,7 +23,7 @@
         </div>
     </div>
 
-@if (LasSolicitudes != null)
+@if (LasSolicitudes != null && LasSolicitudes.Count()>=0)
 {
         <RadzenCard>       
             <RadzenDataGrid @ref="SolGrid" Data="@LasSolicitudes" TItem="Z230_Solicitud" 
@@ -56,7 +56,7 @@
                 </RadzenDataGridColumn>
 
                 <RadzenDataGridColumn TItem="Z230_Solicitud" Property="Almacen" Title="Almacen" 
-                Filterable="true"  Width="150px">
+                Filterable="true"  Width="200px">
                     <Template Context="datos">
                         @datos.Almacen
                     </Template>
@@ -68,9 +68,9 @@
                 </RadzenDataGridColumn>
                 
                     <RadzenDataGridColumn TItem="Z230_Solicitud" Property="Usuario" 
-                        Title="Usuario" Filterable="true"  Width="220px">
+                        Title="Usuario" Filterable="true"  Width="250px">
                     <Template Context="datos">
-                        @LosUsers.FirstOrDefault(x=>x.UsuariosId==datos.Usuario)!.
+                        @LosUsers.FirstOrDefault(x=>x.UsuariosId==datos.Usuario)!.Nombre
                         @LosUsers.FirstOrDefault(x=>x.UsuariosId==datos.Usuario)!.Paterno
                         
                     </Template>
@@ -82,7 +82,7 @@
                         else
                         {
                             <RadzenDropDown Name="Usuario" Data=@LosUsers @bind-Value=@datos.Usuario
-                                ValueProperty="UsuariosId" TextProperty="OldEMail"
+                                    ValueProperty="UsuariosId" TextProperty="OldEmail"
                                 AllowClear="true" Style="width: 100%;" />
                         }
                     </EditTemplate>
@@ -104,9 +104,12 @@
                 Filterable="true"  Width="270px">
                     <Template Context="datos">
                         @datos.Desc <br>
-                        <label>
-                            Articulos: @DataDic[$"Fol_Det_{datos.Folio}"]
-                        </label>
+                        @if(DataDic.ContainsKey($"Fol_Det_{datos.Folio}"))
+                        {
+                            <label>
+                                 Articulos: @DataDic[$"Fol_Det_{datos.Folio}"]
+                            </label>
+                        }
                     </Template>
                     <EditTemplate Context="datos">
                         <RadzenTextArea Name="Desc" @bind-Value="datos.Desc" Style="width: 100%" /><br>
@@ -120,7 +123,7 @@
                         @if (@datos.Estado > 0 && @datos.Estado < 4)
                         {
                             <label class="@DataDic[$"Etiqueta_{@datos.Estado}"]" >
-                                @DataDic[$"Sol_Edo_{datos.Estado}"] / 
+                                @DataDic[$"Sol_Edo_{datos.Estado}"] 
                                 
                             </label>
                         }
@@ -157,10 +160,11 @@
 
                         @if (datos.Estado != 3)
                         {
-                                <label>Borrar este registro? Si </label>
-                                <RadzenSwitch @bind-Value=@datos.Status Name="Status" /> 
-                                <label>No!</label>
-                                <br />
+                            <label>Borrar este registro? </label><br />
+                            <label> Si </label>
+                            <RadzenSwitch @bind-Value=@datos.Status Name="Status" />
+                            <label> No!</label>
+                            <br />
                         }
 
                         <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Primary" 

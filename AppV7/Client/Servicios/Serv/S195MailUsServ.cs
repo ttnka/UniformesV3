@@ -12,9 +12,10 @@ namespace AppV7.Client.Servicios.Serv
         {
             _httpClient = httpClient;
         }
+        string path = "/api/C195MailUs/";
         public async Task<Z195_MailUs> AddMailUs(Z195_MailUs mailUs)
         {
-            var newMailUs = await _httpClient.PostAsJsonAsync<Z195_MailUs>("/api/C195MailUs/", mailUs);
+            var newMailUs = await _httpClient.PostAsJsonAsync<Z195_MailUs>(path, mailUs);
             if (newMailUs.IsSuccessStatusCode)
             {
                 return await newMailUs.Content.ReadFromJsonAsync<Z195_MailUs>();
@@ -27,7 +28,7 @@ namespace AppV7.Client.Servicios.Serv
 
         public async Task<IEnumerable<Z195_MailUs>> Buscar(string clave)
         {
-            var resultado = $"/api/C195MailUs/filtro?clave={clave}";
+            var resultado = $"{path}filtro?clave={clave}";
 
             return await _httpClient.GetFromJsonAsync<IEnumerable<Z195_MailUs>>(resultado);
         }

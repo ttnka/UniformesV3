@@ -119,8 +119,13 @@
                 <RadzenDataGridColumn TItem="Z290_Meta" Property="Usuario" Title="Usuario"
                     Filterable="false" Sortable="false" Width="170px">
                     <Template Context="datos">
-                        @LosUsers.FirstOrDefault(x=>x.UsuariosId==@datos.Usuario).OldEmail /
-                        @LosUsers.FirstOrDefault(x=>x.UsuariosId==@datos.Usuario).Nombre
+                        @if(!string.IsNullOrEmpty(datos.Usuario))
+                       {
+                            @LosUsers.FirstOrDefault(x=>x.UsuariosId==
+                                datos.Usuario)!.OldEmail
+                            @LosUsers.FirstOrDefault(x=>x.UsuariosId==
+                                datos.Usuario)!.Nombre
+                       }
                     </Template>
                     <EditTemplate Context="datos">
                             <RadzenDropDown Name="Usuario" Data=@LosUsers @bind-Value=@datos.Usuario

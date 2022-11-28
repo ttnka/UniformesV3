@@ -12,9 +12,10 @@ namespace AppV7.Client.Servicios.Serv
         {
             _httpClient = httpClient;
         }
+        string path = "/api/C202Contacto/";
         public async Task<Z202_Contacto> AddContacto(Z202_Contacto contacto)
         {
-            var newContacto = await _httpClient.PostAsJsonAsync<Z202_Contacto>("/api/C202Contacto/", contacto);
+            var newContacto = await _httpClient.PostAsJsonAsync<Z202_Contacto>(path, contacto);
             if (newContacto.IsSuccessStatusCode)
             {
                 return await newContacto.Content.ReadFromJsonAsync<Z202_Contacto>();
@@ -27,14 +28,14 @@ namespace AppV7.Client.Servicios.Serv
 
         public async Task<IEnumerable<Z202_Contacto>> Buscar(string clave)
         {
-            var resultado = $"/api/C202Contacto/filtro?clave={clave}";
+            var resultado = $"{path}filtro?clave={clave}";
 
             return await _httpClient.GetFromJsonAsync<IEnumerable<Z202_Contacto>>(resultado);
         }
 
         public async Task<Z202_Contacto> UpdateContacto(Z202_Contacto contacto)
         {
-            var UpdateContacto = await _httpClient.PutAsJsonAsync<Z202_Contacto>("/api/C202Contacto/", contacto);
+            var UpdateContacto = await _httpClient.PutAsJsonAsync<Z202_Contacto>(path, contacto);
             if (UpdateContacto.IsSuccessStatusCode)
             {
                 return await UpdateContacto.Content.ReadFromJsonAsync<Z202_Contacto>();

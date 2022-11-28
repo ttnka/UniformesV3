@@ -3,20 +3,27 @@ using AppV7.Shared.Libreria;
 using AppV7.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Radzen.Blazor;
 using Radzen;
+using Radzen.Blazor;
 
-namespace AppV7.Client.Pages.Uniformes
+namespace AppV7.Client.Pages.Uniformes.Folios
 {
-    public class MisDatosBase : ComponentBase 
+    public class FoliosListBase : ComponentBase 
     {
-        public bool Editar { get; set; } = false;
-        public RadzenTemplateForm<Z110_Usuarios>? MyInfoForm { get; set; } = new();
+        [Inject]
+        public I260FolioServ FolioIServ { get; set; } = default!;
+        public IEnumerable<Z260_Folio> LosFolios { get; set; } = Enumerable.Empty<Z260_Folio>();
+        public bool Editando { get; set; } = false;
+        public RadzenDataGrid<Z260_Folio>? FolioGrid { get; set; } = default!;
+        public List<string> FileNameList { get; set; } = new List<string>();
         protected override async Task OnInitializedAsync()
         {
             await LeerUser();
-            await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId,
-                            "Consulta de los datos del usuario Mis Datos", false);
+            await LeerDatos();
+        }
+        protected async Task LeerDatos()
+        {
+            LosFolios = await FolioIServ.Buscar("Alla");
         }
 
         [CascadingParameter]
@@ -61,6 +68,8 @@ namespace AppV7.Client.Pages.Uniformes
         public I110UsuariosServ UsersIServ { get; set; } = default!;
         [Parameter]
         public Z110_Usuarios ElUsuario { get; set; } = new();
+        public IEnumerable<Z110_Usuarios> LosUsers { get; set; } =
+            Enumerable.Empty<Z110_Usuarios>();
         [Inject]
         public NavigationManager NM { get; set; } = default!;
         public async Task LeerUser()
@@ -69,14 +78,14 @@ namespace AppV7.Client.Pages.Uniformes
             var user = autState.User;
             if (!user.Identity!.IsAuthenticated) NM.NavigateTo("/firma?laurl=/inicio");
             UserIdLogAll = user.FindFirst(c => c.Type == "sub")?.Value!;
-            /*
-            LosUsers = await UserIServ.Buscar("All", "Vacio");
+
+            LosUsers = await UsersIServ.Buscar("All", "Vacio");
             ElUsuario = LosUsers.FirstOrDefault(x => x.UsuariosId == UserIdLogAll)!;
-            */
-            
-            var UserList = await UsersIServ.Buscar($"UserId_-_UserId_-_{UserIdLogAll}", "vacio");
+
+            /*
+            var UserList = await UserIServ.Buscar($"UserId_-_UserId_-_{UserIdLogAll}", "vacio");
             ElUsuario = UserList.FirstOrDefault()!;
-            
+            */
         }
     }
 }

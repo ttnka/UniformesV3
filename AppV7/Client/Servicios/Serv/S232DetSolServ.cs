@@ -12,9 +12,10 @@ namespace AppV7.Client.Servicios.Serv
         {
             _httpClient = httpClient;
         }
+        string path = "/api/C232DetSol/";
         public async Task<Z232_DetSol> AddDetalle(Z232_DetSol det)
         {
-            var newDet = await _httpClient.PostAsJsonAsync<Z232_DetSol>("/api/C232DetSol/", det);
+            var newDet = await _httpClient.PostAsJsonAsync<Z232_DetSol>(path, det);
             if (newDet.IsSuccessStatusCode)
             {
                 return await newDet.Content.ReadFromJsonAsync<Z232_DetSol>();
@@ -27,13 +28,13 @@ namespace AppV7.Client.Servicios.Serv
 
         public async Task<IEnumerable<Z232_DetSol>> Buscar(string clave)
         {
-            var resultado = $"/api/C232DetSol/filtro?clave={clave}";
+            var resultado = $"{path}filtro?clave={clave}";
             return await _httpClient.GetFromJsonAsync<IEnumerable<Z232_DetSol>>(resultado);
         }
 
         public async Task<Z232_DetSol> UpDateDetalle(Z232_DetSol det)
         {
-            var updateDet = await _httpClient.PutAsJsonAsync<Z232_DetSol>("/api/C232DetSol/", det);
+            var updateDet = await _httpClient.PutAsJsonAsync<Z232_DetSol>(path, det);
             return updateDet.IsSuccessStatusCode ?
                 await updateDet.Content.ReadFromJsonAsync<Z232_DetSol>() : null;
         }

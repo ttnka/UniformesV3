@@ -13,14 +13,18 @@ namespace AppV7.Server.Models.Repo
         {
             _appDbContext = appDbContext;
         }
-
         public async Task<Z260_Folio> AddFolio(Z260_Folio folio)
         {
             var res = await _appDbContext.Folios.AddAsync(folio);
             await _appDbContext.SaveChangesAsync();
             return res.Entity;
         }
-
+        public async Task<bool> AddFoliosVarios(List<Z260_Folio> folio)
+        {
+            await _appDbContext.Folios.AddRangeAsync(folio);
+            await _appDbContext.SaveChangesAsync();
+            return true;
+        }
         public async Task<IEnumerable<Z260_Folio>> Buscar(string clave)
         {
             IQueryable<Z260_Folio> querry = _appDbContext.Folios;

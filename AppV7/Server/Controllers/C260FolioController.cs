@@ -30,6 +30,20 @@ namespace AppV7.Server.Controllers
             }
         }
 
+        [HttpPost("{varios}")]
+        public async Task<ActionResult<bool>> AddFoliosVarios(List<Z260_Folio> folio)
+        {
+            try
+            {
+                if (folio == null) return BadRequest();
+                return await _folioIFace.AddFoliosVarios(folio);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error al intentar un grupo de nuevos folio de los comerciantes.");
+            }
+        }
         [HttpPost]
         public async Task<ActionResult<Z260_Folio>> AddFolio(Z260_Folio folio)
         {

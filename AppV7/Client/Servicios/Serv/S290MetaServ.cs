@@ -12,10 +12,10 @@ namespace AppV7.Client.Servicios.Serv
         {
             _httpClient = httpClient;
         }
-
+        string path = "/api/C290Meta/";
         public async Task<Z290_Meta> AddMeta(Z290_Meta meta)
         {
-            var newMeta = await _httpClient.PostAsJsonAsync<Z290_Meta>("/api/C290Meta/", meta);
+            var newMeta = await _httpClient.PostAsJsonAsync<Z290_Meta>(path, meta);
             if (newMeta.IsSuccessStatusCode)
             {
                 return await newMeta.Content.ReadFromJsonAsync<Z290_Meta>();
@@ -28,13 +28,13 @@ namespace AppV7.Client.Servicios.Serv
 
         public async Task<IEnumerable<Z290_Meta>> Buscar(string clave)
         {
-            var resultado = $"/api/C290Meta/filtro?clave={clave}";
+            var resultado = $"{path}filtro?clave={clave}";
             return await _httpClient.GetFromJsonAsync<IEnumerable<Z290_Meta>>(resultado);
         }
 
         public async Task<Z290_Meta> UpDateMeta(Z290_Meta meta)
         {
-            var UpdateMeta = await _httpClient.PutAsJsonAsync<Z290_Meta>("/api/C290Meta/", meta);
+            var UpdateMeta = await _httpClient.PutAsJsonAsync<Z290_Meta>(path, meta);
             return UpdateMeta.IsSuccessStatusCode ?
                 await UpdateMeta.Content.ReadFromJsonAsync<Z290_Meta>() : null;
         }

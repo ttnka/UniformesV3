@@ -12,10 +12,10 @@ namespace AppV7.Client.Servicios.Serv
         {
             _httpClient = httpClient;
         }
-
+        string path = "/api/C110Usuarios/";
         public async Task<Z110_Usuarios> AddUsuario(Z110_Usuarios usuario)
         {
-            var newUsuario = await _httpClient.PostAsJsonAsync<Z110_Usuarios>("/api/C110Usuarios", usuario);
+            var newUsuario = await _httpClient.PostAsJsonAsync<Z110_Usuarios>(path, usuario);
             if (newUsuario.IsSuccessStatusCode)
             {
                 return await newUsuario.Content.ReadFromJsonAsync<Z110_Usuarios>();
@@ -28,14 +28,14 @@ namespace AppV7.Client.Servicios.Serv
 
         public async Task<IEnumerable<Z110_Usuarios>> Buscar(string clave, string orgX)
         {
-            var resultado = $"/api/C110Usuarios/filtro?clave={clave}&orgX={orgX}";
+            var resultado = $"{path}filtro?clave={clave}&orgX={orgX}";
 
             return await _httpClient.GetFromJsonAsync<IEnumerable<Z110_Usuarios>>(resultado);
         }
 
         public async Task<Z110_Usuarios> UpDateUsuario(Z110_Usuarios usuario)
         {
-            var UpdaUsuario = await _httpClient.PutAsJsonAsync<Z110_Usuarios>("/api/C110Usuarios", usuario);
+            var UpdaUsuario = await _httpClient.PutAsJsonAsync<Z110_Usuarios>(path, usuario);
             if (UpdaUsuario.IsSuccessStatusCode)
             {
                 return await UpdaUsuario.Content.ReadFromJsonAsync<Z110_Usuarios>();

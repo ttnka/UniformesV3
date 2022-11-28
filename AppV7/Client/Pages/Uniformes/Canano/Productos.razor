@@ -23,7 +23,7 @@
     </div>
 </div>
 
-@if (LosProductos != null)
+@if (LosProductos != null && LosProductos.Count()>=0)
 {
     <RadzenCard>
         <RadzenDataGrid @ref="ProdGrid" Data="@LosProductos" TItem="Z220_Producto"

@@ -26,9 +26,9 @@
                             </div>
                             <div class="col-sm-4">
                                 <MetasGeneral Anotacion="" ShowAnotacion="false" ShowEtiquetas=true
-                                    TituloGrafica="Avance de Distribucion" SubTituloGrafiaca=""
-                                    TituloSerie="Numeros Metas" TituloY="" MinX="0"
-                                    DatosTitulos="Meta,Inventario,Folio" DatosValores="30,20,10" />
+                                    TituloGrafica="Avance Municipio" SubTituloGrafiaca=""
+                                    TituloSerie="Folios Hermosillo" TituloY="" MinX="0"
+                                    DatosTitulos="Folio" DatosValores="@(DataFoliosHillo.toString())" />
                              </div>
                         </div>
                         } else {
@@ -39,14 +39,14 @@
                             </div>
                             <div class="col-sm-4">
                                 <MetasGeneral TituloGrafica="Almacenes y Comercios" Anotacion=""
-                                              TituloSerie="Puntos de entrega" MinX="0" ShowEtiquetas="false"
-                                              DatosTitulos="Almacenes,Comercios" DatosValores="3,15" />
+                                              TituloSerie="Folios de Sec" MinX="0" ShowEtiquetas="false"
+                                              DatosTitulos="Almacenes,Comercios" DatosValores="@DataAlmComer" />
                             </div>
                             <div class="col-sm-4">
                                 <MetasGeneral Anotacion="" ShowAnotacion="false" ShowEtiquetas=true
-                                              TituloGrafica="Avance de Distribucion" SubTituloGrafiaca=""
-                                              TituloSerie="Numeros Metas" TituloY="" MinX="0"
-                                              DatosTitulos="Meta,Inventario,Folio" DatosValores="30,20,10" />
+                                              TituloGrafica="Folio Entregados Mpios" SubTituloGrafiaca=""
+                                              TituloSerie="Guaymas" TituloY="" MinX="0"
+                                              DatosTitulos="Folios" DatosValores="@DataFoliosGuaymas" />
                             </div>
                         </div>
                         }

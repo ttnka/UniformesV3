@@ -34,6 +34,7 @@ namespace AppV7.Server.Controllers
                     await file.CopyToAsync(fs);
                     uploadresult.StoredName = file.FileName;
                     upLoadResults.Add(uploadresult);
+
                 }
                 return Ok(upLoadResults);
                 

@@ -23,7 +23,7 @@
     </div>
 </div>
 
-@if (LosDets != null)
+@if (LosDets != null && LosDets.Count()>=0)
 {
             <RadzenCard>       
                 <RadzenDataGrid @ref="DetGrid" Data="@LosDets" TItem="Z232_DetSol" 
@@ -52,17 +52,19 @@
                         </Template>
                         <EditTemplate Context="datos">
                         <RadzenNumeric Name="Cantidad" @bind-Value="datos.Cantidad" Min="1"
-                            Style="width: 100%" />
+                            Style="width: 100%" ShowUpDown="false" />
                     </EditTemplate>
                     </RadzenDataGridColumn>
 
                     <RadzenDataGridColumn TItem="Z232_DetSol" Property="Producto" Title="Producto"
                                   Filterable="true" Sortable="true" Width="250px">
                         <Template Context="datos">
-                        
-                        @LosProductos.FirstOrDefault(x=>x.ProductoId == datos.Producto).Nombre
-                        @LosProductos.FirstOrDefault(x=>x.ProductoId == datos.Producto).Talla
-                        @LosProductos.FirstOrDefault(x=>x.ProductoId == datos.Producto).Corto
+                            @LosProductos.FirstOrDefault(x=>x.ProductoId == 
+                                datos.Producto)!.Nombre
+                            @LosProductos.FirstOrDefault(x=>x.ProductoId == 
+                                datos.Producto)!.Talla
+                            @LosProductos.FirstOrDefault(x=>x.ProductoId == 
+                            datos.Producto)!.Corto
                         </Template>
                         <EditTemplate Context="datos">
                             <RadzenDropDown Name="Producto" Data=@LosProductos @bind-Value=@datos.Producto
@@ -70,16 +72,17 @@
                                     Style="width: 100%;" />
                         </EditTemplate>
                     </RadzenDataGridColumn>
-                    <RadzenDataGridColumn TItem="Z232_DetSol" Property="Desc" Title="Descripcion" 
-                Filterable="true"  Width="200px">
+                    <RadzenDataGridColumn TItem="Z232_DetSol" Property="Desc" Title="Comentario" 
+                            Filterable="true"  Width="200px">
                         <Template Context="datos">
                         @datos.Desc
                         </Template>
                         <EditTemplate Context="datos">
+                            
                             <RadzenTextArea Name="Desc" @bind-Value="datos.Desc" 
-                            Style="width: 100%" /><br>
-
-                        </EditTemplate>
+                                    Style="width: 90%" />
+                        
+                    </EditTemplate>
                     </RadzenDataGridColumn>
 
                     <RadzenDataGridColumn TItem="Z232_DetSol" Context="sampleBlazorModelsSampleOrder" 
@@ -102,19 +105,18 @@
 
                         @if (datos.Estado != 3)
                         {
-                                        <label>Borrar registro? Si </label>
-                                        <RadzenSwitch @bind-Value=@datos.Status Name="Status" /> 
-                                        <label>No!</label>
-                                        <br />
+                            <label>Borrar este registro? </label><br />
+                            <label> Si </label>
+                            <RadzenSwitch @bind-Value=@datos.Status Name="Status" />
+                            <label> No!</label>
+                            <br />
                         }
-
                             <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Primary" 
-                            Class="m-1" Click="@((args) => SaveRow(datos))">
+                                Class="m-1" Click="@((args) => SaveRow(datos))">
                             </RadzenButton>
 
                             <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Class="m-1" 
-                        Click="@((args) => CancelEdit(datos))" />
-
+                                Click="@((args) => CancelEdit(datos))" />
                             </EditTemplate>
 
                     </RadzenDataGridColumn>
@@ -163,7 +165,7 @@ else
         DetToInsert = new Z232_DetSol();
         DetToInsert.DetId = Guid.NewGuid().ToString();
         DetToInsert.Folio = ElFolioDet.Folio;
-        DetToInsert.Estado = 1;
+        DetToInsert.Estado = 3;
 
         Editando = !Editando;
 

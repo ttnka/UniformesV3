@@ -12,9 +12,10 @@ namespace AppV7.Client.Servicios.Serv
         {
             this._httpClient = httpClient;
         }
+        string path = "/api/C190Bitacora/";
         public async Task<Z190_Bitacora> AddBitacora(Z190_Bitacora bitacora)
         {
-            var newBitacora = await _httpClient.PostAsJsonAsync<Z190_Bitacora>("/api/C190Bitacora", bitacora);
+            var newBitacora = await _httpClient.PostAsJsonAsync<Z190_Bitacora>(path, bitacora);
             if (newBitacora.IsSuccessStatusCode)
             {
                 return await newBitacora.Content.ReadFromJsonAsync<Z190_Bitacora>();
@@ -27,7 +28,7 @@ namespace AppV7.Client.Servicios.Serv
 
         public async Task<IEnumerable<Z190_Bitacora>> Buscar(string clave, string orgX)
         {
-            var resultado = $"/api/C190Bitacora/filtro?clave={clave}&orgX={orgX}";
+            var resultado = $"{path}filtro?clave={clave}&orgX={orgX}";
 
             return await _httpClient.GetFromJsonAsync<IEnumerable<Z190_Bitacora>>(resultado);
         }

@@ -1,0 +1,196 @@
+﻿@page "/folios"
+@inherits FoliosListBase
+@inject NotificationService NS
+@using AppV7.Shared
+
+<h3>Listado de Folios generador por SEC</h3>
+
+<RadzenCard>
+    <div class="form-grup row">          
+        <div class="col-sm-3"><h4>Agregar el archivo con los folios => </h4></div>
+        <div class="col-sm-3"><FoliosAdd ElUsuario="ElUsuario" FileNames="FileNameList" /></div>
+        <div class="col-sm-2">
+            <RadzenButton Text="Actualizar" Icon="refresh" style="margin-bottom: 10px" ButtonStyle="ButtonStyle.Info"
+                            Click="@LoadData" />
+        </div>
+        <div class="col-sm-2">
+            <NavLink class="nav-link" href=@($"/inicio")>
+            <span class="oi oi-caret-left" aria-hidden="true"></span> Regresar a Inicio</NavLink>
+        </div>
+    </div>
+</RadzenCard>
+
+
+@if (LosFolios != null && LosFolios.Count() >= 0)
+{
+    <RadzenCard>       
+        <RadzenDataGrid @ref="FolioGrid" Data="@LosFolios" TItem="Z260_Folio" 
+            AllowFiltering="true" AllowPaging="true" PageSize="50"
+                    AllowSorting="true" AllowColumnResize="true"
+                ExpandMode="DataGridExpandMode.Single" AllowGrouping="false"
+                EditMode="DataGridEditMode.Single" 
+                 RowUpdate="@OnUpdateRow" 
+                RowCreate="@OnCreateRow"  >
+
+                <Template Context="datos1">
+
+                    <RadzenTabs>
+                        <Tabs>
+                            <RadzenTabsItem Text="Detalle Empresas ">
+                                <FoliosAdd />
+                            </RadzenTabsItem>
+                            <RadzenTabsItem Text="Extras">
+                                                            </RadzenTabsItem>
+                        </Tabs>
+                    </RadzenTabs>
+                </Template>
+        <!-- AQUI EMPIEZA REPORTE-->
+
+                <Columns>
+                    <RadzenDataGridColumn TItem="Z260_Folio" Property="FolioId" Title="Id" 
+                        Filterable="false" Sortable="false" Width="150px">
+                        <Template Context="datos">
+                        @datos.FolioId
+                        </Template>
+                    </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn TItem="Z260_Folio" Property="FechaEntrega" Title="Fecha" 
+                        Filterable="true" Sortable="true" Width="150px">
+                        <Template Context="datos">
+                        @datos.FechaEntrega
+                        </Template>
+                    </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn TItem="Z260_Folio" Property="RegId" Title="Comerciante" 
+                        Filterable="false" Sortable="true" Width="150px">
+                        <Template Context="datos">
+                        @datos.RegId
+                        </Template>
+                    </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn TItem="Z260_Folio" Property="Folio" Title="Folio"
+                                  Filterable="true" Sortable="true" Width="150px">
+                        <Template Context="datos">
+                            @datos.Folio
+                        </Template>
+                    </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn TItem="Z260_Folio" Property="NombreCompleto" Title="Alumno"
+                                  Filterable="false" Sortable="true" Width="250px">
+                        <Template Context="datos">
+                            @datos.NombreCompleto
+                        </Template>
+                    </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn TItem="Z260_Folio" Property="Curp" Title="CURP" 
+                        Filterable="false" Sortable="true" Width="150px">
+                        <Template Context="datos">
+                        @datos.Curp
+                        </Template>
+                    </RadzenDataGridColumn>
+
+                    <RadzenDataGridColumn TItem="Z260_Folio" Property="Status" Title="Estatus"
+                                  Filterable="false" Sortable="true" Width="150px"/>
+             
+                    <RadzenDataGridColumn TItem="Z260_Folio" Property="Municipio" Title="Municipio"
+                                  Filterable="false" Sortable="true" Width="150px"/>
+
+                    <RadzenDataGridColumn TItem="Z260_Folio" Context="sampleBlazorModelsSampleOrder" 
+                        Filterable="false" Sortable="false" TextAlign="TextAlign.Center" 
+                            Width="200px" Title="Estado">
+                        <Template Context="datos">
+                            <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Secondary" 
+                            Class="m-1" Click="@((args) => EditRow(datos))" Visible="@(!Editando)" >
+                        </RadzenButton>
+                        
+                    </Template>
+
+                        <EditTemplate Context="datos">
+                        <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Primary" 
+                            Class="m-1" Click="@((args) => SaveRow(datos))">
+                        </RadzenButton>                
+                        <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Class="m-1" 
+                            Click="@((args) => CancelEdit(datos))" />
+                        </EditTemplate>
+
+                    </RadzenDataGridColumn>
+                </Columns>
+            </RadzenDataGrid>
+    </RadzenCard>
+}
+else
+{
+    <div class="spinner"></div>
+}
+--Tatanka--
+@code {
+
+    Z260_Folio FolioToInsert = new();
+
+    async Task EditRow(Z260_Folio folio)
+    {
+        await FolioGrid!.EditRow(folio);
+        Editando = !Editando;
+    }
+    async void OnUpdateRow(Z260_Folio folio)
+    {
+        if (folio == FolioToInsert) FolioToInsert = null!;
+
+        Editando = !Editando;
+        await FolioIServ.UpDateFolio(folio);
+
+        string texto = $"Se actualizo la folio {folio.FolioId} ";
+        texto += $" con el folio Sec {folio.Folio} del alumno {folio.NombreCompleto} ";
+        await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, texto, false);
+        ShowNotification(ElMsn("Info", "Se Actualizo",
+            $"se actualizo la folio {folio.Folio} {folio.NombreCompleto}", 0));
+    }
+    async Task SaveRow(Z260_Folio folio)
+    {
+        await FolioGrid!.UpdateRow(folio);
+    }
+    void CancelEdit(Z260_Folio folio)
+    {
+        if (folio == FolioToInsert) FolioToInsert = null!;
+        Editando = !Editando;
+        FolioGrid!.CancelEditRow(folio);
+    }
+    async Task InsertRow()
+    {
+        FolioToInsert = new Z260_Folio();
+        FolioToInsert.FolioId = Guid.NewGuid().ToString();
+
+        Editando = !Editando;
+
+        await FolioGrid!.InsertRow(FolioToInsert);
+
+    }
+    async void OnCreateRow(Z260_Folio folio)
+    {
+        if (folio == FolioToInsert) FolioToInsert = null;
+
+        Editando = !Editando;
+
+        Z260_Folio resultado = new Z260_Folio();
+        resultado = await FolioIServ.AddFolio(folio);
+        await LoadData();
+
+        string texto = $"Se creo un folio {folio.FolioId}";
+        texto += $"folio sec {folio.Folio} del alumno {folio.NombreCompleto} municipio {folio.Municipio}";
+        await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, texto, false);
+        ShowNotification(ElMsn("ok", "Nuevo",
+            $"Nuevo folio {folio.FolioId} {folio.NombreCompleto}", 0));
+    }
+
+    public void ShowNotification(NotificationMessage message)
+    {
+        NS.Notify(message);
+    }
+
+    async Task LoadData()
+    {
+        LosFolios = await FolioIServ.Buscar("Alla");
+        Editando = false;
+        FileNameList.Clear();
+    }
+}

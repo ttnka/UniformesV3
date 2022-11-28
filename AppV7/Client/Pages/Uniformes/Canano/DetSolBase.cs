@@ -23,6 +23,7 @@ namespace AppV7.Client.Pages.Uniformes.Canano
         public List<string> LosZapTallas { get; set; } = new();
         public bool Editando { get; set; }  = false;
         public bool Editando2 { get; set; } = false;
+        public bool ShowDesc { get; set; } = false;
         public Dictionary<string, string> DataDetDic { get; set; } = new();
         public NavigationManager NM { get; set; } = default!;
         public RadzenDataGrid<Z232_DetSol>? DetGrid { get; set; } = default!;

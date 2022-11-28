@@ -22,7 +22,7 @@
         </div>
     </div>
 
-@if (LosAlmacenes != null)
+@if (LosAlmacenes != null && LosAlmacenes.Count()>=0)
 {
     <RadzenCard>       
         <RadzenDataGrid @ref="AlmGrid" Data="@LosAlmacenes" TItem="Z210_Almacen" 

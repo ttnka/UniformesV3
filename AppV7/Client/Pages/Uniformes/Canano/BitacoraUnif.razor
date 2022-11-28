@@ -3,9 +3,8 @@
 @using AppV7.Shared
 @using AppV7.Shared.Libreria
 
-@if (LasBitacoras != null)
+@if (LasBitacoras != null && LasBitacoras.Count()>=0)
 {
- 
     <RadzenCard>
 
         <RadzenDataGrid @ref="BitacoraGrid" Data="@LasBitacoras" TItem="@Z190_Bitacora" ColumnWidth="200px"
