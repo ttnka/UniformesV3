@@ -17,5 +17,7 @@ namespace AppV7.Shared
         public string? Desc { get; set; }
         public int Estado { get; set; } = 1;
         public bool Status { get; set; } = true;
+
+
     }
 }

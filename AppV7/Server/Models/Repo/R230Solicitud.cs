@@ -44,11 +44,20 @@ namespace AppV7.Server.Models.Repo
                         case "UserSol":
                             querry = querry.Where(x => x.Usuario == ParamDic["UserSol"] && x.Status);
                             break;
-                        /*
-                        case "Uno":
-                            querry = querry.Where(x => x.OrgId == ParamDic["OrgId"]);
-
+                        
+                        case "Buscar":
+                            
+                            querry = querry.Where(x =>
+                                (ParamDic["Almacen"] != "Alla" ? x.Almacen == ParamDic["Almacen"] :
+                                    x.Almacen != "" ) && 
+                                (ParamDic["Comercio"] != "Alla" ? x.Usuario == ParamDic["Comercio"] :
+                                    x.Usuario != "")
+                                    );
+                            
+                            //x.OrgId == ParamDic["OrgId"]);
+                            
                             break;
+                        /*
                         case "Rfc":
                             querry = querry.Where(x => x.Rfc == ParamDic["Rfc"]);
                             break;
@@ -63,6 +72,8 @@ namespace AppV7.Server.Models.Repo
             }
             return await querry.ToListAsync();
         }
+
+        
 
         public async Task<Z230_Solicitud> UpDateSolicitud(Z230_Solicitud solicitud)
         {

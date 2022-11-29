@@ -7,5 +7,6 @@ namespace AppV7.Server.Models.IFace
         Task<IEnumerable<Z230_Solicitud>> Buscar(string clave);
         Task<Z230_Solicitud> AddSolicitud(Z230_Solicitud solicitud);
         Task<Z230_Solicitud> UpDateSolicitud(Z230_Solicitud solicitud);
+        
     }
 }

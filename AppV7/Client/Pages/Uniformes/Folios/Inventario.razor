@@ -1,0 +1,20 @@
+﻿@page "/inventarios"
+@inherits InventarioBase
+@using AppV7.Shared
+
+<RadzenCard>
+    @if (datos)
+    {
+        
+    }
+    else
+
+    {
+        <div class="spinner"></div>
+    }
+</RadzenCard>
+
+
+@code {
+    bool datos = true;
+}
