@@ -27,7 +27,7 @@ namespace AppV7.Client.Pages.Sistema
             ElNuevo.FirmaIn = true;
             var respuesta = await AddUserIServ.AddUsuario(ElNuevo);
             
-            LaUrl = respuesta.Positivo ? "/" : "/indexusers";
+            LaUrl = respuesta.Positivo ? "/inicio" : "/";
             //LocalRedirect("/indexuser");
             NM.NavigateTo(LaUrl,true);
         }

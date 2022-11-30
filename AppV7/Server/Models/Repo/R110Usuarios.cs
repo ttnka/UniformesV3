@@ -41,9 +41,12 @@ namespace AppV7.Server.Models.Repo
                     break;
             
                 case "OrgX":
-                    querry = querry.Where(x => x.OrgId == orgX && x.Status == true);
+                    querry = querry.Where(x => x.OrgId == orgX && x.Status);
                     break;
-
+                case "Afiliado":
+                case "Afiliados":
+                    querry = querry.Where(x => x.Nivel == 2 && x.Status);
+                    break;
                 default:
                     string[] parametro = clave.Split("_-_");
                     Dictionary<string, string> ParamDic = new Dictionary<string, string>();

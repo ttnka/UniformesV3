@@ -44,6 +44,16 @@ namespace AppV7.Client.Pages.Uniformes.Canano
             }
         }
 
+        public async Task AddDets(Z232_DetSol dsol)
+        {
+            var resultado = await DetIServ.AddDetalle(dsol);
+
+            string texto = $"Se creo un registro Folio {resultado.Folio} detalle {resultado.DetId} ";
+            texto += $"Producto {resultado.Producto}, cantidad {resultado.Cantidad}, desc {resultado.Desc}";
+
+            await Escribir(ElUsuarioDet.UsuariosId, ElUsuarioDet.OrgId, texto, false);
+            
+        }
         protected async Task LeerDatos()
         {
             LosDets = await DetIServ.Buscar($"Folio_-_Folio_-_{ElFolioDet.Folio}");

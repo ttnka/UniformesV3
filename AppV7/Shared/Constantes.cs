@@ -60,7 +60,7 @@ namespace AppV7.Shared
         public const string SolEdos = "Entregado, Proceso, Cancelada";
 
         // DATOS PARA UNIFORMES
-        public const string SolicitudTipo = "Entrega,Salida";
+        public const string SolicitudTipo = "Solicitud, Devolucion, Inicial";
         public const string Grupos = "Ropa,Zapatos";
         public const string RopaTallas = "XCh,Ch,Med,Gde,XGde";
         public const string ZapatoTallas = "Z16,Z17,Z18,Z19,Z20";

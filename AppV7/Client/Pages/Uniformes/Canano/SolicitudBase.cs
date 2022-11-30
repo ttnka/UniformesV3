@@ -21,6 +21,8 @@ namespace AppV7.Client.Pages.Uniformes.Canano
             Enumerable.Empty<Z210_Almacen>();
         public IEnumerable<Z230_Solicitud> LasSolicitudes { get; set; } =
             Enumerable.Empty<Z230_Solicitud>();
+        public IEnumerable<Z232_DetSol> LosDetalles { get; set; } =
+            Enumerable.Empty<Z232_DetSol>();
         public IEnumerable<Z110_Usuarios> LosUsers { get; set; } =
             Enumerable.Empty<Z110_Usuarios>();
         public List<string> LosTipos { get; set; } = new();
@@ -55,14 +57,8 @@ namespace AppV7.Client.Pages.Uniformes.Canano
         }
         public async Task LeerDetalle()
         {
-            var DetTemp = await DetIServ.Buscar("Alla");
-            foreach(var sol in LasSolicitudes)
-            {
-                if(!DataDic.ContainsKey($"Fol_Det_{sol.Folio}")) 
-                    DataDic.Add($"Fol_Det_{sol.Folio}", "0");
-                int reg = DetTemp.Count(x => x.Folio.Equals(sol.Folio) &&  x.Status);
-                if (reg > 0) DataDic[$"Fol_Det_{sol.Folio}"] = reg.ToString();
-            }
+            LosDetalles = await DetIServ.Buscar("Alla");
+            
         }
         public async Task LeerAlmacenes()
         {

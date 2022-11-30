@@ -104,12 +104,11 @@
                 Filterable="true"  Width="270px">
                     <Template Context="datos">
                         @datos.Desc <br>
-                        @if(DataDic.ContainsKey($"Fol_Det_{datos.Folio}"))
-                        {
-                            <label>
-                                 Articulos: @DataDic[$"Fol_Det_{datos.Folio}"]
-                            </label>
-                        }
+                        <label>
+                            Articulos: @LosDetalles.Count(x=>x.SolicitudId == datos.SolicitudId && 
+                                                        x.Status);
+                        </label>
+                        
                     </Template>
                     <EditTemplate Context="datos">
                         <RadzenTextArea Name="Desc" @bind-Value="datos.Desc" Style="width: 100%" /><br>
@@ -202,11 +201,11 @@ else
         Editando = !Editando;
         await SolIServ.UpDateSolicitud(sol);
 
-        string texto = $"Se actualizo un registro Folio {sol.Folio}";
-        texto += $"{sol.Fecha} {sol.Tipo} {sol.Desc} {sol.Almacen}";
+        string texto = $"Se actualizo un registro Solicitud {sol.Folio} ";
+        texto += $"Fecha {sol.Fecha}, tipo {sol.Tipo} almacen {sol.Almacen} {sol.Desc}";
         await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, texto, false);
         ShowNotification(ElMsn("info", "Actualizo", $"Se actualizo el folio {sol.Folio} {sol.Tipo}", 0));
-
+        await LoadData();
     }
     async Task SaveRow(Z230_Solicitud sol)
     {
@@ -225,10 +224,9 @@ else
         SolToInsert.Folio = await ElFolio();
         SolToInsert.Usuario = ElUsuario.UsuariosId;
         SolToInsert.Tipo = "Entrega";
-        SolToInsert.Estado = 3;
+        SolToInsert.Estado = 2;
 
         Editando = !Editando;
-
         await SolGrid!.InsertRow(SolToInsert);
 
     }
@@ -240,7 +238,7 @@ else
 
         Z230_Solicitud resultado = new Z230_Solicitud();
         resultado = await SolIServ.AddSolicitud(sol);
-        await LeerDatos();
+        await LoadData();
 
         string texto = $"Se creo un registro Folio {sol.Folio}";
         texto += $"{sol.Fecha} Almacen {sol.Almacen} Usuario {sol.Usuario} Tipo {sol.Tipo}";
@@ -258,6 +256,7 @@ else
         string buscar = ElUsuario.Nivel > 2 ? "Alla" :
                             $"UserSol_-_UserSol_-_{ElUsuario.UsuariosId}";
         LasSolicitudes = await SolIServ.Buscar(buscar);
+        LosDetalles = await DetIServ.Buscar("Alla");
         Editando = false;
     }
 

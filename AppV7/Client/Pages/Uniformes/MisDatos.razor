@@ -42,6 +42,14 @@
             </div>
         </div>
         <div class="form-grup row">
+            <label for="materno" class="col-sm-3 col-form-label">Municipio</label>
+            <div class="col-sm-9">
+
+                @ElUsuario.Municipio
+
+            </div>
+        </div>
+        <div class="form-grup row">
             <label for="botones" class="col-sm-3 col-form-label">
                Editar Mis Datos? 
             </label>
@@ -51,7 +59,7 @@
             </div>
             <div class="col-sm-5">
                 <RadzenButton ButtonType="ButtonType.Submit" Text="Registro" Disabled=!Editar />
-                <NavLink class="nav-link" href="/">Cancelar</NavLink>
+                <NavLink class="nav-link" href="/inicio">Cancelar</NavLink>
             </div>
             <div class="col-sm-2">
             </div>

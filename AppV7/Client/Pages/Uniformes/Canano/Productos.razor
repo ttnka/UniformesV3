@@ -235,17 +235,20 @@ else
         if (prod == ProdToInsert) ProdToInsert = null;
         prod.Estado = 1;
         prod.Corto = prod.Corto.ToUpper();
-
-        Z220_Producto resultado = new Z220_Producto();
-        resultado = await ProductoIServ.AddProducto(prod);
-
+        await AgregarRegistro(prod);
+        ShowNotification(
+            ElMsn("Ok","Nuevo",$"Se creo un nuevo producto {prod.Corto} {prod.Grupo}",0));
+        Editando = false;
+    }
+    public async Task<Z220_Producto> AgregarRegistro(Z220_Producto prod) {
+        if (prod == null) return null;
+        var resultado = await ProductoIServ.AddProducto(prod);
         string texto = $"Se creo un producto {prod.Corto}";
         texto += $"{prod.Nombre} {prod.Desc} {prod.Grupo} {prod.Talla}";
         await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId, texto, false);
-        ShowNotification(ElMsn("Ok","Nuevo",$"Se creo un nuevo producto {prod.Corto} {prod.Grupo}",0));
         await LoadData();
+        return resultado;
     }
-
     public void ShowNotification(NotificationMessage message)
     {
         NS.Notify(message);

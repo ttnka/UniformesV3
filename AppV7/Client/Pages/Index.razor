@@ -1,9 +1,11 @@
-﻿@page "/old"
+﻿@page "/"
+@using AppV7.Client.Pages.Sistema
 
-<PageTitle>Index</PageTitle>
-
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
+<AuthorizeView>
+    <Authorized>
+        <RadzenLink Path="/inicio" Text="Entrada" />
+    </Authorized>
+    <NotAuthorized>
+        <LogIn />
+    </NotAuthorized>
+</AuthorizeView>

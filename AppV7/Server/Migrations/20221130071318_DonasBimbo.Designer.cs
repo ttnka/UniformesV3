@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppV7.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221125153515_Cuadros")]
-    partial class Cuadros
+    [Migration("20221130071318_DonasBimbo")]
+    partial class DonasBimbo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -405,6 +405,9 @@ namespace AppV7.Server.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("AlmacenesAlmacenId")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<string>("Desc")
                         .HasColumnType("longtext");
 
@@ -429,7 +432,14 @@ namespace AppV7.Server.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("UsuariosId")
+                        .HasColumnType("varchar(255)");
+
                     b.HasKey("SolicitudId");
+
+                    b.HasIndex("AlmacenesAlmacenId");
+
+                    b.HasIndex("UsuariosId");
 
                     b.ToTable("Solicitudes");
                 });
@@ -456,10 +466,20 @@ namespace AppV7.Server.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("SolicitudId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SolicitudesSolicitudId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
                     b.Property<bool>("Status")
                         .HasColumnType("tinyint(1)");
 
                     b.HasKey("DetId");
+
+                    b.HasIndex("SolicitudesSolicitudId");
 
                     b.ToTable("DetSolicitud");
                 });
@@ -470,15 +490,12 @@ namespace AppV7.Server.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Codigo")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Curp")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("EscuelaId")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("FechaEntrega")
@@ -489,45 +506,36 @@ namespace AppV7.Server.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("GeneroId")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("Grado")
-                        .HasColumnType("int");
+                    b.Property<string>("Grado")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("InscStatusId")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Localidad")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Municipio")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("NivelId")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("NombreCompleto")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("RegId")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("TipoValId")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("TurnoId")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("FolioId");
@@ -1035,6 +1043,32 @@ namespace AppV7.Server.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AppV7.Shared.Z230_Solicitud", b =>
+                {
+                    b.HasOne("AppV7.Shared.Z210_Almacen", "Almacenes")
+                        .WithMany("Solicitudes")
+                        .HasForeignKey("AlmacenesAlmacenId");
+
+                    b.HasOne("AppV7.Shared.Z110_Usuarios", "Usuarios")
+                        .WithMany("Solicitudes")
+                        .HasForeignKey("UsuariosId");
+
+                    b.Navigation("Almacenes");
+
+                    b.Navigation("Usuarios");
+                });
+
+            modelBuilder.Entity("AppV7.Shared.Z232_DetSol", b =>
+                {
+                    b.HasOne("AppV7.Shared.Z230_Solicitud", "Solicitudes")
+                        .WithMany("DetSols")
+                        .HasForeignKey("SolicitudesSolicitudId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Solicitudes");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -1084,6 +1118,21 @@ namespace AppV7.Server.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AppV7.Shared.Z110_Usuarios", b =>
+                {
+                    b.Navigation("Solicitudes");
+                });
+
+            modelBuilder.Entity("AppV7.Shared.Z210_Almacen", b =>
+                {
+                    b.Navigation("Solicitudes");
+                });
+
+            modelBuilder.Entity("AppV7.Shared.Z230_Solicitud", b =>
+                {
+                    b.Navigation("DetSols");
                 });
 #pragma warning restore 612, 618
         }

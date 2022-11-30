@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppV7.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221125023536_Donasbimbo")]
-    partial class Donasbimbo
+    [Migration("20221130075456_Tripas")]
+    partial class Tripas
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -405,6 +405,9 @@ namespace AppV7.Server.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("AlmacenesAlmacenId")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<string>("Desc")
                         .HasColumnType("longtext");
 
@@ -429,7 +432,14 @@ namespace AppV7.Server.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("UsuariosId")
+                        .HasColumnType("varchar(255)");
+
                     b.HasKey("SolicitudId");
+
+                    b.HasIndex("AlmacenesAlmacenId");
+
+                    b.HasIndex("UsuariosId");
 
                     b.ToTable("Solicitudes");
                 });
@@ -456,12 +466,116 @@ namespace AppV7.Server.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("SolicitudId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SolicitudesSolicitudId")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<bool>("Status")
                         .HasColumnType("tinyint(1)");
 
                     b.HasKey("DetId");
 
+                    b.HasIndex("SolicitudesSolicitudId");
+
                     b.ToTable("DetSolicitud");
+                });
+
+            modelBuilder.Entity("AppV7.Shared.Z260_Folio", b =>
+                {
+                    b.Property<string>("FolioId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Codigo")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Curp")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("EscuelaId")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("FechaEntrega")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Folio")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("GeneroId")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Grado")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("InscStatusId")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Localidad")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Municipio")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("NivelId")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("NombreCompleto")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("RegId")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TipoValId")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TurnoId")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("FolioId");
+
+                    b.ToTable("Folios");
+                });
+
+            modelBuilder.Entity("AppV7.Shared.Z290_Meta", b =>
+                {
+                    b.Property<string>("MetaId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Desc")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Municipio")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Usuario")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("MetaId");
+
+                    b.ToTable("Metas");
                 });
 
             modelBuilder.Entity("AppV7.Shared.Z800_WebSite", b =>
@@ -928,6 +1042,30 @@ namespace AppV7.Server.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AppV7.Shared.Z230_Solicitud", b =>
+                {
+                    b.HasOne("AppV7.Shared.Z210_Almacen", "Almacenes")
+                        .WithMany("Solicitudes")
+                        .HasForeignKey("AlmacenesAlmacenId");
+
+                    b.HasOne("AppV7.Shared.Z110_Usuarios", "Usuarios")
+                        .WithMany("Solicitudes")
+                        .HasForeignKey("UsuariosId");
+
+                    b.Navigation("Almacenes");
+
+                    b.Navigation("Usuarios");
+                });
+
+            modelBuilder.Entity("AppV7.Shared.Z232_DetSol", b =>
+                {
+                    b.HasOne("AppV7.Shared.Z230_Solicitud", "Solicitudes")
+                        .WithMany("DetSols")
+                        .HasForeignKey("SolicitudesSolicitudId");
+
+                    b.Navigation("Solicitudes");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -977,6 +1115,21 @@ namespace AppV7.Server.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AppV7.Shared.Z110_Usuarios", b =>
+                {
+                    b.Navigation("Solicitudes");
+                });
+
+            modelBuilder.Entity("AppV7.Shared.Z210_Almacen", b =>
+                {
+                    b.Navigation("Solicitudes");
+                });
+
+            modelBuilder.Entity("AppV7.Shared.Z230_Solicitud", b =>
+                {
+                    b.Navigation("DetSols");
                 });
 #pragma warning restore 612, 618
         }

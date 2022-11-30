@@ -1,7 +1,8 @@
-﻿@page "/"
+﻿
 @page "/inicio"
 @inherits InicioUniformesBase
 @using AppV7.Client.Pages.Uniformes.Canano.Metas
+@using AppV7.Client.Pages.Sistema
 @using AppV7.Shared
 @using AppV7.Shared.Libreria
 
@@ -10,7 +11,7 @@
     <Authorized>
         <RadzenTabs @bind-SelectedIndex=@SelectedIndex>
                 <Tabs> 
-                    <RadzenTabsItem Text="Inicio">
+                    <RadzenTabsItem Text="Inicio" Icon="refresh">
                         <RadzenButton Icon="refresh" style="margin-bottom: 10px" ButtonStyle="ButtonStyle.Info"
                                       Click="@LeerGraficos" />
                         @if ( showRenglon > 50)
@@ -109,14 +110,7 @@
             </RadzenTabs>
     </Authorized>
     <NotAuthorized>
-            <h3>La web sin firma</h3>
-            <RadzenTabs @bind-SelectedIndex=@SelectedIndex>
-                <Tabs>
-                    <RadzenTabsItem Text="La Web Sin">
-
-                    </RadzenTabsItem>
-                </Tabs>
-            </RadzenTabs>
+            <LogIn />
     </NotAuthorized>
 </AuthorizeView>
  </RadzenCard>

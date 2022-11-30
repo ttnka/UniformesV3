@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,9 @@ namespace AppV7.Shared
         public string? Desc { get; set; }
         public int Estado { get; set; } = 1;
         public bool Status { get; set; } = true;
-
+        [ForeignKey("SolicitudId")]
+        public string SolicitudId { get; set; }
+        public virtual Z230_Solicitud? Solicitudes { get; set; }
 
     }
 }

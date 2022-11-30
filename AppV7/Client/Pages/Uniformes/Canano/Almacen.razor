@@ -65,7 +65,7 @@
                 <EditTemplate Context="datos">
                     <RadzenTextBox Name="Corto" @bind-Value="datos.Corto" Style="width: 90%" /> <br>
                     
-                    <RadzenLengthValidator Component="Corto" Min="1" Max="15" 
+                    <RadzenLengthValidator Component="Corto" Min="1" Max="25" 
                         Text="El Nombre Corto es Requerido!" />
 
                 </EditTemplate>
@@ -203,8 +203,8 @@ else
     async Task SaveRow(Z210_Almacen alm)
     {
         alm.Corto = alm.Corto.ToUpper();
-
         await AlmGrid!.UpdateRow(alm);
+        Editando = !Editando;
     }
     void CancelEdit(Z210_Almacen alm)
     {
@@ -226,9 +226,7 @@ else
     async void OnCreateRow(Z210_Almacen alm)
     {
         if (alm == AlmToInsert) AlmToInsert = null;
-
         alm.Estado = 1;
-
         alm.Corto = alm.Corto.ToUpper();
      
         Z210_Almacen resultado = new Z210_Almacen();

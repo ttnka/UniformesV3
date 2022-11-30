@@ -141,15 +141,20 @@ else
     async void OnUpdateRow(Z232_DetSol dsol)
     {
         if (dsol == DetToInsert) DetToInsert = null!;
-
         Editando = !Editando;
         await DetIServ.UpDateDetalle(dsol);
+    }
+    public async Task<Task> UpdateDets(Z232_DetSol dsol){
+        var resultado = await DetIServ.UpDateDetalle(dsol);
 
         string texto = $"Se actualizo un registro Folio {dsol.Folio} del detalle {dsol.DetId} ";
         texto += $"Producto {dsol.Producto}, cantidad {dsol.Cantidad}, desc {dsol.Desc}  ";
         await Escribir(ElUsuarioDet.UsuariosId, ElUsuarioDet.OrgId, texto, false);
-        ShowNotification(ElMsn("info", "Actualizacion", $"Se actualizo el registro {dsol.Folio}", 0));
+        ShowNotification(
+            ElMsn("info", "Actualizacion", $"Se actualizo el registro {dsol.Folio}", 0));
+        return Task.CompletedTask;
     }
+
     async Task SaveRow(Z232_DetSol dsol)
     {
         await DetGrid!.UpdateRow(dsol);
@@ -165,6 +170,7 @@ else
         DetToInsert = new Z232_DetSol();
         DetToInsert.DetId = Guid.NewGuid().ToString();
         DetToInsert.Folio = ElFolioDet.Folio;
+        DetToInsert.SolicitudId = ElFolioDet.SolicitudId;
         DetToInsert.Estado = 3;
 
         Editando = !Editando;
@@ -172,20 +178,16 @@ else
         await DetGrid!.InsertRow(DetToInsert);
 
     }
-    async void OnCreateRow(Z232_DetSol dsol)
+    async Task OnCreateRow(Z232_DetSol dsol)
     {
         if (dsol == DetToInsert) DetToInsert = null;
         dsol.Estado = 1;
         Editando = !Editando;
-
-        Z232_DetSol resultado = new Z232_DetSol();
-        resultado = await DetIServ.AddDetalle(dsol);
-
-        string texto = $"Se creo un registro Folio {resultado.Folio} detalle {resultado.DetId} ";
-        texto += $"Producto {resultado.Producto}, cantidad {resultado.Cantidad}, desc {resultado.Desc}";
-        await Escribir(ElUsuarioDet.UsuariosId, ElUsuarioDet.OrgId, texto, false);
-        ShowNotification(ElMsn("Ok", "Nuevo Folio", $"Se creo el nuevo folio {resultado.Folio}", 0));
+        await AddDets(dsol);
+        ShowNotification(
+                ElMsn("Ok", "Nuevo Folio", $"Se agrego un producto", 0));
     }
+    
 
     public void ShowNotification(NotificationMessage message)
     {

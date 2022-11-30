@@ -16,6 +16,16 @@ namespace AppV7.Client.Servicios.Serv
         string path = "/api/C230Solicitud/";
         public async Task<Z230_Solicitud> AddSolicitud(Z230_Solicitud solicitud)
         {
+            try
+            {
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
             var newSol = await _httpClient.PostAsJsonAsync<Z230_Solicitud>(path, solicitud);
             if (newSol.IsSuccessStatusCode)
             {

@@ -40,8 +40,10 @@ namespace AppV7.Client.Pages.Uniformes
 
             LosFolios = await FoliosIServ.Buscar("Alla");
             LasMetas = await MetasIServ.Buscar("Alla");
-            var General = LasMetas.FirstOrDefault(x => x.Titulo == "GENERAL").Cantidad;
-            if (General < 1) General = 1;
+            
+            var General = LasMetas.Count() <= 0 ? 1 :
+                LasMetas.FirstOrDefault(x => x.Titulo == "GENERAL").Cantidad;
+            
             TxtMetaGral = General.ToString();
             showavance = ((100) * (LosFolios.Count()) / General) < 1 ? 1 : 
                 ((100) * (LosFolios.Count()) / General);

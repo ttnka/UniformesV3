@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppV7.Server.Migrations
 {
-    public partial class Donasbimbo : Migration
+    public partial class DonasBimbo : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -160,28 +160,6 @@ namespace AppV7.Server.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "DetSolicitud",
-                columns: table => new
-                {
-                    DetId = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Folio = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Producto = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cantidad = table.Column<int>(type: "int", nullable: false),
-                    Desc = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Estado = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<bool>(type: "tinyint(1)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DetSolicitud", x => x.DetId);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "FilesWeb",
                 columns: table => new
                 {
@@ -206,6 +184,50 @@ namespace AppV7.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FilesWeb", x => x.FileId);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Folios",
+                columns: table => new
+                {
+                    FolioId = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    RegId = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    FechaEntrega = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Status = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Folio = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    NombreCompleto = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Curp = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    TurnoId = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Grado = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Codigo = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    EscuelaId = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    InscStatusId = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    GeneroId = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    NivelId = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    TipoValId = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Localidad = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Municipio = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Folios", x => x.FolioId);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -264,6 +286,32 @@ namespace AppV7.Server.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Metas",
+                columns: table => new
+                {
+                    MetaId = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Titulo = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Desc = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Tipo = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Cantidad = table.Column<int>(type: "int", nullable: false),
+                    Usuario = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Municipio = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Estado = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Metas", x => x.MetaId);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Organizaciones",
                 columns: table => new
                 {
@@ -314,32 +362,6 @@ namespace AppV7.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Productos", x => x.ProductoId);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Solicitudes",
-                columns: table => new
-                {
-                    SolicitudId = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Fecha = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Folio = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Almacen = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Usuario = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Tipo = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Desc = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Estado = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<bool>(type: "tinyint(1)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Solicitudes", x => x.SolicitudId);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -397,16 +419,103 @@ namespace AppV7.Server.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                name: "Solicitudes",
+                columns: table => new
+                {
+                    SolicitudId = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Fecha = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Folio = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Almacen = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Usuario = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Tipo = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Desc = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Estado = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    UsuariosId = table.Column<string>(type: "varchar(255)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    AlmacenesAlmacenId = table.Column<string>(type: "varchar(255)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Solicitudes", x => x.SolicitudId);
+                    table.ForeignKey(
+                        name: "FK_Solicitudes_Almacenes_AlmacenesAlmacenId",
+                        column: x => x.AlmacenesAlmacenId,
+                        principalTable: "Almacenes",
+                        principalColumn: "AlmacenId");
+                    table.ForeignKey(
+                        name: "FK_Solicitudes_Usuarios_UsuariosId",
+                        column: x => x.UsuariosId,
+                        principalTable: "Usuarios",
+                        principalColumn: "UsuariosId");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "DetSolicitud",
+                columns: table => new
+                {
+                    DetId = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Folio = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Producto = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Cantidad = table.Column<int>(type: "int", nullable: false),
+                    Desc = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Estado = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    SolicitudId = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    SolicitudesSolicitudId = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DetSolicitud", x => x.DetId);
+                    table.ForeignKey(
+                        name: "FK_DetSolicitud_Solicitudes_SolicitudesSolicitudId",
+                        column: x => x.SolicitudesSolicitudId,
+                        principalTable: "Solicitudes",
+                        principalColumn: "SolicitudId",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Bitacoras_OrgId",
                 table: "Bitacoras",
                 column: "OrgId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DetSolicitud_SolicitudesSolicitudId",
+                table: "DetSolicitud",
+                column: "SolicitudesSolicitudId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Organizaciones_Rfc",
                 table: "Organizaciones",
                 column: "Rfc",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Solicitudes_AlmacenesAlmacenId",
+                table: "Solicitudes",
+                column: "AlmacenesAlmacenId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Solicitudes_UsuariosId",
+                table: "Solicitudes",
+                column: "UsuariosId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Usuarios_OrgId",
@@ -416,9 +525,6 @@ namespace AppV7.Server.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Almacenes");
-
             migrationBuilder.DropTable(
                 name: "Bitacoras");
 
@@ -441,10 +547,16 @@ namespace AppV7.Server.Migrations
                 name: "FilesWeb");
 
             migrationBuilder.DropTable(
+                name: "Folios");
+
+            migrationBuilder.DropTable(
                 name: "GeneralWeb");
 
             migrationBuilder.DropTable(
                 name: "MailUs");
+
+            migrationBuilder.DropTable(
+                name: "Metas");
 
             migrationBuilder.DropTable(
                 name: "Organizaciones");
@@ -453,13 +565,16 @@ namespace AppV7.Server.Migrations
                 name: "Productos");
 
             migrationBuilder.DropTable(
+                name: "WebSite");
+
+            migrationBuilder.DropTable(
                 name: "Solicitudes");
 
             migrationBuilder.DropTable(
-                name: "Usuarios");
+                name: "Almacenes");
 
             migrationBuilder.DropTable(
-                name: "WebSite");
+                name: "Usuarios");
         }
     }
 }

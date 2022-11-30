@@ -13,6 +13,7 @@ namespace AppV7.Client.Pages.Uniformes.Canano
         [Inject]
         public I290MetaServ MetaIServ { get; set; } = default!;
         public IEnumerable<Z290_Meta> LasMetas { get; set; } = new List<Z290_Meta>();
+        public IEnumerable<Z110_Usuarios> LosAfiliados { get; set; } = new List<Z110_Usuarios>();
         public List<string> LosTipos { get; set; } = new List<string>();
         public List<string> LosMpios { get; set; } = new List<string>();
         public bool Editando { get; set; } = false;
@@ -20,10 +21,12 @@ namespace AppV7.Client.Pages.Uniformes.Canano
         protected override async Task OnInitializedAsync()
         {
             await LeerUser();
-            LeerTipos();
+            await LeerAfiliados();
+            
             await LeerDatos();
             await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId,
                             "Consulta del listado de metas", false);
+            LeerTipos();
         }
         public async Task LeerDatos()
         {
@@ -42,7 +45,10 @@ namespace AppV7.Client.Pages.Uniformes.Canano
                 LosMpios.Add(NomMpios[i]);
             }
         }
-
+        public async Task LeerAfiliados()
+        {
+            LosAfiliados = await UsersIServ.Buscar("Afiliados", "Comercio");
+        }
         [CascadingParameter]
         public Task<AuthenticationState> AuthStateTask { get; set; } = default!;
         public string UserIdLogAll { get; set; } = string.Empty;

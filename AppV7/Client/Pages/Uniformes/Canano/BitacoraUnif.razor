@@ -33,7 +33,11 @@
                 </RadzenDataGridColumn>
                 
                 <RadzenDataGridColumn TItem="@Z190_Bitacora" Property="Desc" Filterable="true"
-                                  Title="Descripcion" Width="400px" TextAlign="TextAlign.Left" />
+                    Title="Descripcion" Width="400px" TextAlign="TextAlign.Left">
+                    <Template Context="Data">
+                       <p style="white-space:pre-wrap"> @Data.Desc </p>
+                    </Template>              
+                </RadzenDataGridColumn>
             </Columns>
         </RadzenDataGrid>
 

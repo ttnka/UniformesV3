@@ -34,11 +34,17 @@ namespace AppV7.Server.Controllers
         {
             try
             {
-                if (solicitud == null) return BadRequest();
-                return await _solIFace.AddSolicitud(solicitud);
+
+                if (solicitud == null)
+                { return BadRequest(); }
+                else
+                {
+                    return await _solIFace.AddSolicitud(solicitud);
+                }
             }
-            catch (Exception)
+            catch (Exception Ex)
             {
+                Console.WriteLine(Ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     "Error al intentar crear una nueva solicitud en base de datos.");
             }
