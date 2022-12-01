@@ -24,10 +24,32 @@ namespace AppV7.Server.Models.Repo
         public async Task<IEnumerable<Z210_Almacen>> Buscar(string clave)
         {
             IQueryable<Z210_Almacen> querry = _appDbContext.Almacenes;
-            switch (clave) 
+            switch (clave)
             {
                 case "Alla":
-                    querry = querry.Where(x => x.Estado == 1 && x.Status); 
+
+                    querry = querry.Where(x => x.Estado == 1 && x.Status);
+                    break;
+
+                case "Full":
+                    //string mpio = "Alla"; string alma = "Alla";
+                    //string comer = "Alla"; string prod = "Alla";
+                    querry = _appDbContext.Almacenes
+                        .Include(y => y.Solicitudes)
+                        .ThenInclude(z => z.DetSols);
+                    /*
+                    querry = querry.Where(x =>
+                    (mpio == "Alla" ? x.Municipio != null : x.Municipio == mpio) &
+                    (alma == "Alla" ? x.AlmacenId != null : x.AlmacenId == alma));
+                    
+                    querry = querry.Where(y.Solicitudes =>
+                    (comer == "Alla" ? y.Solicitudes.Select(z => z.Usuario !=null) : 
+                        y.Solicitudes.Select(z => z.Usuario == comer))
+                    );
+                    */
+                    break;
+                default:
+                    querry = querry.Where(x => x.Estado == 0);
                     break;
             }
             return await querry.ToListAsync();

@@ -23,13 +23,15 @@ namespace AppV7.Server.Models.Repo
 
         public async Task<IEnumerable<Z230_Solicitud>> Buscar(string clave)
         {
-            IQueryable<Z230_Solicitud> querry = _appDbContext.Solicitudes;
+            IQueryable<Z230_Solicitud> querry = _appDbContext.Solicitudes.Include
+                (x => x.DetSols);
             switch (clave)
             {
                 case "Alla":
                     querry = querry.Where(x => x.Status);
                     querry = querry.OrderByDescending(x => x.Estado).ThenBy(x=>x.Fecha);
                     break;
+                
 
                 default:
                     string[] parametro = clave.Split("_-_");
@@ -44,19 +46,13 @@ namespace AppV7.Server.Models.Repo
                         case "UserSol":
                             querry = querry.Where(x => x.Usuario == ParamDic["UserSol"] && x.Status);
                             break;
-                        
+                        /*
                         case "Buscar":
-                            
-                            querry = querry.Where(x =>
-                                (ParamDic["Almacen"] != "Alla" ? x.Almacen == ParamDic["Almacen"] :
-                                    x.Almacen != "" ) && 
-                                (ParamDic["Comercio"] != "Alla" ? x.Usuario == ParamDic["Comercio"] :
-                                    x.Usuario != "")
-                                    );
-                            
-                            //x.OrgId == ParamDic["OrgId"]);
-                            
-                            break;
+                            var querry1 = _appDbContext.Almacenes.Include
+                                (x => x.Solicitudes).ThenInclude(z => z.DetSols);
+                            IEnumerable<Z210_Almacen> resultado = new List<Z210_Almacen>(); 
+                            resultado = await querry1.ToListAsync();
+                            return resultado;
                         /*
                         case "Rfc":
                             querry = querry.Where(x => x.Rfc == ParamDic["Rfc"]);
