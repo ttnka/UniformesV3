@@ -22,7 +22,7 @@ Users (UserId, Email, Nombre, Paterno, Nivel, OrgId, Estado, Status) VALUES (Asp
 ILogger
  Trace, Debug, Information, Warning, Error, Critical
 
- 
+8) Hay que pasar los Procedimientos 
  
  10) ApplictaionDbContext
     10.1)

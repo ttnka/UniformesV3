@@ -14,6 +14,26 @@ namespace AppV7.Server.Controllers
         {
             _detSolIFace = detSolIFace;
         }
+        /*
+        [HttpGet("{invenario}/{FoliosF}/{EstadoF:int}/{AlmacenF}/{TipoEntradaF}/{ComercioF}/{ProductoF}/{CiudadF:int}/")]
+        public async Task<ActionResult<IEnumerable<Z232_DetSol>>> FiltroSP(string FoliosF, 
+            int EstadoF, string AlmacenF, string TipoEntradaF, string ComercioF,
+            string ProductoF, string CiudadF, int CantidadF) 
+        {
+            try
+            {
+                var resultado = await _detSolIFace.FiltroSP(FoliosF, EstadoF, AlmacenF, TipoEntradaF,
+                    ComercioF, ProductoF, CiudadF, CantidadF);
+                return Ok(resultado);
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                   "Error al leer la base de datos buscando datos de inventarios");
+            }
+        }
+        */
         [HttpGet("{filtro}")]
         public async Task<ActionResult<IEnumerable<Z232_DetSol>>> Buscar(string clave)
         {
@@ -22,8 +42,9 @@ namespace AppV7.Server.Controllers
                 var resultado = await _detSolIFace.Buscar(clave);
                 return Ok(resultado);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     "Error al leer la base de datos, buscando registros de detalles de la solicitud");
             }

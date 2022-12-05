@@ -1,7 +1,12 @@
-﻿using AppV7.Server.Data;
+﻿using AppV7.Client.Pages.Uniformes.Canano;
+using AppV7.Server.Data;
 using AppV7.Server.Models.IFace;
 using AppV7.Shared;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using MySqlConnector;
+
+//using System.Data.SqlClient;
 
 namespace AppV7.Server.Models.Repo
 {
@@ -41,13 +46,49 @@ namespace AppV7.Server.Models.Repo
                         case "Folio":
                             querry = querry.Where(x => x.Folio == ParamDic["Folio"] && x.Status);
                             break;
+                        case "Inventarios":
+
+                            MySqlParameter p1 = new MySqlParameter("@FoliosF", ParamDic["FoliosF"]);
+                            MySqlParameter p2 = new MySqlParameter("@EstadoF", ParamDic["EstadoF"]);
+                            MySqlParameter p3 = new MySqlParameter("@AlmacenF", ParamDic["AlmacenF"]);
+                            MySqlParameter p4 = new MySqlParameter("@TipoEntradaF", ParamDic["TipoEntradaF"]);
+                            MySqlParameter p5 = new MySqlParameter("@ComercioF", ParamDic["ComercioF"]);
+                            MySqlParameter p6 = new MySqlParameter("@ProductoF", ParamDic["ProductoF"]);
+                            MySqlParameter p7 = new MySqlParameter("@CiudadF", ParamDic["CiudadF"]);
+                            MySqlParameter p8 = new MySqlParameter("@CantidadF", ParamDic["CantidadF"]);
+                            
+                            string ex = "Call DetFiltroGeneral(@FoliosF, @EstadoF, @AlmacenF, @TipoEntradaF,";
+                            ex += "@ComercioF, @ProductoF, @CiudadF, @CantidadF)";
+                            IEnumerable<Z232_DetSol> res = await _appDbContext.DetSolicitud.FromSqlRaw(ex,
+                                        p1, p2, p3, p4, p5, p6, p7, p8).ToListAsync();
+                            return res;
                             
                     }
                     break;
             }
             return await querry.ToListAsync();
         }
+        /*
+        public async Task<IEnumerable<Z232_DetSol>> FiltroSP(string FoliosF, int EstadoF, 
+            string AlmacenF, string TipoEntradaF, string ComercioF, 
+            string ProductoF, string CiudadF, int CantidadF)
+        {
+            MySqlParameter p1 = new MySqlParameter("@FoliosF", FoliosF);
+            MySqlParameter p2 = new MySqlParameter("@EstadoF", EstadoF);
+            MySqlParameter p3 = new MySqlParameter("@AlmacenF", AlmacenF);
+            MySqlParameter p4 = new MySqlParameter("@TipoEntradaF", TipoEntradaF);
+            MySqlParameter p5 = new MySqlParameter("@ComercioF", ComercioF);
+            MySqlParameter p6 = new MySqlParameter("@ProductoF", ProductoF);
+            MySqlParameter p7 = new MySqlParameter("@CiudadF", CiudadF);
+            MySqlParameter p8 = new MySqlParameter("@CantidadF", CantidadF);
+            string ex = "Call DetFiltroGeneral(@FoliosF, @EstadoF, @AlmacenF, @TipoEntradaF,";
+            ex += "@ComercioF, @ProductoF, @CiudadF, @CantidadF)";
 
+            var res = await _appDbContext.DetSolicitud.FromSqlRaw(ex, 
+                p1, p2, p3, p4, p5, p6, p7, p8).ToListAsync();
+            return res;
+        }
+        */
         public async Task<Z232_DetSol> UpDateDetalle(Z232_DetSol det)
         {
             var res = await _appDbContext.DetSolicitud.FirstOrDefaultAsync(

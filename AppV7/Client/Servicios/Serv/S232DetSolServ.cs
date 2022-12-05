@@ -25,7 +25,22 @@ namespace AppV7.Client.Servicios.Serv
                 return null;
             }
         }
-
+        /*
+        public async Task<IEnumerable<Z232_DetSol>> FiltroSP(string FolioF, int EstadoF,
+            string AlmacenF, string TipoEntradaF, string ComercioF, string ProductoF,
+            string CiudadF, int CantidadF) 
+        {
+            
+            var resultado = $"{path}inventario?FolioF={FolioF}&EstadoF={EstadoF}&";
+            resultado += $"AlmacenF={AlmacenF}&TipoEntradaF={TipoEntradaF}&";
+            resultado += $"ComercioF={ComercioF}&ProductoF={ProductoF}&CiudadF={CiudadF}&";
+            resultado += $"CantidadF={CantidadF}";
+            
+            var resultado = $"{path}inventario/{FolioF}/{EstadoF}/{AlmacenF}/{TipoEntradaF}/ ";
+            resultado += $"{ComercioF}/{ProductoF}/{CiudadF}/{CantidadF}";
+            return await _httpClient.GetFromJsonAsync<IEnumerable<Z232_DetSol>>(resultado);
+        }
+    */
         public async Task<IEnumerable<Z232_DetSol>> Buscar(string clave)
         {
             var resultado = $"{path}filtro?clave={clave}";

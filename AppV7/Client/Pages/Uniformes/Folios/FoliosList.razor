@@ -49,9 +49,15 @@
                 <Columns>
                     <RadzenDataGridColumn TItem="Z260_Folio" Property="FolioId" Title="Id" 
                         Filterable="false" Sortable="false" Width="150px">
+                        <HeaderTemplate>
+                        Total: <b>@FolioGrid.View.Count()</b> de <b>@LosFolios.Count()</b>
+                        </HeaderTemplate>
                         <Template Context="datos">
                         @datos.FolioId
                         </Template>
+                        <FooterTemplate>
+                            Total: <b>@FolioGrid.View.Count()</b> de <b>@LosFolios.Count()</b>
+                        </FooterTemplate>
                     </RadzenDataGridColumn>
 
                     <RadzenDataGridColumn TItem="Z260_Folio" Property="FechaEntrega" Title="Fecha" 

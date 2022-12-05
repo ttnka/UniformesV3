@@ -27,7 +27,7 @@ namespace AppV7.Server.Models.Repo
             switch (clave)
             {
                 case "All":
-                    
+                    querry = querry.Where(x => x.Status);
                     break;
                 case "Alla":
                     querry = querry.Where(x => x.Estado == 1 && x.Status);

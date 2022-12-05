@@ -6,58 +6,29 @@ To see if you require a commercial license for Duende IdentityServer please see 
 
 
 
-var v = linea.Split(',');
-                            Z260_Folio elFolio = new()
-                            {
-                                FolioId = Guid.NewGuid().ToString(),
-                                RegId = v[0],
-                                FechaEntrega = Convert.ToDateTime(v[1]),
-                                Status = int.Parse(v[2]),
-                                Folio = v[3],
-                                NombreCompleto = v[4],
-                                Curp = v[5],
-                                TurnoId = v[6],
-                                Grado = int.Parse(v[7]),
-                                Codigo = v[8],
-                                EscuelaId = v[9],
-                                InscStatusId = v[10],
-                                GeneroId = v[11],
-                                NivelId = v[12],
-                                TipoValId = v[13],
-                                Localidad = v[14],
-                                Municipio = v[15]
-                            };
-                            ResultList.Add(elFolio);
-                        }
-                        Titulos++;
 
 
 
-                         MemoryStream ms = new MemoryStream();
-                fileR.OpenReadStream().CopyTo(ms);
-                try
-                {
-                    using (var lector = new StreamReader(fileR.OpenReadStream()))
-                    {
-                        using (var csv = new CsvReader(lector, CultureInfo.CurrentCulture))
-                        {
-                            var leyo = csv.Read();
-                            Console.WriteLine(leyo);
-                            var tit = csv.ReadHeader();
-                            Console.WriteLine(tit);
-                            while (csv.Read())
-                            {
-                                var newFolio = csv.GetRecord<Z260_Folio>();
-                                newFolio.FolioId = Guid.NewGuid().ToString();
-                                ResultList.Add(newFolio);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    
-                    Console.WriteLine(ex.ToString());
-                    return;
-                }
-                
+Procedimientos guardados en MySQL
+
+DELIMITER $$
+CREATE DEFINER=`lafam002_ulises`@`%` PROCEDURE `DetFiltroGeneral`(IN `FoliosF` VARCHAR(200), IN `EstadoF` INT, IN `AlmacenF` VARCHAR(200), IN `TipoEntradaF` VARCHAR(200), IN `ComercioF` VARCHAR(200), IN `ProductoF` VARCHAR(200), IN `CiudadF` VARCHAR(200), IN `CantidadF` INT)
+Select Det.*
+    FROM 
+    	Usuarios As Users 
+        	INNER Join 
+        Solicitudes As Sol On Sol.Usuario = Users.UsuariosId 
+        	Inner Join 
+        DetSolicitud as Det On Sol.SolicitudId = Det.SolicitudId
+    Where
+    	If (FoliosF != 'Alla', Sol.Folio = FoliosF, 1=1) AND
+        if (EstadoF <> 0, Sol.Estado = EstadoF, 1=1) AND
+    	if (AlmacenF != 'Alla', Sol.Almacen = AlmacenF, 1=1) AND
+        If (TipoEntradaF != 'Alla', Sol.Tipo = TipoEntradaF, 1=1) AND
+        If (ComercioF != 'Alla', Sol.Usuario = ComercioF, 1=1) AND
+        If (ProductoF != 'Alla', Det.Producto = ProductoF, 1=1) AND
+        If (CiudadF != 'Alla', Users.Municipio = CiudadF, 1=1) AND
+        If (CantidadF <> 0, Det.Cantidad = CantidadF, 1=1) AND
+        Sol.Status = '1' AND 
+        Det.Status = '1'$$
+DELIMITER ;

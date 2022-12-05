@@ -58,11 +58,11 @@
                 <RadzenDataGridColumn TItem="Z230_Solicitud" Property="Almacen" Title="Almacen" 
                 Filterable="true"  Width="200px">
                     <Template Context="datos">
-                        @datos.Almacen
+                        @LosAlmacenes.FirstOrDefault(x=>x.AlmacenId == datos.Almacen)!.Corto
                     </Template>
                     <EditTemplate Context="datos">
                         <RadzenDropDown Name="Almacen" Data=@LosAlmacenes @bind-Value=@datos.Almacen
-                                    ValueProperty="Corto" TextProperty="Nombre" AllowClear="true" 
+                                    ValueProperty="AlmacenId" TextProperty="Nombre" AllowClear="true" 
                                     Style="width: 100%;" />
                     </EditTemplate>
                 </RadzenDataGridColumn>

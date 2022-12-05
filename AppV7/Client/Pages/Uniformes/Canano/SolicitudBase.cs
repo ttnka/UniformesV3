@@ -34,12 +34,12 @@ namespace AppV7.Client.Pages.Uniformes.Canano
         protected async override Task OnInitializedAsync()
         {
             await LeerUser();
-            LeerTipos();
             await LeerDatos();
             await LeerAlmacenes();
-            await LeerDetalle();   
+            await LeerDetalle();  
             await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId,
                             "Consulta del listado de solicitudes", false);
+            LeerTipos();
         }
         public async Task LeerDatos()
         {
@@ -58,7 +58,6 @@ namespace AppV7.Client.Pages.Uniformes.Canano
         public async Task LeerDetalle()
         {
             LosDetalles = await DetIServ.Buscar("Alla");
-            
         }
         public async Task LeerAlmacenes()
         {
@@ -84,8 +83,8 @@ namespace AppV7.Client.Pages.Uniformes.Canano
                 
                 if (ElUsuario.Nivel > 2)
                     LosEdos.Add(new KeyValuePair<int, string>(1, "Entregado"));
-                LosEdos.Add(new KeyValuePair<int, string>(2, "Proceso"));
-                LosEdos.Add(new KeyValuePair<int, string>(3, "Cancelada"));
+                    LosEdos.Add(new KeyValuePair<int, string>(2, "Proceso"));
+                    LosEdos.Add(new KeyValuePair<int, string>(3, "Cancelada"));
             }
         }
         public NotificationMessage ElMsn(string tipo, string titulo, string mensaje, int duracion)

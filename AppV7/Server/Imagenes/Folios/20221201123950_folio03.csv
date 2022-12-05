@@ -1,0 +1,17 @@
+DelRegId,Regional,FechaEntrega,Status,Folio,Nombre Completo,CURP,IdTurno,Turno,Grado,Grupo,Codigo,IdEscuela,Escuela,IdStatusInsc,IdGenero,Genero,IdNivel,Nivel,IdTipoVal,TipoVal,Localidad,Mpio
+2c633ea2-73f3-421d-a960-c7414dcff638,Javier@javier.com,11/28/2022,Entregado,Folio13,Nombre completo 14,Curp14,2,dos,Grado14,A,Codigo14,14,Esc14,1,2,H,1,Nivel1,1,Tipo1,Guaymas,Guaymas
+534d8457-8969-4a38-9078-84bf0b55ac54,Guaymas2@Comercio.com,11/28/2022,Entregado,Folio14,Nombre completo 15,Curp15,1,uno,Grado15,A,Codigo15,15,Esc15,1,1,M,1,Nivel1,1,Tipo1,Guaymas,Guaymas
+58e63ef8-5cd1-4703-bd7a-1ac9fccabe7d,Hermosillo@Comercio.com,11/28/2022,Entregado,Folio15,Nombre completo 16,Curp16,1,uno,Grado16,A,Codigo16,16,Esc16,1,2,H,1,Nivel1,1,Tipo1,Hermosillo,Hermosillo
+649fd221-9c61-4f36-a6fe-3ba7f3828d6e,Guaymas@Comercio.com,11/25/2022,Entregado,Folio16,Nombre completo 17,Curp17,2,dos,Grado14,A,Codigo14,14,Esc14,1,2,H,1,Nivel1,1,Tipo1,Guaymas,Guaymas
+534d8457-8969-4a38-9078-84bf0b55ac54,Guaymas2@Comercio.com,10/26/2022,Entregado,Folio79,Nombre completo 80,Curp80,2,dos,Grado14,A,Codigo14,14,Esc14,1,2,H,1,Nivel1,1,Tipo1,Guaymas,Guaymas
+58e63ef8-5cd1-4703-bd7a-1ac9fccabe7d,Hermosillo@Comercio.com,10/27/2022,Entregado,Folio80,Nombre completo 81,Curp81,1,uno,Grado15,A,Codigo15,15,Esc15,1,1,M,1,Nivel1,1,Tipo1,Hermosillo,Hermosillo
+d64dcc24-67a6-4ee0-abe1-d19319055235,Hermosillo2@Comercio.com,10/18/2022,Entregado,Folio103,Nombre completo 104,Curp104,1,uno,Grado16,A,Codigo16,16,Esc16,1,2,H,1,Nivel1,1,Tipo1,Hermosillo,Hermosillo
+2c633ea2-73f3-421d-a960-c7414dcff638,Javier@javier.com,10/14/2022,Entregado,Folio104,Nombre completo 105,Curp105,2,dos,Grado14,A,Codigo14,14,Esc14,1,2,H,1,Nivel1,1,Tipo1,Guaymas,Guaymas
+534d8457-8969-4a38-9078-84bf0b55ac54,Guaymas2@Comercio.com,10/15/2022,Entregado,Folio105,Nombre completo 106,Curp106,1,uno,Grado15,A,Codigo15,15,Esc15,1,1,M,1,Nivel1,1,Tipo1,Guaymas,Guaymas
+58e63ef8-5cd1-4703-bd7a-1ac9fccabe7d,Hermosillo@Comercio.com,10/11/2022,Entregado,Folio106,Nombre completo 107,Curp107,1,uno,Grado16,A,Codigo16,16,Esc16,1,2,H,1,Nivel1,1,Tipo1,Hermosillo,Hermosillo
+649fd221-9c61-4f36-a6fe-3ba7f3828d6e,Guaymas@Comercio.com,10/12/2022,Entregado,Folio107,Nombre completo 108,Curp108,2,dos,Grado14,A,Codigo14,14,Esc14,1,2,H,1,Nivel1,1,Tipo1,Guaymas,Guaymas
+beb8f0f1-92d4-429f-b129-73fa85936809,Nogales@Comercio.com,10/8/2022,Entregado,Folio108,Nombre completo 109,Curp109,1,uno,Grado15,A,Codigo15,15,Esc15,1,1,M,1,Nivel1,1,Tipo1,Nogales,Nogales
+beb8f0f1-92d4-429f-b129-73fa85936809,Nogales@Comercio.com,10/9/2022,Entregado,Folio109,Nombre completo 110,Curp110,2,dos,Grado14,A,Codigo14,14,Esc14,1,2,H,1,Nivel1,1,Tipo1,Nogales,Nogales
+beb8f0f1-92d4-429f-b129-73fa85936809,Nogales@Comercio.com,10/5/2022,Entregado,Folio110,Nombre completo 111,Curp111,1,uno,Grado15,A,Codigo15,15,Esc15,1,1,M,1,Nivel1,1,Tipo1,Nogales,Nogales
+2c633ea2-73f3-421d-a960-c7414dcff638,Javier@javier.com,10/6/2022,Entregado,Folio111,Nombre completo 112,Curp112,1,uno,Grado16,A,Codigo16,16,Esc16,1,2,H,1,Nivel1,1,Tipo1,Guaymas,Guaymas
+534d8457-8969-4a38-9078-84bf0b55ac54,Guaymas2@Comercio.com,10/2/2022,Entregado,Folio112,Nombre completo 113,Curp113,1,uno,Grado16,A,Codigo16,16,Esc16,1,2,H,1,Nivel1,1,Tipo1,Guaymas,Guaymas
