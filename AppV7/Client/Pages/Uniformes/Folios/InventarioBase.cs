@@ -37,6 +37,7 @@ namespace AppV7.Client.Pages.Uniformes.Folios
         public List<ReporteDet> ElRepDet { get; set; } = new List<ReporteDet>();
         public Filtro ElFiltro { get; set; } = new();
         public bool Datos { get; set; } = true;
+        public bool Exportar { get; set; } = false;
         public RadzenTemplateForm<Filtro>? FiltroTemp { get; set; } = default!;
         public RadzenDataGrid<ReporteDet>? RepDetGrid { get; set; } = default!;
         protected async override Task OnInitializedAsync()
@@ -62,8 +63,16 @@ namespace AppV7.Client.Pages.Uniformes.Folios
                 ElFiltro.AlmacenF = "Alla";
             if (string.IsNullOrEmpty(ElFiltro.TipoEntradaF))
                 ElFiltro.TipoEntradaF = "Alla";
-            if (string.IsNullOrEmpty(ElFiltro.ComercioF))
-                ElFiltro.ComercioF = "Alla";
+            if (ElUsuario.Nivel == 2)
+            {
+                ElFiltro.ComercioF = ElUsuario.UsuariosId;
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(ElFiltro.ComercioF))
+                    ElFiltro.ComercioF = "Alla";
+            }
+            
             if (string.IsNullOrEmpty(ElFiltro.ProductoF))
                 ElFiltro.ProductoF = "Alla";
             if (string.IsNullOrEmpty(ElFiltro.CiudadF))
@@ -85,6 +94,7 @@ namespace AppV7.Client.Pages.Uniformes.Folios
             await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId,
                             $"Solicito un reporte de inventario de {buscar}", false);
             Datos = true;
+            Exportar = true;
         }
         
         protected void LeerConstantes()

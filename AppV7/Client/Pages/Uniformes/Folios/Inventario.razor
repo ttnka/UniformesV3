@@ -2,69 +2,101 @@
 @inherits InventarioBase
 @using AppV7.Shared
 
-
 @if (Datos)
 {
     <RadzenCard>
         <RadzenTemplateForm @ref=FiltroTemp Data="@ElFiltro"
                         TItem="@Filtro" Submit="@Filtrar">
             <div class="form-grup row">
-                <label for="FolioF" class="col-sm-3 col-form-label">Folio</label>
-                <label for="EstadoF" class="col-sm-3 col-form-label">Estado Folio</label>
-                <label for="AlmacenF" class="col-sm-3 col-form-label">Almacen</label>
-                <label for="TipoEntradaF" class="col-sm-3 col-form-label">Tipo</label>
-            </div>
-            <div class="form-grup row">
                 <div class="col-sm-3">
-                    <RadzenTextBox Name="FolioF" @bind-Value=@ElFiltro.FolioF Style="width: 100%;" />
+                    <div class="form-grup row">
+                        <label>Folio</label>
+                        
+                    </div>
+                    <div class="form-grup row">
+                        <RadzenTextBox Name="FolioF" @bind-Value=@ElFiltro.FolioF Style="width: 95%;" />
+                    </div>
                 </div>
                 <div class="col-sm-3">
-                    <RadzenDropDown Name="EstadoF" Data=@LosEdos @bind-Value=@ElFiltro.EstadoF
+                    <div class="form-grup row">
+                        <label>Estado del folio</label>
+                    </div>
+                    <div class="form-grup row">
+                        <RadzenDropDown Name="EstadoF" Data=@LosEdos @bind-Value=@ElFiltro.EstadoF
                                 ValueProperty="Value" TextProperty="Text" 
-                                AllowClear="true" Style="width: 100%;" />
+                                AllowClear="true" Style="width: 95%;" />
+                    </div>
                 </div>
                 <div class="col-sm-3">
-                    <RadzenDropDown Name="AlmacenF" Data=@LosAlmacenes @bind-Value=@ElFiltro.AlmacenF
-                                ValueProperty="AlmacenId" TextProperty="Corto" 
-                                AllowClear="true" Style="width: 100%;" />
+                    <div class="form-grup row">
+                        <label>Almacen</label>            
+                    </div>
+                    <div class="form-grup row">
+                        <RadzenDropDown Name="AlmacenF" Data=@LosAlmacenes @bind-Value=@ElFiltro.AlmacenF
+                                    ValueProperty="AlmacenId" TextProperty="Corto"
+                                    AllowClear="true" Style="width: 95%;" />
+                    </div>
                 </div>
                 <div class="col-sm-3">
-                    <RadzenDropDown Name="TipoEntradaF" Data=@LosTipos @bind-Value=@ElFiltro.TipoEntradaF
-                                ValueProperty="Value" TextProperty="Text" 
-                                AllowClear="true" Style="width: 100%;" />
+                    <div class="form-grup row">
+                        <label>Tipo</label>
+                    </div>
+                    <div class="form-grup row">
+                        <RadzenDropDown Name="TipoEntradaF" Data=@LosTipos @bind-Value=@ElFiltro.TipoEntradaF
+                                    ValueProperty="Value" TextProperty="Text"
+                                    AllowClear="true" Style="width: 95%;" />
+                    </div>
                 </div>
             </div>
-            <div class="form-grup row">
-                <label for="ComercioF" class="col-sm-3 col-form-label">Comercio</label>
-                <label for="ProductoF" class="col-sm-3 col-form-label">Producto</label>
-                <label for="CiudadF" class="col-sm-3 col-form-label">Ciudad</label>
-                <label for="CantidadF" class="col-sm-3 col-form-label">Cantidad</label>
-            </div>
+
             <div class="form-grup row">
                 <div class="col-sm-3">
-                    <RadzenDropDown Name="ComercioF" Data=@LosUsers @bind-Value=@ElFiltro.ComercioF
+                    <div class="form-grup row">
+                        <label>Comercio</label>
+                    </div>
+                    <div class="form-grup row">
+                        <RadzenDropDown Name="ComercioF" Data=@LosUsers @bind-Value=@ElFiltro.ComercioF
                                 ValueProperty="UsuarioId" TextProperty="OldEmail" 
-                                AllowClear="true" Style="width: 100%;" />
+                                AllowClear="true" Style="width: 95%;" />
+                    </div>
                 </div>
                 <div class="col-sm-3">
-                    <RadzenDropDown Name="ProductoF" Data=@LosProductos @bind-Value=@ElFiltro.ProductoF
+                    <div class="form-grup row">         
+                        <label>Producto</label>           
+                    </div>
+                    <div class="form-grup row">
+                        <RadzenDropDown Name="ProductoF" Data=@LosProductos @bind-Value=@ElFiltro.ProductoF
                                 ValueProperty="ProductoId" TextProperty="Corto" AllowClear="true" 
-                                Style="width: 100%;" />
+                                Style="width: 95%;" />
+                    </div>
                 </div>
                 <div class="col-sm-3">
-                    <RadzenDropDown Name="CiudadF" Data=@LosMpios @bind-Value=@ElFiltro.CiudadF
+                    <div class="form-grup row">  
+                        <label>Ciudad</label>  
+                    </div>
+                    <div class="form-grup row">
+                        <RadzenDropDown Name="CiudadF" Data=@LosMpios @bind-Value=@ElFiltro.CiudadF
                                 ValueProperty="Value" TextProperty="Text" AllowClear="true" 
-                                Style="width: 100%;" />
+                                Style="width: 95%;" />
+                    </div>
                 </div>
                 <div class="col-sm-3">
-                    <RadzenNumeric Name="CantidadF" @bind-Value=@ElFiltro.CantidadF 
-                            ShowUpDown="false" Style="width: 100%;" />
+                    <div class="form-grup row">        
+                        <label>Cantidad</label>  
+                    </div>
+                    <div class="form-grup row">
+                        <RadzenNumeric Name="CantidadF" @bind-Value=@ElFiltro.CantidadF
+                                   ShowUpDown="false" Style="width: 95%;" />
+                    </div>
                 </div>
             </div>
+
             <div class="form-grup row">
                 <label for="almacenF" class="col-sm-3 col-form-label"></label>
                 <label for="almacenF" class="col-sm-3 col-form-label"></label>
-                <label for="almacenF" class="col-sm-3 col-form-label"></label>
+                <div class="col-sm-3">
+                    
+                </div>
                 <div class="col-sm-3">
                     <RadzenButton ButtonType="ButtonType.Submit" Text="Filtrar" />
                 </div>
@@ -120,8 +152,8 @@
                                   Width="100px" TextAlign="TextAlign.Right" >
                     <Template Context="datos">
                         @if(datos.TipoEntradaRt != "Solicitud") {
-                            <label>@String.Format(new System.Globalization.CultureInfo("en-US"), 
-                                "{0:C}", @datos.CantidadRt)
+                            <label>
+                                @String.Format("{0,15:N0}", @datos.CantidadRt)
                             </label>
                         } else
                         {
@@ -130,9 +162,9 @@
                     </Template>
                     <FooterTemplate>
                         <label>
-                            @String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C}",
-                            ElRepDet.Where(o => o.TipoEntradaRt != "Solicitud").
-                            Sum(o => o.CantidadRt))
+                            @String.Format("{0,15:N0}",
+                                ElRepDet.Where(o => o.TipoEntradaRt != "Solicitud").
+                                Sum(o => o.CantidadRt))
                         </label>
                     </FooterTemplate>
                 </RadzenDataGridColumn>
@@ -142,8 +174,8 @@
                         @if (datos.TipoEntradaRt == "Solicitud")
                         {
                             <label>
-                                @String.Format(new System.Globalization.CultureInfo("en-US"), 
-                                "{0:C}", @datos.CantidadRt)
+
+                                @String.Format("{0,15:N0}", @datos.CantidadRt)
                             </label>
                         }
                         else
@@ -153,18 +185,15 @@
                     </Template>
                     <FooterTemplate>
                         <label>
-                                @String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C}", 
+                            @String.Format("{0,15:N0}", 
                                 ElRepDet.Where(o => o.TipoEntradaRt == "Solicitud").
-                                Sum(o => o.CantidadRt))
+                                Sum(o => o.CantidadRt))    
                         </label>
                     </FooterTemplate>
                 </RadzenDataGridColumn>
             </Columns>
-
         </RadzenDataGrid>
-
     </RadzenCard>
-
 }
 else
 
@@ -182,6 +211,19 @@ else
         ElFiltro.Filtrado = true;
         await LeerRegistros();
     }
+    /*
+     * @inject NorthwindService service
+    public void Export(string type)
+    {
+        service.Export("InventariosDetails", type, new Query()
+            {
+                OrderBy = RepDetGrid.Query.OrderBy,
+                Filter = RepDetGrid.Query.Filter,
+                Select = string.Join(",", RepDetGrid.ColumnsCollection.Where(c =>
+                        c.GetVisible()).Select(c => c.Property))
+            });
+    }
+    */
     void OnRender(DataGridRenderEventArgs<ReporteDet> args)
     {
         if (args.FirstRender)
@@ -198,7 +240,26 @@ else
     
     /*
       Render="@OnRender" GroupRowRender="OnGroupRowRender"
-    
-    
+    <RadzenButton Text="Exportar XLS" Icon="grid_on"
+                        Click="@(args => Export("excel"))" Disabled= "@(!Exportar)" />
+
+
+       public partial class NorthwindService
+        {
+        private readonly NavigationManager navigationManager;
+
+        public NorthwindService(NavigationManager navigationManager)
+            {
+            this.navigationManager = navigationManager;
+        }
+
+        public void Export(string table, string type, Query query = null)
+            {
+            navigationManager.NavigateTo(query != null ?
+                query.ToUrl($"/export/{table}/{type}") :
+                $"/export/{table}/{type}", true);
+    }
+        }
     */
+
 }
