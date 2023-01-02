@@ -57,6 +57,7 @@ namespace AppV7.Client.Pages.Uniformes.Folios
         
         public async Task LeerRegistros()
         {
+            ElFiltro.Filtrado = false;
             if (string.IsNullOrEmpty(ElFiltro.FolioF)) 
                 ElFiltro.FolioF = "Alla";
             if (string.IsNullOrEmpty(ElFiltro.AlmacenF))
@@ -94,6 +95,7 @@ namespace AppV7.Client.Pages.Uniformes.Folios
             await Escribir(ElUsuario.UsuariosId, ElUsuario.OrgId,
                             $"Solicito un reporte de inventario de {buscar}", false);
             Datos = true;
+            ElFiltro.Filtrado = true;
             Exportar = true;
         }
         

@@ -23,7 +23,7 @@
                     </div>
                     <div class="form-grup row">
                         <RadzenDropDown Name="EstadoF" Data=@LosEdos @bind-Value=@ElFiltro.EstadoF
-                                ValueProperty="Value" TextProperty="Text" 
+                                ValueProperty="Key" TextProperty="Value" 
                                 AllowClear="true" Style="width: 95%;" />
                     </div>
                 </div>
@@ -43,7 +43,7 @@
                     </div>
                     <div class="form-grup row">
                         <RadzenDropDown Name="TipoEntradaF" Data=@LosTipos @bind-Value=@ElFiltro.TipoEntradaF
-                                    ValueProperty="Value" TextProperty="Text"
+                                    ValueProperty="Value" TextProperty="Value"
                                     AllowClear="true" Style="width: 95%;" />
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                     </div>
                     <div class="form-grup row">
                         <RadzenDropDown Name="ComercioF" Data=@LosUsers @bind-Value=@ElFiltro.ComercioF
-                                ValueProperty="UsuarioId" TextProperty="OldEmail" 
+                                ValueProperty="UsuariosId" TextProperty="OldEmail" 
                                 AllowClear="true" Style="width: 95%;" />
                     </div>
                 </div>
@@ -76,7 +76,7 @@
                     </div>
                     <div class="form-grup row">
                         <RadzenDropDown Name="CiudadF" Data=@LosMpios @bind-Value=@ElFiltro.CiudadF
-                                ValueProperty="Value" TextProperty="Text" AllowClear="true" 
+                                ValueProperty="Value" TextProperty="Value" AllowClear="true" 
                                 Style="width: 95%;" />
                     </div>
                 </div>
@@ -104,99 +104,126 @@
 
         </RadzenTemplateForm>
     </RadzenCard>
+    @if (ElRepDet != null && ElRepDet.Any())
+    {    
+        <RadzenCard>
+            <RadzenDataGrid @ref="RepDetGrid" Data="@ElRepDet" TItem="ReporteDet" PageSize="50"
+                AllowFiltering="true" AllowPaging="true" AllowSorting="true" AllowColumnResize="true"
+                AllowGrouping="false" >
+                <Columns>
+                    <RadzenDataGridColumn Width="40px" TItem="ReporteDet" Title="#" 
+                        Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
+                        <Template>
+                            @(ElRepDet.IndexOf(context) + 1)
+                        </Template>
+                    </RadzenDataGridColumn>
 
-    <RadzenCard>
-        <RadzenDataGrid @ref="RepDetGrid" Data="@ElRepDet" TItem="ReporteDet" PageSize="50"
-            AllowFiltering="true" AllowPaging="true" AllowSorting="true" AllowColumnResize="true"
-            AllowGrouping="false" >
-            <Columns>
-                <RadzenDataGridColumn Width="40px" TItem="ReporteDet" Title="#" 
-                    Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
-                    <Template>
-                        @(ElRepDet.IndexOf(context) + 1)
-                    </Template>
-                </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="ReporteDet" Title="Almacen" Property="AlmacenRt"
+                                    Filterable="true" Width="150px">
+                        <Template Context="datos">
+                            @datos.AlmacenRt
+                        </Template>
+                        <FooterTemplate>
+                            @if(RepDetGrid.View.Count() > 0) 
+                            {
+                                <label>Totales: <b>@RepDetGrid.View.Count()</b> de <b>@ElRepDet.Count()</b></label>
+                            }
+                        
+                        </FooterTemplate>
+                    </RadzenDataGridColumn>
 
-                <RadzenDataGridColumn TItem="ReporteDet" Title="Almacen" Property="AlmacenRt"
-                                Filterable="true" Width="150px">
-                    <Template Context="datos">
-                        @datos.AlmacenRt
-                    </Template>
-                    <FooterTemplate>
-                        Totales: <b>@RepDetGrid.View.Count()</b> de <b>@ElRepDet.Count()</b>
-                    </FooterTemplate>
-                </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="ReporteDet" Title="Comercios" Filterable="true" 
+                                    Width="150px">
+                        <Template Context="datos">
+                            @datos.ComercioRt
+                        </Template>
+                    </RadzenDataGridColumn>
 
-                <RadzenDataGridColumn TItem="ReporteDet" Title="Comercios" Filterable="true" 
-                                Width="150px">
-                    <Template Context="datos">
-                        @datos.ComercioRt
-                    </Template>
-                </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="ReporteDet" Title="Grupo" Filterable="true" 
+                                    Width="150px">
+                        <Template Context="datos">
+                            @datos.TipoEntradaRt    
+                        </Template>
+                    </RadzenDataGridColumn>
 
-                <RadzenDataGridColumn TItem="ReporteDet" Title="Grupo" Filterable="true" 
-                                Width="150px">
-                    <Template Context="datos">
-                        @datos.TipoEntradaRt    
-                    </Template>
-                </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="ReporteDet" Title="Producto" Filterable="true" 
+                                    Width="150px">
+                        <Template Context="datos">
+                             @datos.ProductoRt
+                        </Template>
+                    </RadzenDataGridColumn>
 
-                <RadzenDataGridColumn TItem="ReporteDet" Title="Producto" Filterable="true" 
-                                Width="150px">
-                    <Template Context="datos">
-                         @datos.ProductoRt
-                    </Template>
-                </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="ReporteDet" Title="Entradas" Filterable="true" 
+                                      Width="100px" TextAlign="TextAlign.Right" >
+                        <Template Context="datos">
+                            @if (RepDetGrid.View.Count() > 0)
+                            {
+                                @if (datos.TipoEntradaRt != "Solicitud")
+                                {
+                                    <label>
+                                        @String.Format("{0,15:N0}", @datos.CantidadRt)
+                                    </label>
+                                }
+                                else
+                                {
+                                    <label>0</label>
+                                }
+                            }
+                        </Template>
+                        <FooterTemplate>
+                            @if(RepDetGrid.View.Count() > 0) 
+                            {
+                                <label>
+                                    @String.Format("{0,15:N0}",
+                                        ElRepDet.Where(o => o.TipoEntradaRt != "Solicitud").
+                                        Sum(o => o.CantidadRt))
+                                </label>
+                            }
+                        </FooterTemplate>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="ReporteDet" Title="Salidas" Filterable="true"
+                                      Width="100px" TextAlign="TextAlign.Right">
+                        <Template Context="datos">
+                            @if (RepDetGrid.View.Count() > 0)
+                            {
+                                @if (datos.TipoEntradaRt == "Solicitud")
+                                {
+                                    <label>
 
-                <RadzenDataGridColumn TItem="ReporteDet" Title="Entradas" Filterable="true" 
-                                  Width="100px" TextAlign="TextAlign.Right" >
-                    <Template Context="datos">
-                        @if(datos.TipoEntradaRt != "Solicitud") {
+                                        @String.Format("{0,15:N0}", @datos.CantidadRt)
+                                    </label>
+                                }
+                                else
+                                {
+                                    <label>0</label>
+                                }
+                            }
+                        </Template>
+                        <FooterTemplate>
+                         @if(RepDetGrid.View.Count() > 0) 
+                            {   
                             <label>
-                                @String.Format("{0,15:N0}", @datos.CantidadRt)
+                                @String.Format("{0,15:N0}", 
+                                    ElRepDet.Where(o => o.TipoEntradaRt == "Solicitud").
+                                    Sum(o => o.CantidadRt))    
                             </label>
-                        } else
-                        {
-                            <label>0</label>
-                        }
-                    </Template>
-                    <FooterTemplate>
-                        <label>
-                            @String.Format("{0,15:N0}",
-                                ElRepDet.Where(o => o.TipoEntradaRt != "Solicitud").
-                                Sum(o => o.CantidadRt))
-                        </label>
-                    </FooterTemplate>
-                </RadzenDataGridColumn>
-                <RadzenDataGridColumn TItem="ReporteDet" Title="Salidas" Filterable="true"
-                                  Width="100px" TextAlign="TextAlign.Right">
-                    <Template Context="datos">
-                        @if (datos.TipoEntradaRt == "Solicitud")
-                        {
-                            <label>
-
-                                @String.Format("{0,15:N0}", @datos.CantidadRt)
-                            </label>
-                        }
-                        else
-                        {
-                            <label>0</label>
-                        }
-                    </Template>
-                    <FooterTemplate>
-                        <label>
-                            @String.Format("{0,15:N0}", 
-                                ElRepDet.Where(o => o.TipoEntradaRt == "Solicitud").
-                                Sum(o => o.CantidadRt))    
-                        </label>
-                    </FooterTemplate>
-                </RadzenDataGridColumn>
-            </Columns>
-        </RadzenDataGrid>
-    </RadzenCard>
+                            }
+                        </FooterTemplate>
+                    </RadzenDataGridColumn>
+                </Columns>
+            </RadzenDataGrid>
+        </RadzenCard>
+    }
+    else 
+    {
+        @if(ElFiltro.Filtrado) 
+        {
+            <label>No se encontraro registros con estos criterios</label>
+        }
+    }
 }
 else
-
+    
 {
     <div class="spinner"></div>
 }

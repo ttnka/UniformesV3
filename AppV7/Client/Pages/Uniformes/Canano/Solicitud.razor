@@ -3,6 +3,7 @@
 @inject NotificationService NS
 @using AppV7.Shared
 @using AppV7.Shared.Libreria
+@using AppV7.Client.Pages.Uniformes.Folios
 
     <div class="form-grup row">        
         <div class="col-sm-9">
@@ -35,9 +36,24 @@
                 RowCreate="@OnCreateRow"  >
 
             <Template Context="datos1">
-                <DetSol ElFolioDet="@datos1" ElUsuarioDet="@ElUsuario"  />
-                
+                <RadzenTabs>
+                    <Tabs>
+                        <RadzenTabsItem Text="Carga Manual">
+                            <DetSol ElFolioDet="@datos1" ElUsuarioDet="@ElUsuario" />
+                        </RadzenTabsItem>
+                        <RadzenTabsItem Text="Extras">
+                            @if (datos1.Estado == 2)
+                            {
+                                <FoliosAdd ElUsuario="ElUsuario" FileNames="FileNameList" 
+                                   SolFolio="@datos1.Folio"  SolId="@datos1.SolicitudId"
+                                   ElTipo="Entrada" />
+                            }
+                        </RadzenTabsItem>
+                    </Tabs>
+            </RadzenTabs>
             </Template>
+
+           
     <!-- AQUI EMPIEZA REPORTE-->
 
             <Columns>

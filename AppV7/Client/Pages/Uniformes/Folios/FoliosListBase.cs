@@ -40,7 +40,8 @@ namespace AppV7.Client.Pages.Uniformes.Folios
             bita = MyFunc.WriteBitacora(usuarioId, ordId, desc, sistema);
             await BitacoraIServ.AddBitacora(bita);
         }
-        public NotificationMessage ElMsn(string tipo, string titulo, string mensaje, int duracion)
+        public NotificationMessage ElMsn(string tipo, string titulo, 
+            string mensaje, int duracion)
         {
             NotificationMessage respuesta = new();
             switch (tipo.ToLower())

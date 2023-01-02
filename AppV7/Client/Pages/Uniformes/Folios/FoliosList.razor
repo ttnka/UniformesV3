@@ -8,7 +8,9 @@
 <RadzenCard>
     <div class="form-grup row">          
         <div class="col-sm-3"><h4>Agregar el archivo con los folios => </h4></div>
-        <div class="col-sm-3"><FoliosAdd ElUsuario="ElUsuario" FileNames="FileNameList" /></div>
+        <div class="col-sm-3">
+            <FoliosAdd ElUsuario="ElUsuario" FileNames="FileNameList" ElTipo="Folio" />
+        </div>
         <div class="col-sm-2">
             <RadzenButton Text="Actualizar" Icon="refresh" style="margin-bottom: 10px" ButtonStyle="ButtonStyle.Info"
                             Click="@LoadData" />

@@ -78,3 +78,25 @@ ILogger
                                   $"AppV7.Client.Pages.Usuarios.Web.{@comp.Web}") 
                                   Parameters=Parametros />
                     </RadzenTabsItem>
+
+
+                    Server info
+                    
+                    Nombre del servidor
+                        ZuverworksServer
+
+                    Nombre de host:
+                        36.55.167.72.host.secureserver.net
+
+                    Dirección IP
+                        72.167.55.36
+
+                    Servicio de retransmisión SMTP
+                        dedrelay.secureserver.net
+
+                    Credenciales de inicio de sesión
+                        ihernandez P.as...sword
+
+                        ssh-ed25519 255 SHA256:G9mMAJbFt7TNcYG9x/nDbMC14kYtehKgrRID9dj5V8E
+
+

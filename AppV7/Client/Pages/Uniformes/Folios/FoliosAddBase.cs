@@ -13,31 +13,94 @@ using System.Net.Http.Json;
 using System.Globalization;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using Radzen.Blazor;
+using System.Reflection.Metadata.Ecma335;
 
 namespace AppV7.Client.Pages.Uniformes.Folios
 {
+    // ElTipo es la variable de donde biene los datos
+    // Folio Son los folios de SEC
+    // Entrada son los registros de detalle de inventario o almacen
     public class FoliosAddBase : ComponentBase 
     {
         [Inject]
         public I260FolioServ FolioIServ { get; set; } = default!;
+        [Inject]
+        public I220ProductoServ ProductoIServ { get; set; } = default!;
+        [Inject]
+        public I232DetSolServ DetIServ { get; set; } = default!;
+        public bool WorkOnIt = true;
+        public IEnumerable<Z220_Producto> LosProductos { get; set; } = new 
+            List<Z220_Producto>();
         protected async override Task OnInitializedAsync()
         {
             await LeerUser();
+            switch (ElTipo)
+            {
+                case "Folio":
+                    break;
+                case "Entrada":
+                    await PoblarInfoEntrada();
+                    break;
+            }
         }
+        protected async Task PoblarInfoEntrada()
+        {
+            LosProductos = await ProductoIServ.Buscar("Alla");
+            if (LosProductos == null) WorkOnIt = false;
+        }
+        
         [Inject]
         public HttpClient Http { get; set; } = default!;
+        [Parameter]
+        public List<string> FileNames { get; set; } = new();
+        [Parameter]
+        public string ElTipo { get; set; } = string.Empty;
+        [Parameter]
+        public string SolId { get; set; } = string.Empty;
+        [Parameter]
+        public string SolFolio { get; set; } = string.Empty;
+        [Parameter]
+        public Dictionary <string, string> DatosDicF { get; set; } = 
+            new Dictionary<string, string>();
+        private List<Z232_DetSol> InventarioList = new();
+        private List<Z260_Folio> ResultList = new();
 
         private int Titulos = 0;
         private int Vacios = 0;
-        private List<Z260_Folio> ResultList = new();
+        
+        protected List<string> ProductosList = new();
 
         private int MaxAllowedFiles = 3;
         private long MaxFileSize = long.MaxValue;
-        [Parameter]
-        public List<string> FileNames { get; set; } = new();
+        
         public string FullName = string.Empty;
         private List<Z812_Upload> upLoadResults = new();
         
+        private (bool correcto, Z232_DetSol registro) PoblandoZ232(string[] v)
+        {
+            Z232_DetSol resultado = new();
+            bool positivo = false;
+            Console.WriteLine(v.Length);
+
+            if (v != null && WorkOnIt && v[0].ToLower() == SolFolio)
+            {
+                var producto = LosProductos.FirstOrDefault(x => x.Corto == v[2].ToUpper());
+                if (producto != null)
+                { 
+                    resultado.DetId = Guid.NewGuid().ToString();
+                    resultado.Folio = v[0];
+                    resultado.Cantidad = int.TryParse(v[1], out int numero) ? numero : 0;
+                    resultado.Producto = producto.ProductoId;
+                    var desc1 = v[3];
+                    resultado.Desc = String.IsNullOrEmpty(desc1) ? " f*" : $"{desc1} f*";
+                    resultado.SolicitudId = SolId;
+                    resultado.Estado = 1;
+                    positivo = true;
+                }
+            }
+            return (positivo, resultado);
+        }
         private Z260_Folio PoblandoZ260(string[] v) 
         {
             string texto = "v3= " + v[3] + " v4= " + v[4] + " v5= " + v[5] + " v6= " + v[6] + " v7= " + v[7] + " v9= " + v[9];
@@ -64,9 +127,25 @@ namespace AppV7.Client.Pages.Uniformes.Folios
             resultado.Municipio = v[22];      
             return resultado;
         }
-        private async Task AddFoliosDb(string tabla, List<string[]> csv)
+        private async Task AddRegistrosDb(string tabla, List<string[]> csv)
         {   
             switch (tabla){
+                case "Entrada":
+                    foreach(var row in csv)
+                    {
+                        if(row[0] == "Fin" || string.IsNullOrEmpty(row[0]) ||
+                            string.IsNullOrEmpty(row[1]))
+                        { continue; }
+                        else
+                        {
+                            var invadd = PoblandoZ232(row);
+                            if (!invadd.correcto) continue;
+                            await DetIServ.AddDetalle(invadd.registro);
+                            //InventarioList.Add(invadd.registro);
+                        }
+                    }
+                    //await DetIServ.AddDetalleGpo(InventarioList);
+                    break;
                 case "Folio":
                     foreach(var reg in csv)
                     {  
@@ -82,13 +161,14 @@ namespace AppV7.Client.Pages.Uniformes.Folios
                             //ResultList.Add(radd);
                         }
                     }
+                    //await FolioIServ.AddFoliosVarios(ResultList);
                 break;
 
                 default:
 
                     break;
             }
-            //await FolioIServ.AddFoliosVarios(ResultList);
+            
         }
         public async Task OIFChange(InputFileChangeEventArgs arg)
         {
@@ -108,12 +188,9 @@ namespace AppV7.Client.Pages.Uniformes.Folios
                     Titulos++;
                 }
                 Vacios = 0;
-                await AddFoliosDb("Folio", csv);
+                await AddRegistrosDb(ElTipo, csv);
             }
-            
            
-            
-    
     #region SUBIR Archivo
             using var content = new MultipartFormDataContent();
             foreach (var file in arg.GetMultipleFiles(MaxAllowedFiles))
@@ -121,7 +198,7 @@ namespace AppV7.Client.Pages.Uniformes.Folios
                 var fileCont = new StreamContent(file.OpenReadStream(MaxFileSize));
                 fileCont.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
                 FullName = string.Empty;
-                FullName = BuildFull(file.Name);
+                FullName = BuildFull($"{ElTipo}_{file.Name}");
                 FileNames.Add(FullName);
                 content.Add(
                     content: fileCont,

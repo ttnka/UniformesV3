@@ -26,6 +26,7 @@ namespace AppV7.Client.Pages.Uniformes.Canano
         public IEnumerable<Z110_Usuarios> LosUsers { get; set; } =
             Enumerable.Empty<Z110_Usuarios>();
         public List<string> LosTipos { get; set; } = new();
+        public List<string> FileNameList { get; set; } = new List<string>();
         public List<KeyValuePair<int, string>> LosEdos { get; set; } =
             new List<KeyValuePair<int, string>>();
         public bool Editando { get; set; } = false;
